@@ -1,0 +1,112 @@
+{
+    "name": "Agente de An\u00e1lise de Reservas",
+    "nodes": [
+      {
+        "parameters": {
+          "values": {
+            "string": [
+              {
+                "name": "question",
+                "value": "Qual cidade teve mais reservas no m\u00eas de abril?"
+              }
+            ]
+          }
+        },
+        "name": "Input Pergunta",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 1,
+        "position": [
+          250,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "functionCode": "\nconst fs = require('fs');\n\nconst markdownPath = '/files/markdown/analise-reservas-woba.md';\nconst question = $json[\"question\"];\n\nconst promptTemplate = `\nVoc\u00ea \u00e9 um assistente de dados que responde perguntas sobre o uso de reservas de uma empresa com base nas informa\u00e7\u00f5es abaixo.\n\nO conte\u00fado est\u00e1 em formato de relat\u00f3rio estruturado, incluindo dados como:\n- total de reservas\n- cr\u00e9ditos consumidos\n- cidades com mais reservas\n- grupos com mais reservas\n- tipos de espa\u00e7os utilizados\n- ranking de usu\u00e1rios que mais consumiram cr\u00e9ditos\n\n### \ud83d\udcc4 Relat\u00f3rio:\n\n{MARKDOWN}\n\n### \u2753 Pergunta do usu\u00e1rio:\n\n{QUESTION}\n\n---\n\n\ud83d\udcac Sua resposta deve ser:\n- Baseada apenas no relat\u00f3rio acima\n- Objetiva, clara e com dados num\u00e9ricos quando poss\u00edvel\n- Em tom profissional\n- Em portugu\u00eas\n`;\n\ntry {\n  const markdown = fs.readFileSync(markdownPath, 'utf8');\n  const prompt = promptTemplate\n    .replace('{MARKDOWN}', markdown)\n    .replace('{QUESTION}', question);\n\n  return [{ json: { prompt } }];\n} catch (err) {\n  return [{ json: { error: 'Erro ao ler o arquivo Markdown', details: err.message } }];\n}\n"
+        },
+        "name": "Montar Prompt",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [
+          500,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "requestMethod": "POST",
+          "url": "https://api.openai.com/v1/chat/completions",
+          "jsonParameters": true,
+          "options": {},
+          "bodyParametersJson": "\n{\n  \"model\": \"gpt-3.5-turbo\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"={{$json[\"prompt\"]}}\"\n    }\n  ],\n  \"temperature\": 0.5\n}\n"
+        },
+        "name": "Chamar OpenAI",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 1,
+        "position": [
+          750,
+          300
+        ],
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "openai-api",
+            "name": "OpenAI API"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "functionCode": "\nconst resposta = $json.choices[0].message.content;\nreturn [{ json: { resposta } }];\n"
+        },
+        "name": "Formatar Resposta",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [
+          1000,
+          300
+        ]
+      }
+    ],
+    "connections": {
+      "Input Pergunta": {
+        "main": [
+          [
+            {
+              "node": "Montar Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar Prompt": {
+        "main": [
+          [
+            {
+              "node": "Chamar OpenAI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Chamar OpenAI": {
+        "main": [
+          [
+            {
+              "node": "Formatar Resposta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "active": false,
+    "settings": {},
+    "tags": [
+      "MVP",
+      "IA",
+      "Reservas"
+    ]
+  }

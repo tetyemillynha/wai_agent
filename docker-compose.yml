@@ -10,7 +10,5 @@ services:
       - .env
     volumes:
       - ./workflows:/files/workflows
-      - n8n_data:/home/node/.n8n
-
-volumes:
-  n8n_data:
+      - ./markdown:/files/markdown
+      - ~/.n8n:/home/node/.n8n
