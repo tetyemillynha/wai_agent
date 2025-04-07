@@ -1,5 +1,10 @@
 # 📊 Análise de Dados de Reservas - Woba
 
+## Dados da Empresa
+| ID | Créditos Totais | Valor do crédito | Valor do crédito excedente |
+|----|-----------------|------------------|----------------------------|
+|189 | 12000           | R$ 80            | R$100                      |
+
 ## 📌 Resumo Geral
 
 - **Total de reservas:** 907
