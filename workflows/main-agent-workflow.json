@@ -1,101 +1,171 @@
 {
-  "name": "Agent Facilities",
+  "name": "WAi Workflow",
   "nodes": [
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4o",
-          "mode": "list",
-          "cachedResultName": "gpt-4o"
+        "httpMethod": "POST",
+        "path": "usage-report",
+        "options": {}
+      },
+      "id": "b7f8623c-ac8b-40f9-8390-45582ed9e75b",
+      "name": "Receber do Slack",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        460,
+        40
+      ],
+      "webhookId": "webhook-pergunta-slack"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "pergunta",
+              "value": "={{ $json.body.text }}"
+            },
+            {
+              "name": "response_url",
+              "value": "={{ $json.body.response_url }}"
+            },
+            {
+              "name": "sessionId",
+              "value": "={{ $json.body.user_id || 'slack-session' }}"
+            }
+          ]
         },
         "options": {}
       },
+      "id": "abac1556-3b17-4000-985d-bb1389cad774",
+      "name": "Preparar Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        680,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.sessionId || $json.body.user_id || 'default' }}",
+        "contextWindowLength": 3
+      },
+      "id": "f5bc269b-503a-4955-b781-6fed0b3d27f7",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1160,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.pergunta }}",
+        "options": {
+          "systemMessage": "=Hoje é dia {{ $now }}\n\nVocê é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português.\n\n# 📊 Relatório Avançado de Análise de Reservas - Woba\n\n## Dados da Empresa\n| ID | Créditos Totais | Valor do crédito | Valor do crédito excedente |\n|----|-----------------|------------------|----------------------------|\n|189 | 12000           | R$ 80            | R$100                      |\n\n## 1. Resumo Geral\n\n- **Total de Reservas:** 907\n- **Total de Créditos Consumidos (apenas reservas aprovadas):** 1160.65 créditos\n- **Período Analisado:** Dados recentes, com maior volume registrado em Janeiro, Fevereiro e Março de 2025.\n\nEsta análise aprofunda o entendimento dos padrões de agendamento, utilização de créditos, comportamento dos usuários e tendências temporais, servindo de base para decisões estratégicas e operacionais.\n\n---\n\n## 2. Distribuição por Status de Reserva\n\n| Status                        | Quantidade | Percentual Aproximado |\n|-------------------------------|------------|-----------------------|\n| **Aprovado**                  | 769        | 84,8%                 |\n| **Cancelado pelo usuário**    | 100        | 11,0%                 |\n| **Cancelado**                 | 24         | 2,6%                  |\n| **Recusado**                  | 14         | 1,5%                  |\n\n**Insights:**  \n- A alta taxa de reservas aprovadas (≈85%) indica um processo de agendamento eficiente.  \n- Os cancelamentos, realizados tanto pelo usuário quanto pelo sistema, somam cerca de 14%, sugerindo a necessidade de analisar os motivos para minimizar desistências.\n\n---\n\n## 3. Análise de Check-in (Apenas Reservas Aprovadas)\n\n| Check-in | Quantidade | Percentual Aproximado |\n|----------|------------|-----------------------|\n| **Sim**  | 360        | 46,8%                 |\n| **Não**  | 409        | 53,2%                 |\n\n**Insights:**  \n- Menos da metade das reservas aprovadas efetivam o check-in, evidenciando uma lacuna entre o agendamento e a utilização efetiva dos espaços.  \n- Recomenda-se investigar os fatores que dificultam o check-in, como a comunicação prévia e a facilidade do processo, para aumentar o comparecimento.\n\n---\n\n## 4. Distribuição Geográfica das Reservas (Top 5 Cidades)\n\n| Cidade                   | Reservas |\n|--------------------------|----------|\n| **São Paulo/SP**         | 334      |\n| **Belo Horizonte/MG**    | 113      |\n| **Florianópolis/SC**     | 61       |\n| **Rio de Janeiro/RJ**    | 50       |\n| **Salvador/BA**          | 50       |\n\n**Insights:**  \n- São Paulo concentra a maior quantidade de reservas, refletindo alta demanda e possivelmente maior oferta de espaços.\n- A análise geográfica orienta estratégias regionais para alocação de recursos e campanhas de marketing direcionadas.\n\n---\n\n## 5. Análise por Grupo de Usuários (Top 5 Grupos)\n\n| Grupo         | Reservas |\n|---------------|----------|\n| **CS/CX**       | 135      |\n| **Supply Ops**  | 117      |\n| **Engineering** | 98       |\n| **Marketing**   | 47       |\n| **Finance**     | 35       |\n\n**Insights:**  \n- Grupos como CS/CX e Supply Ops lideram em volume, indicando necessidades específicas que podem ser priorizadas.  \n- A segmentação por grupo permite a criação de estratégias personalizadas para aumentar o engajamento de usuários com menor volume de reservas.\n\n---\n\n## 6. Tipos de Espaços Reservados\n\n| Tipo             | Reservas |\n|------------------|----------|\n| **Compartilhado** | 704      |\n| **Reunião**       | 123      |\n| **Exclusivo**     | 64       |\n| **Eventos**       | 12       |\n\n**Insights:**  \n- O tipo \"Compartilhado\" domina o uso (≈77% do total), demonstrando uma forte preferência por ambientes colaborativos.  \n- O baixo número de reservas para \"Eventos\" pode apontar para uma demanda reprimida ou para um segmento de nicho que ainda precisa ser explorado.\n\n---\n\n## 7. Ranking de Usuários com Mais Créditos Consumidos\n\n| Nome                                     | Créditos Consumidos |\n|------------------------------------------|---------------------|\n| **Felipe Mascoli**                       | 80.75               |\n| **Maria Carolina De Oliveira Melo**      | 67.00               |\n| **Paula Ladeira**                        | 46.50               |\n| **Juliana Pedroso**                      | 45.25               |\n| **Andressa Lazzeri**                     | 39.00               |\n| **Eduardo Gruber**                       | 39.00               |\n| **Caio Stanczyk**                        | 37.30               |\n| **Leonardo Tramontina**                  | 37.00               |\n| **Jean Silva**                           | 36.25               |\n| **Márcio Fernandes**                     | 33.05               |\n\n**Insights:**  \n- Esse ranking evidencia os principais consumidores de créditos, facilitando a criação de programas de fidelidade e estratégias personalizadas.  \n- A análise dos perfis desses usuários pode orientar a oferta de benefícios e a melhoria contínua dos serviços.\n\n---\n\n## 8. Análise por Período (Data da Reserva)\n\nUtilizando o campo **Data da reserva**, que reflete a data agendada para utilização dos espaços, a distribuição mensal dos agendamentos foi a seguinte:\n\n| Período             | Reservas Totais | Reservas Aprovadas | Créditos Consumidos (Aprovadas) |\n|---------------------|-----------------|--------------------|---------------------------------|\n| **Janeiro/2025**    | 320             | 280                | 500.00                          |\n| **Fevereiro/2025**  | 330             | 290                | 440.65                          |\n| **Março/2025**      | 257             | 199                | 220.00                          |\n| **Total**           | 907             | 769                | 1160.65                         |\n\n**Insights:**  \n- **Janeiro/2025:** Com 320 reservas, registrou-se um forte volume inicial, com 280 reservas aprovadas e um consumo de 500 créditos, indicando alta demanda no início do ano.  \n- **Fevereiro/2025:** Apresentou 330 reservas, das quais 290 foram aprovadas, consumindo 440.65 créditos.  \n- **Março/2025:** Foram registradas 257 reservas, com 199 aprovadas e um consumo de 220 créditos.  \n- A análise revela que a maioria das reservas se concentra nos primeiros três meses do ano, o que pode indicar um padrão sazonal ou influências operacionais específicas para esse período.\n\n**Recomendações:**  \n- **Visualizações Temporais:** Desenvolver gráficos de linha ou histogramas para monitorar a evolução diária e semanal das reservas, identificando picos e tendências.  \n- **Ajuste de Oferta:** Alinhar a disponibilidade dos espaços e os recursos operacionais com os períodos de maior demanda, garantindo a otimização da operação.  \n- **Campanhas e Comunicação:** Planejar campanhas de marketing e lembretes direcionados para estimular reservas em períodos de menor volume e incentivar a efetivação do check-in.\n\n---\n\n## 9. Conclusão\n\nEste relatório avançado oferece uma visão abrangente dos dados de reservas da Woba, evidenciando:\n\n- A eficiência do sistema de agendamento com uma alta taxa de reservas aprovadas.\n- A necessidade de melhorias no processo de check-in para converter reservas em utilização efetiva.\n- A distribuição geográfica e a segmentação por grupos, que permitem estratégias regionais e personalizadas.\n- A predominância dos espaços compartilhados e o perfil dos usuários que mais consomem créditos.\n- Tendências temporais claras, com a maioria das reservas concentradas em Janeiro, Fevereiro e Março de 2025.\n"
+        }
+      },
+      "id": "a8d9530d-ab04-44f5-b80f-64bd34ff789d",
+      "name": "Analista de Dados",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        940,
+        40
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "model": {
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "id": "5f368b30-391b-4634-88ad-8a03af0f225b",
+      "name": "OpenAI Chat Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -372,
-        -360
+        980,
+        280
       ],
-      "id": "d20012bb-c99b-47a0-8faa-245d3ea01217",
-      "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
-          "id": "pif8A32caO8sfryt",
-          "name": "OpenIA Credential WOBA"
+          "id": "A7CBOA3izWSsa9LD",
+          "name": "OpenAi account"
         }
       }
     },
     {
       "parameters": {
-        "options": {}
+        "requestMethod": "POST",
+        "url": "={{ $json.response_url }}",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "=={\n  \"text\": \"🤖 {{ $json.output || 'Sem resposta gerada pela IA.' }}\",\n  \"response_type\": \"ephemeral\"\n}"
       },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.1,
+      "id": "8a4ba789-faec-442f-bb2c-2e361f11d498",
+      "name": "Responder no Slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
       "position": [
-        -620,
-        -580
-      ],
-      "id": "4780fa18-bd3c-488e-8a29-75947bf65302",
-      "name": "When chat message received",
-      "webhookId": "24293698-a26d-45c3-9f86-7a04b83e7ba1"
+        1820,
+        -220
+      ]
     },
     {
       "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
         "options": {
-          "systemMessage": "=Hoje é dia {{ $now }}\n\nVocê é um assistente de dados que responde perguntas sobre o uso de reservas de uma empresa com base nas informações abaixo.\n\nO conteúdo está em formato de relatório estruturado, incluindo dados como:\n- total de reservas\n- créditos consumidos\n- cidades com mais reservas\n- grupos com mais reservas\n- tipos de espaços utilizados\n- ranking de usuários que mais consumiram créditos\n\n### 📄 Relatório:\n\n```\n# 📊 Relatório Avançado de Análise de Reservas - Woba\n\n## 1. Resumo Geral\n\n- **Total de Reservas:** 907\n- **Total de Créditos Consumidos (apenas reservas aprovadas):** 1160.65 créditos\n- **Período Analisado:** Dados recentes, com maior volume registrado em Janeiro, Fevereiro e Março de 2025.\n\nEsta análise aprofunda o entendimento dos padrões de agendamento, utilização de créditos, comportamento dos usuários e tendências temporais, servindo de base para decisões estratégicas e operacionais.\n\n---\n\n## 2. Distribuição por Status de Reserva\n\n| Status                        | Quantidade | Percentual Aproximado |\n|-------------------------------|------------|-----------------------|\n| **Aprovado**                  | 769        | 84,8%                 |\n| **Cancelado pelo usuário**    | 100        | 11,0%                 |\n| **Cancelado**                 | 24         | 2,6%                  |\n| **Recusado**                  | 14         | 1,5%                  |\n\n**Insights:**  \n- A alta taxa de reservas aprovadas (≈85%) indica um processo de agendamento eficiente.  \n- Os cancelamentos, realizados tanto pelo usuário quanto pelo sistema, somam cerca de 14%, sugerindo a necessidade de analisar os motivos para minimizar desistências.\n\n---\n\n## 3. Análise de Check-in (Apenas Reservas Aprovadas)\n\n| Check-in | Quantidade | Percentual Aproximado |\n|----------|------------|-----------------------|\n| **Sim**  | 360        | 46,8%                 |\n| **Não**  | 409        | 53,2%                 |\n\n**Insights:**  \n- Menos da metade das reservas aprovadas efetivam o check-in, evidenciando uma lacuna entre o agendamento e a utilização efetiva dos espaços.  \n- Recomenda-se investigar os fatores que dificultam o check-in, como a comunicação prévia e a facilidade do processo, para aumentar o comparecimento.\n\n---\n\n## 4. Distribuição Geográfica das Reservas (Top 5 Cidades)\n\n| Cidade                   | Reservas |\n|--------------------------|----------|\n| **São Paulo/SP**         | 334      |\n| **Belo Horizonte/MG**    | 113      |\n| **Florianópolis/SC**     | 61       |\n| **Rio de Janeiro/RJ**    | 50       |\n| **Salvador/BA**          | 50       |\n\n**Insights:**  \n- São Paulo concentra a maior quantidade de reservas, refletindo alta demanda e possivelmente maior oferta de espaços.  \n- A análise geográfica orienta estratégias regionais para alocação de recursos e campanhas de marketing direcionadas.\n\n---\n\n## 5. Análise por Grupo de Usuários (Top 5 Grupos)\n\n| Grupo         | Reservas |\n|---------------|----------|\n| **CS/CX**       | 135      |\n| **Supply Ops**  | 117      |\n| **Engineering** | 98       |\n| **Marketing**   | 47       |\n| **Finance**     | 35       |\n\n**Insights:**  \n- Grupos como CS/CX e Supply Ops lideram em volume, indicando necessidades específicas que podem ser priorizadas.  \n- A segmentação por grupo permite a criação de estratégias personalizadas para aumentar o engajamento de usuários com menor volume de reservas.\n\n---\n\n## 6. Tipos de Espaços Reservados\n\n| Tipo             | Reservas |\n|------------------|----------|\n| **Compartilhado** | 704      |\n| **Reunião**       | 123      |\n| **Exclusivo**     | 64       |\n| **Eventos**       | 12       |\n\n**Insights:**  \n- O tipo \"Compartilhado\" domina o uso (≈77% do total), demonstrando uma forte preferência por ambientes colaborativos.  \n- O baixo número de reservas para \"Eventos\" pode apontar para uma demanda reprimida ou para um segmento de nicho que ainda precisa ser explorado.\n\n---\n\n## 7. Ranking de Usuários com Mais Créditos Consumidos\n\n| Nome                                     | Créditos Consumidos |\n|------------------------------------------|---------------------|\n| **Felipe Mascoli**                       | 80.75               |\n| **Maria Carolina De Oliveira Melo**      | 67.00               |\n| **Paula Ladeira**                        | 46.50               |\n| **Juliana Pedroso**                      | 45.25               |\n| **Andressa Lazzeri**                     | 39.00               |\n| **Eduardo Gruber**                       | 39.00               |\n| **Caio Stanczyk**                        | 37.30               |\n| **Leonardo Tramontina**                  | 37.00               |\n| **Jean Silva**                           | 36.25               |\n| **Márcio Fernandes**                     | 33.05               |\n\n**Insights:**  \n- Esse ranking evidencia os principais consumidores de créditos, facilitando a criação de programas de fidelidade e estratégias personalizadas.  \n- A análise dos perfis desses usuários pode orientar a oferta de benefícios e a melhoria contínua dos serviços.\n\n---\n\n## 8. Análise por Período (Data da Reserva)\n\nUtilizando o campo **Data da reserva**, que reflete a data agendada para utilização dos espaços, a distribuição mensal dos agendamentos foi a seguinte:\n\n| Período             | Reservas Totais | Reservas Aprovadas | Créditos Consumidos (Aprovadas) |\n|---------------------|-----------------|--------------------|---------------------------------|\n| **Janeiro/2025**    | 320             | 280                | 500.00                          |\n| **Fevereiro/2025**  | 330             | 290                | 440.65                          |\n| **Março/2025**      | 257             | 199                | 220.00                          |\n| **Total**           | 907             | 769                | 1160.65                         |\n\n**Insights:**  \n- **Janeiro/2025:** Com 320 reservas, registrou-se um forte volume inicial, com 280 reservas aprovadas e um consumo de 500 créditos, indicando alta demanda no início do ano.  \n- **Fevereiro/2025:** Apresentou 330 reservas, das quais 290 foram aprovadas, consumindo 440.65 créditos.  \n- **Março/2025:** Foram registradas 257 reservas, com 199 aprovadas e um consumo de 220 créditos.  \n- A análise revela que a maioria das reservas se concentra nos primeiros três meses do ano, o que pode indicar um padrão sazonal ou influências operacionais específicas para esse período.\n\n**Recomendações:**  \n- **Visualizações Temporais:** Desenvolver gráficos de linha ou histogramas para monitorar a evolução diária e semanal das reservas, identificando picos e tendências.  \n- **Ajuste de Oferta:** Alinhar a disponibilidade dos espaços e os recursos operacionais com os períodos de maior demanda, garantindo a otimização da operação.  \n- **Campanhas e Comunicação:** Planejar campanhas de marketing e lembretes direcionados para estimular reservas em períodos de menor volume e incentivar a efetivação do check-in.\n\n---\n\n## 9. Conclusão\n\nEste relatório avançado oferece uma visão abrangente dos dados de reservas da Woba, evidenciando:\n\n- A eficiência do sistema de agendamento com uma alta taxa de reservas aprovadas.\n- A necessidade de melhorias no processo de check-in para converter reservas em utilização efetiva.\n- A distribuição geográfica e a segmentação por grupos, que permitem estratégias regionais e personalizadas.\n- A predominância dos espaços compartilhados e o perfil dos usuários que mais consomem créditos.\n- Tendências temporais claras, com a maioria das reservas concentradas em Janeiro, Fevereiro e Março de 2025.\n```\n\n---\n\n💬 Sua resposta deve ser:\n- Baseada apenas no relatório acima\n- Objetiva, clara e com dados numéricos quando possível\n- Em tom profissional\n- Em português"
+          "includeUnpaired": true
         }
       },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
       "position": [
-        -400,
-        -580
+        1240,
+        -220
       ],
-      "id": "dc413a7c-f0dc-4e2d-b9b4-822e744fe9ed",
-      "name": "Analista de Dados"
+      "id": "ed5c0a6b-7f4c-4d6e-a5fc-9ee9b29803e7",
+      "name": "Merge",
+      "alwaysOutputData": false
     },
     {
       "parameters": {
-        "contextWindowLength": 3
+        "jsCode": "const url = $input.first().json.response_url\nconst formated_text = $input.first().json.output.replace(/\\\\n/g, '\\n')\n\n\nreturn [\n  {\n    json: {\n      response_url: url,\n      output: formated_text\n    }\n  }\n];\n"
       },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        -252,
-        -360
+        1480,
+        -220
       ],
-      "id": "bad102e5-a5da-438c-a27d-6606e832092c",
-      "name": "Simple Memory"
+      "id": "8913222c-3098-4457-9caa-79de12846c82",
+      "name": "Code"
     }
   ],
   "pinData": {},
   "connections": {
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Analista de Dados",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When chat message received": {
+    "Receber do Slack": {
       "main": [
         [
           {
-            "node": "Analista de Dados",
+            "node": "Preparar Dados",
             "type": "main",
             "index": 0
           }
         ]
-      ]
-    },
-    "Analista de Dados": {
-      "main": [
-        []
       ]
     },
     "Simple Memory": {
@@ -108,17 +178,77 @@
           }
         ]
       ]
+    },
+    "Analista de Dados": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analista de Dados",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Dados": {
+      "main": [
+        [
+          {
+            "node": "Analista de Dados",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Responder no Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": false,
+  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8a76887a-f48f-4b03-ad4b-b54cb1c24ab0",
+  "versionId": "a0e5b33d-56f4-46ea-8348-4959c581e958",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "8c52f2a0a080e2e1b2e04448a7ba8b9d2d9ea37f13b86a4c21963399fbb04308"
+    "instanceId": "499ab5a93cffbd1bd523352e296515b05cebf4f71e67381ca94a0d315ee131fa"
   },
-  "id": "bNBrM8jtCNyl8sc0",
+  "id": "pGUBQ8uGyEQcVuAm",
   "tags": []
 }
