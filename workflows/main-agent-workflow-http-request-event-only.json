@@ -317,7 +317,7 @@
           "parameters": [
             {
               "name": "authorization",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQzMzQ4NDYsImV4cCI6MTc0NDM0MDg0Nn0.DInOlB-4vgcMNLzLuOC3kXKAeoeu8uFNYKr49AOn95U"
+              "value": ""
             }
           ]
         },
