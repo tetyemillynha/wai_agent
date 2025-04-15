@@ -12,7 +12,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        920,
+        720,
         380
       ]
     },
@@ -21,7 +21,7 @@
         "promptType": "define",
         "text": "={{ $('Slack Trigger').item.json.blocks[0].elements[0].elements[1].text }}",
         "options": {
-          "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\nTambém retorne o relatório formatado no idioma pt-br com formatação de datas e horários , informando as datas consultadas, nome e id da empresa.\n\n{{ $('Code').item.json.markdown }}"
+          "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\n\n{{ $('Code').item.json.markdown }}"
         }
       },
       "id": "d5207c64-3e26-4185-a2ab-6091629c6b06",
@@ -29,7 +29,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        800,
+        600,
         180
       ],
       "alwaysOutputData": true,
@@ -50,7 +50,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        780,
+        580,
         380
       ],
       "credentials": {
@@ -78,7 +78,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        1180,
+        980,
         180
       ],
       "id": "74bce596-ee71-4982-a58a-84388d4d4115",
@@ -133,7 +133,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -180,
+        -380,
         -20
       ],
       "id": "e4cc5606-1abf-4bec-aa7f-31f61ee9938e",
@@ -146,7 +146,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        340,
+        140,
         180
       ],
       "id": "0b407452-5912-4789-aed4-020eb4b60c31",
@@ -169,7 +169,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -180,
+        -380,
         180
       ],
       "id": "34d4dcaf-9977-4be3-bfb2-2c5f28e284f7",
@@ -192,7 +192,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -180,
+        -380,
         380
       ],
       "id": "1aae3215-a13e-4c8d-b763-5f688fe6f869",
@@ -208,7 +208,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        160,
+        -40,
         180
       ],
       "id": "3a19e947-7e6b-4dd2-877f-2a7d9a7419ec",
@@ -217,10 +217,10 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=",
+        "text": "={{ $json.blocks[0].elements[0].elements[1].text }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=Hoje é {{ $now }}\n\nPreciso que você me ajude a extrair corretamente 2 informações a partir do input do usário o id da empresa e o período consultado.\n\nCaso o usuário não forneça as informações relacionadas a esses dados, retorne uma mensagem informando que você precisa saber qual é a liga e o período.\n\nEssa informação deve ser retornada assim:\ncompanyId: [id extraído]\nstartDate: [data inicial no formato YYYY-MM-DD]\nendDate: [data final no formato YYYY-MM-DD]\n\n{{ $json.text }}"
+          "systemMessage": "=Hoje é {{ $now }}.\n\nVocê é um assistente de dados responsável por analisar perguntas de usuários relacionadas ao consumo de créditos e reservas de empresas na plataforma.\n\nSeu objetivo é validar se a pergunta está dentro do **contexto** esperado e **extrair as informações necessárias**. A resposta deve sempre estar no seguinte formato JSON:\n\ncompanyId: [id extraído]\nstartDate: [data inicial no formato YYYY-MM-DD]\nendDate: [data final no formato YYYY-MM-DD]\nerrorMessage: [null ou mensagem explicativa]\n\n---\n\n**Contexto aceito**:\n- Perguntas sobre consumo de créditos\n- Volume de reservas\n- Distribuição de uso por espaço, cidade, usuário, grupo\n- Ranking de consumo\n- Comparativos de meses\n\n---\n\n**Instruções de interpretação:**\n\n1. **Período**:\n   - Aceite datas absolutas (ex: “de 01/01/2024 a 31/03/2024”)\n   - Aceite datas relativas (ex: “últimas 3 semanas”, “últimos 2 meses”, “este mês”)\n   - Converta sempre para startDate e endDate no formato ISO (YYYY-MM-DD), usando hoje como base: {{ $now }}\n\n2. **ID da empresa / liga**:\n   - Identifique qualquer número que se refira claramente a uma empresa ou liga\n   - Pode aparecer como “empresa 189”, “liga 554” ou “id 102”\n\n---\n\n**Responda com:**\nSe a pergunta estiver fora do contexto, responda com:\n\ncompanyId: null,\nstartDate: null,\nendDate\": null,\nerrorMessage: \"Desculpe, só consigo responder perguntas sobre consumo de créditos e reservas.\"\n\nSe a pergunta estiver dentro do contexto, mas sem o ID da empresa ou período, responda com:\n\ncompanyId: null,\nstartDate: null,\nendDate: null,\nerrorMessage: \"Por favor, forneça o ID da empresa e o período desejado.\"\n\nSe estiver tudo certo, responda com:\n\ncompanyId: 123,\nstartDate: \"2024-01-01\",\nendDate: \"2024-03-31\",\nerrorMessage: null\n\n❗ Atenção: **retorne apenas o JSON**, sem qualquer comentário adicional."
         }
       },
       "id": "7158aa5f-832c-47c4-ba51-37f1cdedd4d6",
@@ -235,19 +235,6 @@
       "executeOnce": false,
       "retryOnFail": false,
       "notesInFlow": false
-    },
-    {
-      "parameters": {
-        "jsonSchemaExample": "{\n\t\"companyId\": \"189\",\n\t\"startDate\": \"YYYY-MM-DD\",\n    \"endDate\": \"YYYY-MM-DD\"\n}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.2,
-      "position": [
-        -1000,
-        400
-      ],
-      "id": "e4b874fd-ca5c-4c24-8e6d-8f5b12edab64",
-      "name": "Structured Output Parser"
     },
     {
       "parameters": {
@@ -321,7 +308,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -780,
+        -820,
         180
       ],
       "id": "d5236f70-65e0-4008-8996-c023f885ecae",
@@ -372,7 +359,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        560,
+        360,
         180
       ],
       "id": "e5891e3e-8d9f-4a68-80dd-d406d70bfcd4",
@@ -384,6 +371,19 @@
           "name": "Slack account 2"
         }
       }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"companyId\": null,\n  \"startDate\": null,\n  \"endDate\": null,\n  \"errorMessage\": null\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -980,
+        400
+      ],
+      "id": "3c0f9338-4070-407d-917d-6f5abccbc207",
+      "name": "Structured Output Parser"
     }
   ],
   "pinData": {},
@@ -503,17 +503,6 @@
         ]
       ]
     },
-    "Structured Output Parser": {
-      "ai_outputParser": [
-        [
-          {
-            "node": "Analista de Dados1",
-            "type": "ai_outputParser",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "OpenAI Chat Model1": {
       "ai_languageModel": [
         [
@@ -563,13 +552,24 @@
           }
         ]
       ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Analista de Dados1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "7eeea4d0-a70b-4004-9b7b-39e17b14ce64",
+  "versionId": "5f0c72ff-a5c0-467a-805c-6f21e12c6a1e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b1dd7d5a248f52852a54c187dc8b5f2508350d00b2bf8019f80ca5f0a6737f0c"
