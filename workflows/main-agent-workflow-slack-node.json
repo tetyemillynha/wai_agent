@@ -4,7 +4,7 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $json.user }}",
+        "sessionKey": "={{ $('Slack Trigger').item.json.user }}",
         "contextWindowLength": 3
       },
       "id": "f2a5dd5e-29a1-4dbe-b640-c15b12661862",
@@ -12,16 +12,16 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        740,
-        440
+        920,
+        380
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $json.text }}",
+        "text": "={{ $('Slack Trigger').item.json.blocks[0].elements[0].elements[1].text }}",
         "options": {
-          "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\n\n{{ $json.markdown }}"
+          "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\nTambém retorne o relatório formatado no idioma pt-br com formatação de datas e horários , informando as datas consultadas, nome e id da empresa.\n\n{{ $('Code').item.json.markdown }}"
         }
       },
       "id": "d5207c64-3e26-4185-a2ab-6091629c6b06",
@@ -29,7 +29,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        620,
+        800,
         180
       ],
       "alwaysOutputData": true,
@@ -50,8 +50,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        580,
-        440
+        780,
+        380
       ],
       "credentials": {
         "openAiApi": {
@@ -78,7 +78,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        1000,
+        1180,
         180
       ],
       "id": "74bce596-ee71-4982-a58a-84388d4d4115",
@@ -103,7 +103,7 @@
       "type": "n8n-nodes-base.slackTrigger",
       "typeVersion": 1,
       "position": [
-        -1620,
+        -1340,
         180
       ],
       "id": "bd9e729e-4d60-48ea-ba48-42d25f2a6d6e",
@@ -123,7 +123,8 @@
         "headerParameters": {
           "parameters": [
             {
-              "name": "auth-token"
+              "name": "auth-token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQ3MjM1NDMsImV4cCI6MTc0NDcyOTU0M30.KytjXpqaSw6wXQ0mlYb3_ELIENtOZkBJeXxI48PZw-k"
             }
           ]
         },
@@ -140,7 +141,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const bookings = $input.first().json.bookings;\n\nconst groups = $input.first().json._embedded?.company_groups || [];\n\nconst pacotes = $input.first().json.packages || [];\n\nconsole.log($input.first().json._embedded)\n\nconsole.log(groups);\n\n\nif (!bookings || bookings.length === 0) {\n  return [{ json: { markdown: '# ❌ Nenhuma reserva encontrada.' } }];\n}\n\n// Mapas auxiliares\nconst porCidade = {};\nconst porEspaco = {};\nconst porGrupo = {};\nconst porUsuario = {};\nlet totalCreditos = 0;\nlet totalGasto = 0;\n\n// Map de ID de grupo → nome\nconst mapGrupos = {};\ngroups.forEach(g => {\n  const ginfo = g.company_group;\n  mapGrupos[ginfo.id] = {\n    name: ginfo.name || 'Grupo sem nome',\n    total_members: g.total_members || 0\n  };\n});\n\n// Processar bookings\nbookings.forEach(booking => {\n  const cidade = booking.spaces?.cityname || 'Desconhecida';\n  const espaco = booking.spaces?.name || 'Espaço desconhecido';\n  const user = booking.users;\n  const grupoId = booking.group_id;\n  const grupo = mapGrupos[grupoId];\n\n  totalCreditos += booking.credits || 0;\n  totalGasto += booking.spentAmmount || 0;\n\n  // Cidades\n  porCidade[cidade] = (porCidade[cidade] || 0) + 1;\n\n  // Espaços\n  porEspaco[espaco] = porEspaco[espaco] || {\n    count: 0,\n    cm: booking.spaces?.cm_name,\n    bairro: booking.spaces?.neighborhood,\n    cidade\n  };\n  porEspaco[espaco].count++;\n\n  // Grupos\n  if (grupo) {\n    porGrupo[grupo.name] = porGrupo[grupo.name] || { count: 0, members: grupo.total_members };\n    porGrupo[grupo.name].count++;\n  }\n\n  // Usuários\n  if (user?.first_name) {\n    const nomeCompleto = `${user.first_name} ${user.last_name || ''}`.trim();\n    porUsuario[nomeCompleto] = porUsuario[nomeCompleto] || {\n      email: user.email || '',\n      totalCreditos: 0\n    };\n    porUsuario[nomeCompleto].totalCreditos += booking.credits || 0;\n  }\n});\n\n// Top 5 usuários\nconst topUsuarios = Object.entries(porUsuario)\n  .sort((a, b) => b[1].totalCreditos - a[1].totalCreditos)\n  .slice(0, 5);\n\n// Montagem do markdown\nlet markdown = `# 📊 Relatório Analítico - ${bookings[0].companies?.name || 'Empresa Desconhecida'}\\n\\n`;\n\nmarkdown += `## 🗓️ Período: ${bookings[0].booking_date?.split('T')[0] || 'Indefinido'} até ${bookings.at(-1).booking_date?.split('T')[0] || 'Indefinido'}\\n\\n`;\n\nmarkdown += `### 🔢 Resumo Geral\\n`;\nmarkdown += `- Total de reservas: ${bookings.length}\\n`;\nmarkdown += `- Créditos consumidos: ${totalCreditos}\\n`;\nmarkdown += `- Valor gasto estimado: R$ ${(totalGasto / 100).toFixed(2)}\\n`;\nmarkdown += `- Cidades atendidas: ${Object.keys(porCidade).length}\\n`;\nmarkdown += `- Grupos identificados: ${Object.keys(porGrupo).length}\\n\\n`;\n\nmarkdown += `---\\n## 🏙️ Reservas por Cidade:\\n`;\nfor (const [cidade, total] of Object.entries(porCidade)) {\n  markdown += `- **${cidade}**: ${total} reservas\\n`;\n}\n\nmarkdown += `\\n## 🧑‍🤝‍🧑 Reservas por Grupo:\\n`;\nfor (const [grupo, data] of Object.entries(porGrupo)) {\n  markdown += `- **${grupo}**: ${data.count} reservas (${data.members} membros)\\n`;\n}\n\nmarkdown += `\\n## 👥 Top 5 Usuários por Créditos Consumidos:\\n`;\ntopUsuarios.forEach(([nome, data], i) => {\n  markdown += `${i + 1}. **${nome}** (${data.email}) – ${data.totalCreditos} créditos\\n`;\n});\n\nmarkdown += `\\n## 🏢 Espaços Utilizados:\\n`;\nfor (const [espaco, data] of Object.entries(porEspaco)) {\n  markdown += `- **${espaco}** (${data.cidade}, ${data.bairro}) – ${data.count} reservas`;\n  if (data.cm) markdown += ` — CM: ${data.cm}`;\n  markdown += '\\n';\n}\n\nmarkdown += `\\n---\\n## 📝 Detalhamento das Reservas:\\n`;\nbookings.forEach((b, i) => {\n  const nomeUsuario = b.users?.first_name ? `${b.users.first_name} ${b.users.last_name || ''}` : 'Usuário desconhecido';\n  const grupoNome = mapGrupos[b.group_id]?.name || 'Sem grupo';\n  const espaco = b.spaces?.name || 'Espaço não identificado';\n  const cidade = b.spaces?.cityname || 'Cidade não informada';\n  const data = b.booking_date?.split('T')[0] || 'Data não informada';\n  const horario = b.booking_detail || '';\n  const tipo = b.meetingRooms ? 'Reunião' : b.privateRooms ? 'Exclusivo' : 'Outro';\n  const checkin = b.checkIn ? '✅' : '❌';\n\n  markdown += `### Reserva #${b.id}\\n`;\n  markdown += `- Data: ${data} ${horario}\\n`;\n  markdown += `- Espaço: ${espaco} (${cidade})\\n`;\n  markdown += `- Tipo: ${tipo}\\n`;\n  markdown += `- Usuário: ${nomeUsuario} (${b.users?.email || 'sem email'})\\n`;\n  markdown += `- Grupo: ${grupoNome}\\n`;\n  markdown += `- Créditos: ${b.credits || 0}\\n`;\n  markdown += `- Gasto estimado: R$ ${(b.spentAmmount / 100).toFixed(2)}\\n`;\n  markdown += `- Check-in: ${checkin}\\n\\n`;\n});\n\nmarkdown += `## 🎯 Informações do Pacote Contratado\\n\\n`;\n\nfor (const pacote of pacotes) {\n  const ciclo = pacote.activeCycle || {};\n  const produtos = pacote.products?.join(', ') || '-';\n  const bloqueados = pacote.blockedProducts?.length ? pacote.blockedProducts.join(', ') : '_nenhum_';\n  const consumido = ciclo.creditAmountConsumed || 0;\n  const total = ciclo.creditAmountTotal || 0;\n  const disponivel = ciclo.availableCredits || 0;\n  const excedentes = ciclo.exceededCredits || 0;\n\n  markdown += `### Pacote #${pacote.id} (${pacote.duration})\\n`;\n  markdown += `- Vigência: ${new Date(pacote.startDate).toLocaleDateString('pt-BR')} até ${new Date(pacote.endDate).toLocaleDateString('pt-BR')}\\n`;\n  markdown += `- Produtos disponíveis: **${produtos}**\\n`;\n  markdown += `- Produtos bloqueados: **${bloqueados}**\\n`;\n  if (total > 0) {\n    markdown += `- Créditos totais: ${total}\\n`;\n    markdown += `- Créditos consumidos: ${consumido}\\n`;\n    markdown += `- Créditos disponíveis: ${disponivel}\\n`;\n    markdown += `- Preço unitário: R$ ${(ciclo.creditUnitPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Preço de crédito excedente: R$ ${(ciclo.creditExceededPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Porcentagem consumida: ${(ciclo.consumeInPercentage || 0).toFixed(2)}%\\n\\n`;\n  } else {\n    markdown += `- Créditos excedentes utilizados: ${excedentes}\\n`;\n    markdown += `- Preço de crédito excedente: R$ ${(ciclo.creditExceededPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Créditos disponíveis: ${disponivel}\\n\\n`;\n  }\n}\n\nmarkdown += `---\\n_Gerado automaticamente por WAi Facilities em ${new Date().toLocaleString('pt-BR')}_`;\n\n\n\nreturn [{ json: { markdown } }];\n"
+        "jsCode": "const bookings = $input.first().json.bookings;\n\nconst groups = $input.first().json._embedded?.company_groups || [];\n\nconst pacotes = $input.first().json.packages || [];\n\nconsole.log($input.first().json._embedded)\n\nconsole.log(groups);\n\n\nif (!bookings || bookings.length === 0) {\n  return [{ json: { markdown: '# ❌ Nenhuma reserva encontrada.' } }];\n}\n\n// Mapas auxiliares\nconst porCidade = {};\nconst porEspaco = {};\nconst porGrupo = {};\nconst porUsuario = {};\nlet totalCreditos = 0;\nlet totalGasto = 0;\n\n// Map de ID de grupo → nome\nconst mapGrupos = {};\ngroups.forEach(g => {\n  const ginfo = g.company_group;\n  mapGrupos[ginfo.id] = {\n    name: ginfo.name || 'Grupo sem nome',\n    total_members: g.total_members || 0\n  };\n});\n\n// Processar bookings\nbookings.forEach(booking => {\n  const cidade = booking.spaces?.cityname || 'Desconhecida';\n  const espaco = booking.spaces?.name || 'Espaço desconhecido';\n  const user = booking.users;\n  const grupoId = booking.group_id;\n  const grupo = mapGrupos[grupoId];\n\n  totalCreditos += booking.credits || 0;\n  totalGasto += booking.spentAmmount || 0;\n\n  // Cidades\n  porCidade[cidade] = (porCidade[cidade] || 0) + 1;\n\n  // Espaços\n  porEspaco[espaco] = porEspaco[espaco] || {\n    count: 0,\n    cm: booking.spaces?.cm_name,\n    bairro: booking.spaces?.neighborhood,\n    cidade\n  };\n  porEspaco[espaco].count++;\n\n  // Grupos\n  if (grupo) {\n    porGrupo[grupo.name] = porGrupo[grupo.name] || { count: 0, members: grupo.total_members };\n    porGrupo[grupo.name].count++;\n  }\n\n  // Usuários\n  if (user?.first_name) {\n    const nomeCompleto = `${user.first_name} ${user.last_name || ''}`.trim();\n    porUsuario[nomeCompleto] = porUsuario[nomeCompleto] || {\n      email: user.email || '',\n      totalCreditos: 0\n    };\n    porUsuario[nomeCompleto].totalCreditos += booking.credits || 0;\n  }\n});\n\n// Top 5 usuários\nconst topUsuarios = Object.entries(porUsuario)\n  .sort((a, b) => b[1].totalCreditos - a[1].totalCreditos)\n  .slice(0, 5);\n\n// Montagem do markdown\nlet markdown = `# 📊 Relatório Analítico - Empresa ${bookings[0].companies?.id} -  ${bookings[0].companies?.name || 'Empresa Desconhecida'}\\n\\n`;\n\nmarkdown += `## 🗓️ Período: ${bookings[0].booking_date?.split('T')[0] || 'Indefinido'} até ${bookings.at(-1).booking_date?.split('T')[0] || 'Indefinido'}\\n\\n`;\n\nmarkdown += `### 🔢 Resumo Geral\\n`;\nmarkdown += `- Total de reservas: ${bookings.length}\\n`;\nmarkdown += `- Créditos consumidos: ${totalCreditos}\\n`;\nmarkdown += `- Valor gasto estimado: R$ ${(totalGasto / 100).toFixed(2)}\\n`;\nmarkdown += `- Cidades atendidas: ${Object.keys(porCidade).length}\\n`;\nmarkdown += `- Grupos identificados: ${Object.keys(porGrupo).length}\\n\\n`;\n\nmarkdown += `---\\n## 🏙️ Reservas por Cidade:\\n`;\nfor (const [cidade, total] of Object.entries(porCidade)) {\n  markdown += `- **${cidade}**: ${total} reservas\\n`;\n}\n\nmarkdown += `\\n## 🧑‍🤝‍🧑 Reservas por Grupo:\\n`;\nfor (const [grupo, data] of Object.entries(porGrupo)) {\n  markdown += `- **${grupo}**: ${data.count} reservas (${data.members} membros)\\n`;\n}\n\nmarkdown += `\\n## 👥 Top 5 Usuários por Créditos Consumidos:\\n`;\ntopUsuarios.forEach(([nome, data], i) => {\n  markdown += `${i + 1}. **${nome}** (${data.email}) – ${data.totalCreditos} créditos\\n`;\n});\n\nmarkdown += `\\n## 🏢 Espaços Utilizados:\\n`;\nfor (const [espaco, data] of Object.entries(porEspaco)) {\n  markdown += `- **${espaco}** (${data.cidade}, ${data.bairro}) – ${data.count} reservas`;\n  if (data.cm) markdown += ` — CM: ${data.cm}`;\n  markdown += '\\n';\n}\n\nmarkdown += `\\n---\\n## 📝 Detalhamento das Reservas:\\n`;\nbookings.forEach((b, i) => {\n  const nomeUsuario = b.users?.first_name ? `${b.users.first_name} ${b.users.last_name || ''}` : 'Usuário desconhecido';\n  const grupoNome = mapGrupos[b.group_id]?.name || 'Sem grupo';\n  const espaco = b.spaces?.name || 'Espaço não identificado';\n  const cidade = b.spaces?.cityname || 'Cidade não informada';\n  const data = b.booking_date?.split('T')[0] || 'Data não informada';\n  const horario = b.booking_detail || '';\n  const tipo = b.meetingRooms ? 'Reunião' : b.privateRooms ? 'Exclusivo' : 'Outro';\n  const checkin = b.checkIn ? '✅' : '❌';\n\n  markdown += `### Reserva #${b.id}\\n`;\n  markdown += `- Data: ${data} ${horario}\\n`;\n  markdown += `- Espaço: ${espaco} (${cidade})\\n`;\n  markdown += `- Tipo: ${tipo}\\n`;\n  markdown += `- Usuário: ${nomeUsuario} (${b.users?.email || 'sem email'})\\n`;\n  markdown += `- Grupo: ${grupoNome}\\n`;\n  markdown += `- Créditos: ${b.credits || 0}\\n`;\n  markdown += `- Gasto estimado: R$ ${(b.spentAmmount / 100).toFixed(2)}\\n`;\n  markdown += `- Check-in: ${checkin}\\n\\n`;\n});\n\nmarkdown += `## 🎯 Informações do Pacote Contratado\\n\\n`;\n\nfor (const pacote of pacotes) {\n  const ciclo = pacote.activeCycle || {};\n  const produtos = pacote.products?.join(', ') || '-';\n  const bloqueados = pacote.blockedProducts?.length ? pacote.blockedProducts.join(', ') : '_nenhum_';\n  const consumido = ciclo.creditAmountConsumed || 0;\n  const total = ciclo.creditAmountTotal || 0;\n  const disponivel = ciclo.availableCredits || 0;\n  const excedentes = ciclo.exceededCredits || 0;\n\n  markdown += `### Pacote #${pacote.id} (${pacote.duration})\\n`;\n  markdown += `- Vigência: ${new Date(pacote.startDate).toLocaleDateString('pt-BR')} até ${new Date(pacote.endDate).toLocaleDateString('pt-BR')}\\n`;\n  markdown += `- Produtos disponíveis: **${produtos}**\\n`;\n  markdown += `- Produtos bloqueados: **${bloqueados}**\\n`;\n  if (total > 0) {\n    markdown += `- Créditos totais: ${total}\\n`;\n    markdown += `- Créditos consumidos: ${consumido}\\n`;\n    markdown += `- Créditos disponíveis: ${disponivel}\\n`;\n    markdown += `- Preço unitário: R$ ${(ciclo.creditUnitPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Preço de crédito excedente: R$ ${(ciclo.creditExceededPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Porcentagem consumida: ${(ciclo.consumeInPercentage || 0).toFixed(2)}%\\n\\n`;\n  } else {\n    markdown += `- Créditos excedentes utilizados: ${excedentes}\\n`;\n    markdown += `- Preço de crédito excedente: R$ ${(ciclo.creditExceededPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Créditos disponíveis: ${disponivel}\\n\\n`;\n  }\n}\n\nmarkdown += `---\\n_Gerado automaticamente por WAi Facilities em ${new Date().toLocaleString('pt-BR')}_`;\n\n\n\nreturn [{ json: { markdown } }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -153,13 +154,13 @@
     },
     {
       "parameters": {
-        "url": "=https://api-gateway.staging.woba.com.br/api/v0/companies/189/groups?fl=stats-members&limit=2000",
+        "url": "=https://api-gateway.staging.woba.com.br/api/v0/companies/{{ $json.output.companyId }}/groups?fl=stats-members&limit=2000",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "auth-token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQzOTI0NzgsImV4cCI6MTc0NDM5ODQ3OH0.4Xj83zcXqWLlslagJDPd7sS40F2f2vqRnqy2kTFNguc"
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQ3MjM1NDMsImV4cCI6MTc0NDcyOTU0M30.KytjXpqaSw6wXQ0mlYb3_ELIENtOZkBJeXxI48PZw-k"
             }
           ]
         },
@@ -176,13 +177,13 @@
     },
     {
       "parameters": {
-        "url": "=https://api-gateway.staging.woba.com.br/companies/189/packages/consumption",
+        "url": "=https://api-gateway.staging.woba.com.br/companies/{{ $json.output.companyId }}/packages/consumption",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "authorization",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQzOTI0NzgsImV4cCI6MTc0NDM5ODQ3OH0.4Xj83zcXqWLlslagJDPd7sS40F2f2vqRnqy2kTFNguc"
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQ3MjM1NDMsImV4cCI6MTc0NDcyOTU0M30.KytjXpqaSw6wXQ0mlYb3_ELIENtOZkBJeXxI48PZw-k"
             }
           ]
         },
@@ -227,7 +228,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -1140,
+        -1160,
         180
       ],
       "alwaysOutputData": true,
@@ -242,7 +243,7 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        -980,
+        -1000,
         400
       ],
       "id": "e4b874fd-ca5c-4c24-8e6d-8f5b12edab64",
@@ -260,7 +261,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -1140,
+        -1160,
         400
       ],
       "id": "e2f4174e-29c6-4b2c-a2ce-5e3968f9fad1",
@@ -342,11 +343,40 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        -540,
+        -620,
         460
       ],
       "id": "ccf43980-6485-4d17-a7fe-1ea26928d807",
       "name": "Slack1",
+      "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
+      "credentials": {
+        "slackApi": {
+          "id": "GhUVE8zWnVkhUdSG",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('Slack Trigger').item.json.channel }}",
+          "mode": "id"
+        },
+        "text": "=Aguarde enquanto estou analisando as informações...",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        180
+      ],
+      "id": "e5891e3e-8d9f-4a68-80dd-d406d70bfcd4",
+      "name": "Slack2",
       "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
       "credentials": {
         "slackApi": {
@@ -455,7 +485,7 @@
       "main": [
         [
           {
-            "node": "Analista de Dados",
+            "node": "Slack2",
             "type": "main",
             "index": 0
           }
@@ -522,13 +552,24 @@
           }
         ]
       ]
+    },
+    "Slack2": {
+      "main": [
+        [
+          {
+            "node": "Analista de Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "96f131d5-3295-4399-b9b3-4cc5729e771f",
+  "versionId": "7eeea4d0-a70b-4004-9b7b-39e17b14ce64",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b1dd7d5a248f52852a54c187dc8b5f2508350d00b2bf8019f80ca5f0a6737f0c"
