@@ -1,0 +1,573 @@
+{
+  "name": "Agent Facilities",
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Slack Trigger').item.json.user }}",
+        "contextWindowLength": 3
+      },
+      "id": "f61ff1ac-b011-4ef4-a2d3-0ce02adaea7c",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        920,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Slack Trigger').item.json.blocks[0].elements[0].elements[1].text }}",
+        "options": {
+          "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\nTambém retorne o relatório formatado no idioma pt-br com formatação de datas e horários , informando as datas consultadas, nome e id da empresa.\n\n{{ $json.markdown }}"
+        }
+      },
+      "id": "9e1dd28c-fd61-4310-99c8-d643740cd752",
+      "name": "Analista de Dados",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        800,
+        200
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "model": {
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "id": "6d22fb28-3be0-47f8-b0fc-05dd82f7dd43",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        760,
+        460
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "7tz1jSXYDP6ECM17",
+          "name": "Woba OpenAI Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('Slack Trigger').item.json.channel }}",
+          "mode": "id"
+        },
+        "text": "={{ $json.output }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1180,
+        200
+      ],
+      "id": "e5ccf078-a4b7-48bd-ab1e-8cc7b272bfa7",
+      "name": "Slack",
+      "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "IiZ4ANmuQYAemLNU",
+          "name": "Slack OAuth2 Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "trigger": [
+          "app_mention",
+          "any_event"
+        ],
+        "watchWorkspace": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1220,
+        200
+      ],
+      "id": "1aac186c-49df-499c-a261-4148009a49dd",
+      "name": "Slack Trigger",
+      "webhookId": "3febc220-7207-45e4-b21c-5a9cb3526280",
+      "credentials": {
+        "slackApi": {
+          "id": "0cCLPOkMGShjobqq",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api-gateway.staging.woba.com.br/api/bookings?start_date={{ $('If').item.json.output.startDate }}&end_date={{ $('If').item.json.output.endDate }}&allowFuture=true&status[]=0&status[]=1&status[]=2&status[]=3&status[]=4&status[]=5&appType=3&companies%5B%5D={{ $('If').item.json.output.companyId }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "auth-token",
+              "value": "={{ $json.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "73a7ff74-bc1a-4c3a-9404-f6fc5d876dc9",
+      "name": "Request Bookings"
+    },
+    {
+      "parameters": {
+        "jsCode": "const bookings = $input.first().json.bookings;\n\nconst groups = $input.first().json._embedded?.company_groups || [];\n\nconst pacotes = $input.first().json.packages || [];\n\nconsole.log($input.first().json._embedded)\n\nconsole.log(groups);\n\n\nif (!bookings || bookings.length === 0) {\n  return [{ json: { markdown: '# ❌ Nenhuma reserva encontrada.' } }];\n}\n\n// Mapas auxiliares\nconst porCidade = {};\nconst porEspaco = {};\nconst porGrupo = {};\nconst porUsuario = {};\nlet totalCreditos = 0;\nlet totalGasto = 0;\n\n// Map de ID de grupo → nome\nconst mapGrupos = {};\ngroups.forEach(g => {\n  const ginfo = g.company_group;\n  mapGrupos[ginfo.id] = {\n    name: ginfo.name || 'Grupo sem nome',\n    total_members: g.total_members || 0\n  };\n});\n\n// Processar bookings\nbookings.forEach(booking => {\n  const cidade = booking.spaces?.cityname || 'Desconhecida';\n  const espaco = booking.spaces?.name || 'Espaço desconhecido';\n  const user = booking.users;\n  const grupoId = booking.group_id;\n  const grupo = mapGrupos[grupoId];\n\n  totalCreditos += booking.credits || 0;\n  totalGasto += booking.spentAmmount || 0;\n\n  // Cidades\n  porCidade[cidade] = (porCidade[cidade] || 0) + 1;\n\n  // Espaços\n  porEspaco[espaco] = porEspaco[espaco] || {\n    count: 0,\n    cm: booking.spaces?.cm_name,\n    bairro: booking.spaces?.neighborhood,\n    cidade\n  };\n  porEspaco[espaco].count++;\n\n  // Grupos\n  if (grupo) {\n    porGrupo[grupo.name] = porGrupo[grupo.name] || { count: 0, members: grupo.total_members };\n    porGrupo[grupo.name].count++;\n  }\n\n  // Usuários\n  if (user?.first_name) {\n    const nomeCompleto = `${user.first_name} ${user.last_name || ''}`.trim();\n    porUsuario[nomeCompleto] = porUsuario[nomeCompleto] || {\n      email: user.email || '',\n      totalCreditos: 0\n    };\n    porUsuario[nomeCompleto].totalCreditos += booking.credits || 0;\n  }\n});\n\n// Top 5 usuários\nconst topUsuarios = Object.entries(porUsuario)\n  .sort((a, b) => b[1].totalCreditos - a[1].totalCreditos)\n  .slice(0, 5);\n\n// Montagem do markdown\nlet markdown = `# 📊 Relatório Analítico - Empresa ${bookings[0].companies?.id} -  ${bookings[0].companies?.name || 'Empresa Desconhecida'}\\n\\n`;\n\nmarkdown += `## 🗓️ Período: ${bookings[0].booking_date?.split('T')[0] || 'Indefinido'} até ${bookings.at(-1).booking_date?.split('T')[0] || 'Indefinido'}\\n\\n`;\n\nmarkdown += `### 🔢 Resumo Geral\\n`;\nmarkdown += `- Total de reservas: ${bookings.length}\\n`;\nmarkdown += `- Créditos consumidos: ${totalCreditos}\\n`;\nmarkdown += `- Valor gasto estimado: R$ ${(totalGasto / 100).toFixed(2)}\\n`;\nmarkdown += `- Cidades atendidas: ${Object.keys(porCidade).length}\\n`;\nmarkdown += `- Grupos identificados: ${Object.keys(porGrupo).length}\\n\\n`;\n\nmarkdown += `---\\n## 🏙️ Reservas por Cidade:\\n`;\nfor (const [cidade, total] of Object.entries(porCidade)) {\n  markdown += `- **${cidade}**: ${total} reservas\\n`;\n}\n\nmarkdown += `\\n## 🧑‍🤝‍🧑 Reservas por Grupo:\\n`;\nfor (const [grupo, data] of Object.entries(porGrupo)) {\n  markdown += `- **${grupo}**: ${data.count} reservas (${data.members} membros)\\n`;\n}\n\nmarkdown += `\\n## 👥 Top 5 Usuários por Créditos Consumidos:\\n`;\ntopUsuarios.forEach(([nome, data], i) => {\n  markdown += `${i + 1}. **${nome}** (${data.email}) – ${data.totalCreditos} créditos\\n`;\n});\n\nmarkdown += `\\n## 🏢 Espaços Utilizados:\\n`;\nfor (const [espaco, data] of Object.entries(porEspaco)) {\n  markdown += `- **${espaco}** (${data.cidade}, ${data.bairro}) – ${data.count} reservas`;\n  if (data.cm) markdown += ` — CM: ${data.cm}`;\n  markdown += '\\n';\n}\n\nmarkdown += `\\n---\\n## 📝 Detalhamento das Reservas:\\n`;\nbookings.forEach((b, i) => {\n  const nomeUsuario = b.users?.first_name ? `${b.users.first_name} ${b.users.last_name || ''}` : 'Usuário desconhecido';\n  const grupoNome = mapGrupos[b.group_id]?.name || 'Sem grupo';\n  const espaco = b.spaces?.name || 'Espaço não identificado';\n  const cidade = b.spaces?.cityname || 'Cidade não informada';\n  const data = b.booking_date?.split('T')[0] || 'Data não informada';\n  const horario = b.booking_detail || '';\n  const tipo = b.meetingRooms ? 'Reunião' : b.privateRooms ? 'Exclusivo' : 'Outro';\n  const checkin = b.checkIn ? '✅' : '❌';\n\n  markdown += `### Reserva #${b.id}\\n`;\n  markdown += `- Data: ${data} ${horario}\\n`;\n  markdown += `- Espaço: ${espaco} (${cidade})\\n`;\n  markdown += `- Tipo: ${tipo}\\n`;\n  markdown += `- Usuário: ${nomeUsuario} (${b.users?.email || 'sem email'})\\n`;\n  markdown += `- Grupo: ${grupoNome}\\n`;\n  markdown += `- Créditos: ${b.credits || 0}\\n`;\n  markdown += `- Gasto estimado: R$ ${(b.spentAmmount / 100).toFixed(2)}\\n`;\n  markdown += `- Check-in: ${checkin}\\n\\n`;\n});\n\nmarkdown += `## 🎯 Informações do Pacote Contratado\\n\\n`;\n\nfor (const pacote of pacotes) {\n  const ciclo = pacote.activeCycle || {};\n  const produtos = pacote.products?.join(', ') || '-';\n  const bloqueados = pacote.blockedProducts?.length ? pacote.blockedProducts.join(', ') : '_nenhum_';\n  const consumido = ciclo.creditAmountConsumed || 0;\n  const total = ciclo.creditAmountTotal || 0;\n  const disponivel = ciclo.availableCredits || 0;\n  const excedentes = ciclo.exceededCredits || 0;\n\n  markdown += `### Pacote #${pacote.id} (${pacote.duration})\\n`;\n  markdown += `- Vigência: ${new Date(pacote.startDate).toLocaleDateString('pt-BR')} até ${new Date(pacote.endDate).toLocaleDateString('pt-BR')}\\n`;\n  markdown += `- Produtos disponíveis: **${produtos}**\\n`;\n  markdown += `- Produtos bloqueados: **${bloqueados}**\\n`;\n  if (total > 0) {\n    markdown += `- Créditos totais: ${total}\\n`;\n    markdown += `- Créditos consumidos: ${consumido}\\n`;\n    markdown += `- Créditos disponíveis: ${disponivel}\\n`;\n    markdown += `- Preço unitário: R$ ${(ciclo.creditUnitPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Preço de crédito excedente: R$ ${(ciclo.creditExceededPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Porcentagem consumida: ${(ciclo.consumeInPercentage || 0).toFixed(2)}%\\n\\n`;\n  } else {\n    markdown += `- Créditos excedentes utilizados: ${excedentes}\\n`;\n    markdown += `- Preço de crédito excedente: R$ ${(ciclo.creditExceededPrice || 0).toFixed(2)}\\n`;\n    markdown += `- Créditos disponíveis: ${disponivel}\\n\\n`;\n  }\n}\n\nmarkdown += `---\\n_Gerado automaticamente por WAi Facilities em ${new Date().toLocaleString('pt-BR')}_`;\n\n\n\nreturn [{ json: { markdown } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        200
+      ],
+      "id": "07b11e0a-4129-4963-9885-85ff5cde6130",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "url": "=https://api-gateway.staging.woba.com.br/api/v0/companies/{{ $('If').item.json.output.companyId }}/groups?fl=stats-members&limit=2000",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "auth-token",
+              "value": "={{ $json.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        200
+      ],
+      "id": "457fb5f9-8221-4c87-a566-1583f286288d",
+      "name": "Request Groups"
+    },
+    {
+      "parameters": {
+        "url": "=https://api-gateway.staging.woba.com.br/companies/{{ $('If').item.json.output.companyId }}/packages/consumption",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "authorization",
+              "value": "={{ $json.token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        400
+      ],
+      "id": "81001bd4-4f78-46c2-b5a5-7ce30a787e1a",
+      "name": "Request Packages"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        340,
+        200
+      ],
+      "id": "f7bfbf87-facb-4d7e-81d2-b5689ed83bc9",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"companyId\": \"189\",\n\t\"startDate\": \"YYYY-MM-DD\",\n    \"endDate\": \"YYYY-MM-DD\",\n  \"returnMessage\": \"return Message\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -800,
+        420
+      ],
+      "id": "eda3ad70-1f74-4017-a3a1-35ce2624444d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -960,
+        420
+      ],
+      "id": "8ae01896-9569-4fae-b210-b827e2626f1d",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "7tz1jSXYDP6ECM17",
+          "name": "Woba OpenAI Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "195f66f0-840d-42e0-b8c3-44e1661de4f6",
+              "leftValue": "={{ $json.output.companyId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "19bf20e8-603b-4582-a890-6db029f9e65c",
+              "leftValue": "={{ $json.output.startDate }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "cb5b0c4c-dfbe-49b1-a23a-976c674d365a",
+              "leftValue": "={{ $json.output.endDate }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -600,
+        200
+      ],
+      "id": "185b6040-c586-46d4-a931-0ff673859355",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('Slack Trigger').item.json.channel }}",
+          "mode": "id"
+        },
+        "text": "={{ $json.output.returnMessage }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -360,
+        480
+      ],
+      "id": "06afea7b-eb32-4bff-a8bd-f1e7786518d0",
+      "name": "Slack1",
+      "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "IiZ4ANmuQYAemLNU",
+          "name": "Slack OAuth2 Credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://woba-backend.staging.woba.com.br/auth/login",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "password",
+              "value": "123123"
+            },
+            {
+              "name": "email",
+              "value": "guilherme.dourado@woba.com.br"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -300,
+        180
+      ],
+      "id": "5140a9f6-7feb-4176-a176-cb03796dfa3d",
+      "name": "Get Token"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Hoje é {{ $now }}\n\nPreciso que você me ajude a extrair corretamente 2 informações a partir do input do usário o id da empresa e o período consultado.\n\nCaso o usuário não forneça as informações relacionadas a esses dados, retorne uma mensagem informando que você precisa saber qual é a liga e o período.\n\nEssa informação deve ser retornada assim:\ncompanyId: [id extraído]\nstartDate: [data inicial no formato YYYY-MM-DD]\nendDate: [data final no formato YYYY-MM-DD]\nreturnMessage: [mensagem caso nao tenha os dados necessários]\n\n{{ $json.text }}"
+        }
+      },
+      "id": "ebe40f56-1779-4e21-bd78-aaea15bff7a9",
+      "name": "Agente de Intenção",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -960,
+        200
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "notesInFlow": false
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Analista de Dados",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analista de Dados": {
+      "main": [
+        [
+          {
+            "node": "Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analista de Dados",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "Agente de Intenção",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request Bookings": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request Groups": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Request Packages": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Analista de Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agente de Intenção",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente de Intenção",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Slack1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Token": {
+      "main": [
+        [
+          {
+            "node": "Request Bookings",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Request Groups",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Request Packages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente de Intenção": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f114158e-34d5-491d-8b03-05820c78ac58",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d6be90e61a0f7712934974811b60532eb608c78e527414683d5e2ffa811f54f9"
+  },
+  "id": "9rz1NgYYhSoFKa5z",
+  "tags": []
+}
