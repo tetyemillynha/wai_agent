@@ -3,34 +3,84 @@
   "nodes": [
     {
       "parameters": {
+        "method": "POST",
+        "url": "=https://woba-backend.staging.woba.com.br/auth/login",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "password",
+              "value": "@WBste342"
+            },
+            {
+              "name": "email",
+              "value": "stefhany.oliveira@woba.com.br"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -220,
+        1120
+      ],
+      "id": "8616318f-a2ba-49b6-b583-8ed447e021f1",
+      "name": "Get Token"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.blocks[0].elements[0].elements[1].text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Hoje é {{ $now }}.\n\nVocê é um assistente de dados responsável por analisar perguntas de usuários relacionadas ao consumo de créditos e reservas de espaços de trabalho flexíveis (coworkings) de empresas na plataforma.\n\nSeu objetivo é validar se a pergunta está dentro do **contexto** esperado e **extrair as informações necessárias**. Sempre retorne os dados nesse formato:\n\ncompanyId: [id extraído]\nstartDate: [data inicial no formato YYYY-MM-DD]\nendDate: [data final no formato YYYY-MM-DD]\nerrorMessage: [null ou mensagem explicativa]\n\n**Instruções de interpretação:**\n\n1. **Período**:\n   - Aceite datas absolutas (ex: “de 01/01/2024 a 31/03/2024”)\n   - Aceite datas relativas (ex: “últimas 3 semanas”, “últimos 2 meses”, “este mês”)\n   - Converta sempre para startDate e endDate no formato ISO (YYYY-MM-DD), usando hoje como base: {{ $now }}\n\n2. **ID da empresa / liga**:\n   - Identifique qualquer número que se refira claramente a uma empresa ou liga\n   - Pode aparecer como “empresa 189”, “liga 554” ou “id 102”\n\n---\n\n**Contexto aceito**:\n- Perguntas sobre consumo de créditos\n- Volume de reservas\n- Distribuição de uso por espaço, cidade, usuário, grupo\n- Ranking de consumo de créditos e/ou produtos\n- Comparativos de meses\n- Qualquer pergunta que esteja relacionada com bookings e reservas de coworkings para trabalho flexivel\n\n---\n\n\n**Responda com:**\nSe a pergunta estiver fora do contexto, responda com:\n\ncompanyId: null,\nstartDate: null,\nendDate\": null,\nvalidatedQuestion: \"aqui retorna a primeira pergunta válida do usuário\"\nerrorMessage: \"Desculpe, só consigo responder perguntas sobre consumo de créditos e reservas.\"\n\nSe a pergunta estiver dentro do contexto, mas sem o ID da empresa ou período, responda sempre com:\n\ncompanyId: null,\nstartDate: null,\nendDate: null,\nvalidatedQuestion: \"**aqui retorna a primeira pergunta válida do usuário**\",\nerrorMessage: \"Por favor, forneça o ID da empresa e o período desejado.\"\n\nSe estiver tudo certo, responda com:\ncompanyId: 123,\nstartDate: \"2024-01-01\",\nendDate: \"2024-03-31\",\nvalidatedQuestion: \"**aqui retorna a primeira pergunta válida do usuário**\",\nerrorMessage: null\n\nHumano:\n{{ $json.blocks[0].elements[0].elements[1].text }}"
+        }
+      },
+      "id": "1bcea020-9445-4d81-a5a1-8f24f9cb3730",
+      "name": "Agente de Intenção",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -1320,
+        1140
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Slack Trigger').item.json.user }}",
+        "sessionKey": "={{ $('Slack Trigger1').item.json.user }}",
         "contextWindowLength": 3
       },
-      "id": "f2a5dd5e-29a1-4dbe-b640-c15b12661862",
-      "name": "Simple Memory",
+      "id": "20f2a095-93bd-4649-ae7e-6e8d62501d94",
+      "name": "Simple Memory1",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        720,
-        380
+        1260,
+        1400
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $('Slack Trigger').item.json.blocks[0].elements[0].elements[1].text }}",
+        "text": "={{ $('If1').item.json.validatedQuestion }}",
         "options": {
-          "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\n\n{{ $('Code').item.json.markdown }}"
+          "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\n{{ $('Code1').item.json.markdown }}\n"
         }
       },
-      "id": "d5207c64-3e26-4185-a2ab-6091629c6b06",
-      "name": "Analista de Dados",
+      "id": "068e5ef8-fb8a-469d-865f-fcebad72d279",
+      "name": "Analista de Dados2",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        600,
-        180
+        1140,
+        1140
       ],
       "alwaysOutputData": true,
       "executeOnce": false,
@@ -45,13 +95,13 @@
         },
         "options": {}
       },
-      "id": "57028f1d-971e-4b40-a473-341c94cd2427",
-      "name": "OpenAI Chat Model",
+      "id": "e1da6d7b-2589-4f5b-8e0d-07296e717f09",
+      "name": "OpenAI Chat Model2",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        580,
-        380
+        1100,
+        1400
       ],
       "credentials": {
         "openAiApi": {
@@ -66,9 +116,8 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "C08KLKYEPL3",
-          "mode": "list",
-          "cachedResultName": "toda-a-empresa-novo-workspace"
+          "value": "={{ $('Slack Trigger1').item.json.channel }}",
+          "mode": "id"
         },
         "text": "={{ $json.output }}",
         "otherOptions": {
@@ -78,11 +127,11 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        980,
-        180
+        1520,
+        1140
       ],
-      "id": "74bce596-ee71-4982-a58a-84388d4d4115",
-      "name": "Slack",
+      "id": "f5c07fe2-de06-4bb9-bb80-e18e1d023d13",
+      "name": "Slack3",
       "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
       "credentials": {
         "slackOAuth2Api": {
@@ -103,11 +152,11 @@
       "type": "n8n-nodes-base.slackTrigger",
       "typeVersion": 1,
       "position": [
-        -1340,
-        180
+        -1520,
+        1140
       ],
-      "id": "bd9e729e-4d60-48ea-ba48-42d25f2a6d6e",
-      "name": "Slack Trigger",
+      "id": "e8da30bb-b2d8-446b-944b-3c08a51578ec",
+      "name": "Slack Trigger1",
       "webhookId": "3febc220-7207-45e4-b21c-5a9cb3526280",
       "credentials": {
         "slackApi": {
@@ -118,13 +167,13 @@
     },
     {
       "parameters": {
-        "url": "=https://api-gateway.staging.woba.com.br/api/bookings?start_date={{ $json.output.startDate }}&end_date={{ $json.output.endDate }}&allowFuture=true&status[]=0&status[]=1&status[]=2&status[]=3&status[]=4&status[]=5&appType=3&companies%5B%5D={{ $json.output.companyId }}",
+        "url": "=https://api-gateway.staging.woba.com.br/api/bookings?start_date={{ $('If1').item.json.startDate }}&end_date={{ $('If1').item.json.endDate }}&allowFuture=true&status[]=0&status[]=1&status[]=2&status[]=3&status[]=4&status[]=5&appType=3&companies%5B%5D={{ $('If1').item.json.companyId }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "auth-token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQ3MjM1NDMsImV4cCI6MTc0NDcyOTU0M30.KytjXpqaSw6wXQ0mlYb3_ELIENtOZkBJeXxI48PZw-k"
+              "value": "={{ $json.token }}"
             }
           ]
         },
@@ -133,11 +182,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -380,
-        -20
+        80,
+        940
       ],
-      "id": "e4cc5606-1abf-4bec-aa7f-31f61ee9938e",
-      "name": "Request Bookings"
+      "id": "96d9e143-ea9c-41c2-b145-a35455691da3",
+      "name": "Request Bookings1"
     },
     {
       "parameters": {
@@ -146,21 +195,21 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        140,
-        180
+        600,
+        1140
       ],
-      "id": "0b407452-5912-4789-aed4-020eb4b60c31",
-      "name": "Code"
+      "id": "1f59e28b-7ff0-443e-b031-8e9e29cd02ba",
+      "name": "Code1"
     },
     {
       "parameters": {
-        "url": "=https://api-gateway.staging.woba.com.br/api/v0/companies/{{ $json.output.companyId }}/groups?fl=stats-members&limit=2000",
+        "url": "=https://api-gateway.staging.woba.com.br/api/v0/companies/{{ $('If1').item.json.output.companyId }}/groups?fl=stats-members&limit=2000",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "auth-token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQ3MjM1NDMsImV4cCI6MTc0NDcyOTU0M30.KytjXpqaSw6wXQ0mlYb3_ELIENtOZkBJeXxI48PZw-k"
+              "value": "={{ $json.token }}"
             }
           ]
         },
@@ -169,21 +218,21 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -380,
-        180
+        80,
+        1140
       ],
-      "id": "34d4dcaf-9977-4be3-bfb2-2c5f28e284f7",
-      "name": "Request Groups"
+      "id": "84c17dcf-7d11-4493-bbae-355569bbfbaa",
+      "name": "Request Groups1"
     },
     {
       "parameters": {
-        "url": "=https://api-gateway.staging.woba.com.br/companies/{{ $json.output.companyId }}/packages/consumption",
+        "url": "=https://api-gateway.staging.woba.com.br/companies/{{ $('If1').item.json.companyId }}/packages/consumption",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "authorization",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjc5MjE4LCJlbWFpbCI6InN0ZWZoYW55Lm9saXZlaXJhQHdvYmEuY29tLmJyIiwicm9sZSI6ImFkbWluLGFkbWluLWNvLGFkbWluLWN3IiwicGVybWlzc2lvbnMiOlsicmVhZC1idWRnZXQiLCJjcmVhdGUtYnVkZ2V0IiwicmVhZC1ib29raW5ncy1yZXZpZXciLCJyZWFkLWJvb2tpbmdzLWNpdGllcyIsInJlYWQtY29tcGFueS1ncm91cHMiLCJyZWFkLWJvb2tpbmdzIiwicmVhZC1jb21wYW5pZXMtcmVwb3J0cyIsInJlYWQtc3BhY2VzIiwicmVhZC11c2VycyIsInVwZGF0ZS11c2VycyIsImRlbGV0ZS11c2VycyIsInJlYWQtdXNlcnMtc3Vic2NyaWJlcnMiLCJjcmVhdGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJkZWxldGUtdXNlcnMtc3Vic2NyaWJlcnMiLCJyZWFkLXByaXZhdGUtcm9vbXMiLCJyZWFkLWNvbnRyYWN0cyIsInJlYWQtcGFja2FnZXMiLCJpbXBvcnQtbWVtYmVycyIsInJlYWQtaW52b2ljZXMiLCJyZWFkLWJvb2tpbmdzLWZpbHRlcnMiLCJjcmVhdGUtY29tcGFueS1ncm91cCJdLCJjb21wYW55SWQiOjE4OSwiZ3JvdXBJZCI6bnVsbCwicHJvZHVjdHMiOltdLCJhY2Nlc3NHcm91cHMiOltdLCJpYXQiOjE3NDQ3MjM1NDMsImV4cCI6MTc0NDcyOTU0M30.KytjXpqaSw6wXQ0mlYb3_ELIENtOZkBJeXxI48PZw-k"
+              "value": "={{ $json.token }}"
             }
           ]
         },
@@ -192,11 +241,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -380,
-        380
+        80,
+        1340
       ],
-      "id": "1aae3215-a13e-4c8d-b763-5f688fe6f869",
-      "name": "Request Packages"
+      "id": "02113dec-505f-4715-9f1f-7d641e743493",
+      "name": "Request Packages1"
     },
     {
       "parameters": {
@@ -208,51 +257,30 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        -40,
-        180
+        420,
+        1140
       ],
-      "id": "3a19e947-7e6b-4dd2-877f-2a7d9a7419ec",
-      "name": "Merge1"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.blocks[0].elements[0].elements[1].text }}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "=Hoje é {{ $now }}.\n\nVocê é um assistente de dados responsável por analisar perguntas de usuários relacionadas ao consumo de créditos e reservas de empresas na plataforma.\n\nSeu objetivo é validar se a pergunta está dentro do **contexto** esperado e **extrair as informações necessárias**. A resposta deve sempre estar no seguinte formato JSON:\n\ncompanyId: [id extraído]\nstartDate: [data inicial no formato YYYY-MM-DD]\nendDate: [data final no formato YYYY-MM-DD]\nerrorMessage: [null ou mensagem explicativa]\n\n---\n\n**Contexto aceito**:\n- Perguntas sobre consumo de créditos\n- Volume de reservas\n- Distribuição de uso por espaço, cidade, usuário, grupo\n- Ranking de consumo\n- Comparativos de meses\n\n---\n\n**Instruções de interpretação:**\n\n1. **Período**:\n   - Aceite datas absolutas (ex: “de 01/01/2024 a 31/03/2024”)\n   - Aceite datas relativas (ex: “últimas 3 semanas”, “últimos 2 meses”, “este mês”)\n   - Converta sempre para startDate e endDate no formato ISO (YYYY-MM-DD), usando hoje como base: {{ $now }}\n\n2. **ID da empresa / liga**:\n   - Identifique qualquer número que se refira claramente a uma empresa ou liga\n   - Pode aparecer como “empresa 189”, “liga 554” ou “id 102”\n\n---\n\n**Responda com:**\nSe a pergunta estiver fora do contexto, responda com:\n\ncompanyId: null,\nstartDate: null,\nendDate\": null,\nerrorMessage: \"Desculpe, só consigo responder perguntas sobre consumo de créditos e reservas.\"\n\nSe a pergunta estiver dentro do contexto, mas sem o ID da empresa ou período, responda com:\n\ncompanyId: null,\nstartDate: null,\nendDate: null,\nerrorMessage: \"Por favor, forneça o ID da empresa e o período desejado.\"\n\nSe estiver tudo certo, responda com:\n\ncompanyId: 123,\nstartDate: \"2024-01-01\",\nendDate: \"2024-03-31\",\nerrorMessage: null\n\n❗ Atenção: **retorne apenas o JSON**, sem qualquer comentário adicional."
-        }
-      },
-      "id": "7158aa5f-832c-47c4-ba51-37f1cdedd4d6",
-      "name": "Analista de Dados1",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
-      "position": [
-        -1160,
-        180
-      ],
-      "alwaysOutputData": true,
-      "executeOnce": false,
-      "retryOnFail": false,
-      "notesInFlow": false
+      "id": "c1b9343f-095d-4a2e-b7c4-f4b9c1221dd0",
+      "name": "Merge"
     },
     {
       "parameters": {
         "model": {
           "__rl": true,
+          "value": "gpt-4o",
           "mode": "list",
-          "value": "gpt-4o-mini"
+          "cachedResultName": "gpt-4o"
         },
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -1160,
-        400
+        -1320,
+        1360
       ],
-      "id": "e2f4174e-29c6-4b2c-a2ce-5e3968f9fad1",
-      "name": "OpenAI Chat Model1",
+      "id": "fadf18a3-2b03-4b5f-bd4a-85e0335c7da8",
+      "name": "OpenAI Chat Model3",
       "credentials": {
         "openAiApi": {
           "id": "UFd2WIrurvCwSOE0",
@@ -272,18 +300,18 @@
           "conditions": [
             {
               "id": "195f66f0-840d-42e0-b8c3-44e1661de4f6",
-              "leftValue": "={{ $json.output.companyId }}",
-              "rightValue": "",
+              "leftValue": "={{ $json.companyId }}",
+              "rightValue": "null",
               "operator": {
-                "type": "string",
-                "operation": "notEmpty",
+                "type": "number",
+                "operation": "exists",
                 "singleValue": true
               }
             },
             {
               "id": "19bf20e8-603b-4582-a890-6db029f9e65c",
-              "leftValue": "={{ $json.output.startDate }}",
-              "rightValue": "",
+              "leftValue": "={{ $json.startDate }}",
+              "rightValue": "null",
               "operator": {
                 "type": "string",
                 "operation": "notEmpty",
@@ -292,8 +320,8 @@
             },
             {
               "id": "cb5b0c4c-dfbe-49b1-a23a-976c674d365a",
-              "leftValue": "={{ $json.output.endDate }}",
-              "rightValue": "",
+              "leftValue": "={{ $json.endDate }}",
+              "rightValue": "null",
               "operator": {
                 "type": "string",
                 "operation": "notEmpty",
@@ -308,21 +336,22 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -820,
-        180
+        -520,
+        1140
       ],
-      "id": "d5236f70-65e0-4008-8996-c023f885ecae",
-      "name": "If"
+      "id": "cf302591-b0b7-4633-9fc8-5d0cbe44d902",
+      "name": "If1"
     },
     {
       "parameters": {
+        "authentication": "oAuth2",
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "={{ $('Slack Trigger').item.json.channel }}",
+          "value": "={{ $('Slack Trigger1').item.json.channel }}",
           "mode": "id"
         },
-        "text": "=Preciso que você infome o id da empresa/liga e o período que deseja consultar",
+        "text": "={{ $json.errorMessage }}",
         "otherOptions": {
           "includeLinkToWorkflow": false
         }
@@ -330,16 +359,16 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        -620,
-        460
+        -220,
+        1380
       ],
-      "id": "ccf43980-6485-4d17-a7fe-1ea26928d807",
-      "name": "Slack1",
+      "id": "876637cb-40d3-4830-b089-e0c7dfe09bfb",
+      "name": "Slack4",
       "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
       "credentials": {
-        "slackApi": {
-          "id": "GhUVE8zWnVkhUdSG",
-          "name": "Slack account 2"
+        "slackOAuth2Api": {
+          "id": "diJj3DsJ6mfYnxja",
+          "name": "Slack account"
         }
       }
     },
@@ -348,7 +377,7 @@
         "select": "channel",
         "channelId": {
           "__rl": true,
-          "value": "={{ $('Slack Trigger').item.json.channel }}",
+          "value": "={{ $('Slack Trigger1').item.json.channel }}",
           "mode": "id"
         },
         "text": "=Aguarde enquanto estou analisando as informações...",
@@ -359,11 +388,11 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        360,
-        180
+        840,
+        1140
       ],
-      "id": "e5891e3e-8d9f-4a68-80dd-d406d70bfcd4",
-      "name": "Slack2",
+      "id": "d6cc6441-a816-4b01-94e5-d86965812df8",
+      "name": "Slack5",
       "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
       "credentials": {
         "slackApi": {
@@ -374,103 +403,56 @@
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n  \"companyId\": null,\n  \"startDate\": null,\n  \"endDate\": null,\n  \"errorMessage\": null\n}\n"
+        "jsCode": "const output = $input.first().json.output || '';\n\nconst linhas = output\n  .trim()\n  .split('\\n')\n  .map(l => l.trim())\n  .filter(Boolean);\n\n// Trata cada linha e remove vírgula do final\nconst entries = linhas.map(linha => {\n  const [chaveRaw, valorRaw] = linha.split(':');\n  const chave = chaveRaw.trim();\n  let valor = valorRaw.trim().replace(/,$/, ''); // remove vírgula no final\n\n  // Converte null, number ou mantém string\n  if (valor === 'null') {\n    valor = null;\n  } else if (/^\\d+$/.test(valor)) {\n    valor = Number(valor);\n  } else {\n    valor = valor.replace(/^\"|\"$/g, ''); // remove aspas se houver\n  }\n\n  return [chave, valor];\n});\n\n// Monta o objeto final\nconst resultado = {};\nentries.forEach(([chave, valor]) => {\n  resultado[chave] = valor;\n});\n\nreturn [{ json: resultado }];"
       },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.2,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        -980,
-        400
+        -960,
+        1140
       ],
-      "id": "3c0f9338-4070-407d-917d-6f5abccbc207",
-      "name": "Structured Output Parser"
+      "id": "23dfd998-3022-4db1-9690-570bea86ddea",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Slack Trigger1').item.json.user }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1160,
+        1360
+      ],
+      "id": "7c835e9d-b774-482a-99ea-b1889d9f8a53",
+      "name": "Memória da Intenção"
     }
   ],
   "pinData": {},
   "connections": {
-    "Simple Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "Analista de Dados",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Analista de Dados": {
+    "Get Token": {
       "main": [
         [
           {
-            "node": "Slack",
+            "node": "Request Bookings1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Request Groups1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Request Packages1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Analista de Dados",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Slack Trigger": {
-      "main": [
-        [
-          {
-            "node": "Analista de Dados1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Slack": {
-      "main": [
-        []
-      ]
-    },
-    "Request Bookings": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Request Groups": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Request Packages": {
-      "main": [
-        [
-          {
-            "node": "Merge1",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
-    "Merge1": {
+    "Agente de Intenção": {
       "main": [
         [
           {
@@ -481,84 +463,162 @@
         ]
       ]
     },
-    "Code": {
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Analista de Dados2",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analista de Dados2": {
       "main": [
         [
           {
-            "node": "Slack2",
+            "node": "Slack3",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Analista de Dados1": {
-      "main": [
-        [
-          {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model1": {
+    "OpenAI Chat Model2": {
       "ai_languageModel": [
         [
           {
-            "node": "Analista de Dados1",
+            "node": "Analista de Dados2",
             "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "Slack Trigger1": {
       "main": [
         [
           {
-            "node": "Request Bookings",
+            "node": "Agente de Intenção",
             "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "Request Bookings1": {
+      "main": [
+        [
           {
-            "node": "Request Groups",
+            "node": "Merge",
             "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
           {
-            "node": "Request Packages",
+            "node": "Slack5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request Groups1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Request Packages1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente de Intenção",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Get Token",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Slack1",
+            "node": "Slack4",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Slack2": {
+    "Slack5": {
       "main": [
         [
           {
-            "node": "Analista de Dados",
+            "node": "Analista de Dados2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Structured Output Parser": {
-      "ai_outputParser": [
+    "Code": {
+      "main": [
         [
           {
-            "node": "Analista de Dados1",
-            "type": "ai_outputParser",
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memória da Intenção": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente de Intenção",
+            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -569,7 +629,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "5f0c72ff-a5c0-467a-805c-6f21e12c6a1e",
+  "versionId": "5a2fdcdb-4e42-40af-830d-08aa21f58b95",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b1dd7d5a248f52852a54c187dc8b5f2508350d00b2bf8019f80ca5f0a6737f0c"
