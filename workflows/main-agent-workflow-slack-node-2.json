@@ -12,16 +12,16 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        920,
-        460
+        908,
+        580
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $('Slack Trigger').item.json.blocks[0].elements[0].elements[1].text }}",
+        "text": "=Pergunta: {{ $('Slack Trigger').item.json.blocks[0].elements[0].elements[1].text }}\n\nDados: {{ $json.markdown }}",
         "options": {
-          "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\nTambém retorne o relatório formatado no idioma pt-br com formatação de datas e horários , informando as datas consultadas, nome e id da empresa.\n\n{{ $json.markdown }}"
+          "systemMessage": "=Você é um analista de dados especializado em consumo de espaços flexíveis e reservas empresariais.\n\nAo receber:\n1. Uma pergunta em linguagem natural (já validada e dentro do escopo)\n2. Um documento em Markdown com os dados da empresa\n\nSua missão é responder com **clareza, objetividade e facilidade de leitura**, gerando **insights úteis** com base somente nos dados fornecidos.\n\n**Instruções:**\n\n1. Comece com o título:\n🔍 **O que encontramos para você**\n\n2. Em seguida, apresente de **3 a 5 insights** relevantes em tópicos (bullet points):\n   - Seja direto e claro.\n   - Destaque padrões, aumentos, quedas, ou qualquer dado que se destaque.\n   - Evite jargões técnicos. Use linguagem acessível a gestores de qualquer área.\n\n3. Se não houver dados suficientes para responder à pergunta, escreva:\n**Desculpe! Não encontramos dados suficientes para responder à sua pergunta neste momento.**\n\n**Exemplo de resposta:**\n\n---\n\n🔍 **O que encontramos para você**\n\n- A empresa consumiu **2.130 créditos** no período analisado.\n- O espaço mais utilizado foi a **Sala Reunião A**, com 56% do total.\n- O grupo \"Comercial\" foi responsável por 40% das reservas.\n- Houve uma queda de 18% no consumo em março comparado a fevereiro.\n\n---\n\n**Importante:**\n- Sempre baseie sua resposta **apenas nos dados fornecidos no Markdown**.\n- Nunca invente informações.\n- Mantenha o texto simples, visual e com foco em leitura rápida."
         }
       },
       "id": "9e1dd28c-fd61-4310-99c8-d643740cd752",
@@ -29,8 +29,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        800,
-        200
+        760,
+        360
       ],
       "alwaysOutputData": true,
       "executeOnce": false,
@@ -50,8 +50,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        760,
-        460
+        788,
+        580
       ],
       "credentials": {
         "openAiApi": {
@@ -77,12 +77,13 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        1180,
-        200
+        1136,
+        360
       ],
       "id": "e5ccf078-a4b7-48bd-ab1e-8cc7b272bfa7",
       "name": "Slack",
       "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
+      "retryOnFail": true,
       "credentials": {
         "slackOAuth2Api": {
           "id": "IiZ4ANmuQYAemLNU",
@@ -103,7 +104,7 @@
       "typeVersion": 1,
       "position": [
         -1220,
-        200
+        560
       ],
       "id": "1aac186c-49df-499c-a261-4148009a49dd",
       "name": "Slack Trigger",
@@ -132,11 +133,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        0,
-        0
+        100,
+        260
       ],
       "id": "73a7ff74-bc1a-4c3a-9404-f6fc5d876dc9",
-      "name": "Request Bookings"
+      "name": "Request Bookings",
+      "retryOnFail": true
     },
     {
       "parameters": {
@@ -145,8 +147,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        520,
-        200
+        540,
+        360
       ],
       "id": "07b11e0a-4129-4963-9885-85ff5cde6130",
       "name": "Code"
@@ -168,8 +170,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        0,
-        200
+        100,
+        460
       ],
       "id": "457fb5f9-8221-4c87-a566-1583f286288d",
       "name": "Request Groups"
@@ -191,8 +193,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        0,
-        400
+        100,
+        660
       ],
       "id": "81001bd4-4f78-46c2-b5a5-7ce30a787e1a",
       "name": "Request Packages"
@@ -207,21 +209,22 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        340,
-        200
+        320,
+        360
       ],
       "id": "f7bfbf87-facb-4d7e-81d2-b5689ed83bc9",
       "name": "Merge1"
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n\t\"companyId\": \"189\",\n\t\"startDate\": \"YYYY-MM-DD\",\n    \"endDate\": \"YYYY-MM-DD\",\n  \"returnMessage\": \"return Message\"\n}"
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"companyId\": {\n    \"type\": \"number\",\n    \"nullable\": true\n  },\n  \"startDate\": {\n    \"type\": \"string\",\n    \"nullable\": true\n  },\n  \"endDate\": {\n    \"type\": \"string\",\n    \"nullable\": true\n  },\n  \"errorMessage\": {\n    \"type\": \"string\",\n    \"nullable\": true\n  }\n}"
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        -800,
-        420
+        -760,
+        780
       ],
       "id": "eda3ad70-1f74-4017-a3a1-35ce2624444d",
       "name": "Structured Output Parser"
@@ -238,8 +241,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -960,
-        420
+        -1000,
+        780
       ],
       "id": "8ae01896-9569-4fae-b210-b827e2626f1d",
       "name": "OpenAI Chat Model1",
@@ -265,8 +268,8 @@
               "leftValue": "={{ $json.output.companyId }}",
               "rightValue": "",
               "operator": {
-                "type": "string",
-                "operation": "notEmpty",
+                "type": "number",
+                "operation": "exists",
                 "singleValue": true
               }
             },
@@ -298,8 +301,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -600,
-        200
+        -560,
+        560
       ],
       "id": "185b6040-c586-46d4-a931-0ff673859355",
       "name": "If"
@@ -313,7 +316,7 @@
           "value": "={{ $('Slack Trigger').item.json.channel }}",
           "mode": "id"
         },
-        "text": "={{ $json.output.returnMessage }}",
+        "text": "={{ $('Agente de Intenção').item.json.output.errorMessage }}",
         "otherOptions": {
           "includeLinkToWorkflow": false
         }
@@ -321,8 +324,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        -360,
-        480
+        -340,
+        660
       ],
       "id": "06afea7b-eb32-4bff-a8bd-f1e7786518d0",
       "name": "Slack1",
@@ -356,8 +359,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -300,
-        180
+        -120,
+        460
       ],
       "id": "5140a9f6-7feb-4176-a176-cb03796dfa3d",
       "name": "Get Token"
@@ -365,10 +368,10 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=",
+        "text": "={{ $json.blocks[0].elements[0].elements[1].text }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=Hoje é {{ $now }}\n\nPreciso que você me ajude a extrair corretamente 2 informações a partir do input do usário o id da empresa e o período consultado.\n\nCaso o usuário não forneça as informações relacionadas a esses dados, retorne uma mensagem informando que você precisa saber qual é a liga e o período.\n\nEssa informação deve ser retornada assim:\ncompanyId: [id extraído]\nstartDate: [data inicial no formato YYYY-MM-DD]\nendDate: [data final no formato YYYY-MM-DD]\nreturnMessage: [mensagem caso nao tenha os dados necessários]\n\n{{ $json.text }}"
+          "systemMessage": "=Você é um agente de IA especializado em validar perguntas em linguagem natural sobre métricas de uso empresarial, como consumo de créditos e reservas.\n\nSeu papel é extrair e retornar um JSON estruturado com os seguintes campos:\n- companyId: número da empresa\n- startDate: data inicial no formato YYYY-MM-DD\n- endDate: data final no formato YYYY-MM-DD\n- errorMessage: mensagem de erro ou null\n\nA resposta deve ser **estritamente um JSON**, sem nenhuma explicação adicional.\n\nRegras de comportamento:\n1. Se a pergunta estiver **fora do escopo abaixo**, retorne errorMessage:\n   - Consumo de créditos\n   - Volume de reservas\n   - Distribuição de uso por espaço, cidade, grupo ou usuário\n   - Rankings de consumo\n   - Comparativos entre meses\n\n2. Se **a pergunta atual não contiver um companyId ou período**, **busque essa informação nas mensagens anteriores da conversa** (memória de chat). Só peça essas informações se realmente não tiver como inferir.\n\n3. Converta períodos relativos como \"últimas 3 semanas\" ou \"este mês\" em datas absolutas, usando a data de hoje como base: {{ $now }}\n\n---\n\nFormato de resposta esperado:\n\n{\n  \"companyId\": 189,\n  \"startDate\": \"2024-03-25\",\n  \"endDate\": \"2024-04-15\",\n  \"errorMessage\": null\n}\n\nSe a pergunta for inválida:\n{\n  \"companyId\": null,\n  \"startDate\": null,\n  \"endDate\": null,\n  \"errorMessage\": \"Desculpe, só consigo responder perguntas sobre consumo de créditos e reservas.\"\n}\n\nSe faltar ID ou período e não for possível recuperar da conversa:\n{\n  \"companyId\": null,\n  \"startDate\": null,\n  \"endDate\": null,\n  \"errorMessage\": \"Por favor, forneça o ID da empresa e o período desejado.\"\n}"
         }
       },
       "id": "ebe40f56-1779-4e21-bd78-aaea15bff7a9",
@@ -376,13 +379,58 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        -960,
-        200
+        -968,
+        560
       ],
       "alwaysOutputData": true,
       "executeOnce": false,
       "retryOnFail": false,
       "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Slack Trigger').item.json.user }}-{{ $('Slack Trigger').item.json.channel }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -880,
+        780
+      ],
+      "id": "d06c2983-5ee2-4f4b-a9e7-23bf79fd9c99",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('Slack Trigger').item.json.channel }}",
+          "mode": "id"
+        },
+        "text": "=🔄 Aguarde só um instante... estamos buscando as informações para você!",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -340,
+        460
+      ],
+      "id": "474ebbc9-52cf-47a6-b307-2c3aa61538c8",
+      "name": "Loading Message",
+      "webhookId": "f76a0e17-643e-4399-8cee-0f0be5fa21af",
+      "retryOnFail": true,
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "IiZ4ANmuQYAemLNU",
+          "name": "Slack OAuth2 Credential"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -512,7 +560,7 @@
       "main": [
         [
           {
-            "node": "Get Token",
+            "node": "Loading Message",
             "type": "main",
             "index": 0
           }
@@ -557,13 +605,35 @@
           }
         ]
       ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente de Intenção",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loading Message": {
+      "main": [
+        [
+          {
+            "node": "Get Token",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "f114158e-34d5-491d-8b03-05820c78ac58",
+  "versionId": "f13b3204-7d5b-4954-ba3f-5505cf9d35d9",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d6be90e61a0f7712934974811b60532eb608c78e527414683d5e2ffa811f54f9"
