@@ -23,7 +23,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -220,
+        -420,
         1120
       ],
       "id": "8616318f-a2ba-49b6-b583-8ed447e021f1",
@@ -35,7 +35,7 @@
         "text": "={{ $json.blocks[0].elements[0].elements[1].text }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=Hoje é {{ $now }}.\n\nVocê é um assistente de dados responsável por analisar perguntas de usuários relacionadas ao consumo de créditos e reservas de espaços de trabalho flexíveis (coworkings) de empresas na plataforma.\n\nSeu objetivo é validar se a pergunta está dentro do **contexto** esperado e **extrair as informações necessárias**. Sempre retorne os dados nesse formato:\n\ncompanyId: [id extraído]\nstartDate: [data inicial no formato YYYY-MM-DD]\nendDate: [data final no formato YYYY-MM-DD]\nerrorMessage: [null ou mensagem explicativa]\n\n**Instruções de interpretação:**\n\n1. **Período**:\n   - Aceite datas absolutas (ex: “de 01/01/2024 a 31/03/2024”)\n   - Aceite datas relativas (ex: “últimas 3 semanas”, “últimos 2 meses”, “este mês”)\n   - Converta sempre para startDate e endDate no formato ISO (YYYY-MM-DD), usando hoje como base: {{ $now }}\n\n2. **ID da empresa / liga**:\n   - Identifique qualquer número que se refira claramente a uma empresa ou liga\n   - Pode aparecer como “empresa 189”, “liga 554” ou “id 102”\n\n---\n\n**Contexto aceito**:\n- Perguntas sobre consumo de créditos\n- Volume de reservas\n- Distribuição de uso por espaço, cidade, usuário, grupo\n- Ranking de consumo de créditos e/ou produtos\n- Comparativos de meses\n- Qualquer pergunta que esteja relacionada com bookings e reservas de coworkings para trabalho flexivel\n\n---\n\n\n**Responda com:**\nSe a pergunta estiver fora do contexto, responda com:\n\ncompanyId: null,\nstartDate: null,\nendDate\": null,\nvalidatedQuestion: \"aqui retorna a primeira pergunta válida do usuário\"\nerrorMessage: \"Desculpe, só consigo responder perguntas sobre consumo de créditos e reservas.\"\n\nSe a pergunta estiver dentro do contexto, mas sem o ID da empresa ou período, responda sempre com:\n\ncompanyId: null,\nstartDate: null,\nendDate: null,\nvalidatedQuestion: \"**aqui retorna a primeira pergunta válida do usuário**\",\nerrorMessage: \"Por favor, forneça o ID da empresa e o período desejado.\"\n\nSe estiver tudo certo, responda com:\ncompanyId: 123,\nstartDate: \"2024-01-01\",\nendDate: \"2024-03-31\",\nvalidatedQuestion: \"**aqui retorna a primeira pergunta válida do usuário**\",\nerrorMessage: null\n\nHumano:\n{{ $json.blocks[0].elements[0].elements[1].text }}"
+          "systemMessage": "=Hoje é {{ $now }}.\n\nVocê é um assistente de dados responsável por analisar perguntas de usuários relacionadas ao consumo de créditos e reservas de espaços de trabalho flexíveis (coworkings) de empresas na plataforma.\n\nSeu objetivo é validar se a pergunta está dentro do **contexto** esperado e **extrair as informações necessárias**. Sempre retorne os dados nesse formato:\n\ncompanyId: [id extraído]\nstartDate: [data inicial no formato YYYY-MM-DD]\nendDate: [data final no formato YYYY-MM-DD]\nerrorMessage: [null ou mensagem explicativa]\n\n**Instruções de interpretação:**\n\n1. **Período**:\n   - Aceite datas absolutas (ex: “de 01/01/2024 a 31/03/2024”)\n   - Aceite datas relativas (ex: “últimas 3 semanas”, “últimos 2 meses”, “este mês”)\n   - Converta sempre para startDate e endDate no formato ISO (YYYY-MM-DD), usando hoje como base: {{ $now }}\n\n2. **ID da empresa / liga**:\n   - Identifique qualquer número que se refira claramente a uma empresa ou liga\n   - Pode aparecer como “empresa 189”, “liga 554” ou “id 102”\n\n2. Se **a pergunta atual não contiver um **id ou período**, **busque essa informação nas mensagens anteriores da conversa** (memória de chat). Só peça essas informações se realmente não tiver como inferir.\n\n---\n\n**Contexto aceito**:\n- Perguntas sobre consumo de créditos\n- Volume de reservas\n- Distribuição de uso por espaço, cidade, usuário, grupo\n- Ranking de consumo de créditos e/ou produtos\n- Comparativos de meses\n- Qualquer pergunta que esteja relacionada com bookings e reservas de coworkings para trabalho flexivel\n\n---\n\n\n**Responda com:**\nSe a pergunta estiver fora do contexto, responda com:\n\ncompanyId: null,\nstartDate: null,\nendDate\": null,\nvalidatedQuestion: \"aqui retorna a primeira pergunta válida do usuário\"\nerrorMessage: \"Desculpe, só consigo responder perguntas sobre consumo de créditos e reservas.\"\n\nSe a pergunta estiver dentro do contexto, mas sem o ID da empresa ou período, responda sempre com:\n\ncompanyId: null,\nstartDate: null,\nendDate: null,\nvalidatedQuestion: \"**aqui retorna a primeira pergunta válida do usuário**\",\nerrorMessage: \"Por favor, forneça o ID da empresa e o período desejado.\"\n\nSe estiver tudo certo, responda com:\ncompanyId: 123,\nstartDate: \"2024-01-01\",\nendDate: \"2024-03-31\",\nvalidatedQuestion: \"**aqui retorna a primeira pergunta válida do usuário**\",\nerrorMessage: null\n\nHumano:\n{{ $json.blocks[0].elements[0].elements[1].text }}"
         }
       },
       "id": "1bcea020-9445-4d81-a5a1-8f24f9cb3730",
@@ -62,14 +62,14 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        1260,
+        1060,
         1400
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $('If1').item.json.validatedQuestion }}",
+        "text": "={{ $('If1').item.json['\"validatedQuestion\"'] }}",
         "options": {
           "systemMessage": "=Assuma que você é um assistente de dados que responde perguntas com base no relatório abaixo. Seja objetivo, use dados numéricos quando possível, e responda sempre em português. Se necessário forneça alguma informação relevante de alerta ou ofertas.\n{{ $('Code1').item.json.markdown }}\n"
         }
@@ -79,7 +79,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        1140,
+        940,
         1140
       ],
       "alwaysOutputData": true,
@@ -100,7 +100,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1100,
+        900,
         1400
       ],
       "credentials": {
@@ -127,7 +127,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        1520,
+        1320,
         1140
       ],
       "id": "f5c07fe2-de06-4bb9-bb80-e18e1d023d13",
@@ -167,7 +167,7 @@
     },
     {
       "parameters": {
-        "url": "=https://api-gateway.staging.woba.com.br/api/bookings?start_date={{ $('If1').item.json.startDate }}&end_date={{ $('If1').item.json.endDate }}&allowFuture=true&status[]=0&status[]=1&status[]=2&status[]=3&status[]=4&status[]=5&appType=3&companies%5B%5D={{ $('If1').item.json.companyId }}",
+        "url": "=https://api-gateway.staging.woba.com.br/api/bookings?start_date={{ $('If1').item.json['\"startDate\"'] }}&end_date={{ $('If1').item.json['\"endDate\"'] }}&allowFuture=true&status[]=0&status[]=1&status[]=2&status[]=3&status[]=4&status[]=5&appType=3&companies%5B%5D={{ $('If1').item.json['\"companyId\"'] }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -182,7 +182,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        80,
+        -120,
         940
       ],
       "id": "96d9e143-ea9c-41c2-b145-a35455691da3",
@@ -195,7 +195,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        600,
+        400,
         1140
       ],
       "id": "1f59e28b-7ff0-443e-b031-8e9e29cd02ba",
@@ -203,7 +203,7 @@
     },
     {
       "parameters": {
-        "url": "=https://api-gateway.staging.woba.com.br/api/v0/companies/{{ $('If1').item.json.output.companyId }}/groups?fl=stats-members&limit=2000",
+        "url": "=https://api-gateway.staging.woba.com.br/api/v0/companies/{{ $('If1').item.json['\"companyId\"'] }}/groups?fl=stats-members&limit=2000",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -218,7 +218,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        80,
+        -120,
         1140
       ],
       "id": "84c17dcf-7d11-4493-bbae-355569bbfbaa",
@@ -226,7 +226,7 @@
     },
     {
       "parameters": {
-        "url": "=https://api-gateway.staging.woba.com.br/companies/{{ $('If1').item.json.companyId }}/packages/consumption",
+        "url": "=https://api-gateway.staging.woba.com.br/companies/{{ $('If1').item.json['\"companyId\"'] }}/packages/consumption",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -241,7 +241,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        80,
+        -120,
         1340
       ],
       "id": "02113dec-505f-4715-9f1f-7d641e743493",
@@ -257,7 +257,7 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        420,
+        220,
         1140
       ],
       "id": "c1b9343f-095d-4a2e-b7c4-f4b9c1221dd0",
@@ -276,7 +276,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -1320,
+        -1380,
         1360
       ],
       "id": "fadf18a3-2b03-4b5f-bd4a-85e0335c7da8",
@@ -300,7 +300,7 @@
           "conditions": [
             {
               "id": "195f66f0-840d-42e0-b8c3-44e1661de4f6",
-              "leftValue": "={{ $json.companyId }}",
+              "leftValue": "={{ $json['\"companyId\"'] }}",
               "rightValue": "null",
               "operator": {
                 "type": "number",
@@ -310,7 +310,7 @@
             },
             {
               "id": "19bf20e8-603b-4582-a890-6db029f9e65c",
-              "leftValue": "={{ $json.startDate }}",
+              "leftValue": "={{ $json['\"startDate\"'] }}",
               "rightValue": "null",
               "operator": {
                 "type": "string",
@@ -320,7 +320,7 @@
             },
             {
               "id": "cb5b0c4c-dfbe-49b1-a23a-976c674d365a",
-              "leftValue": "={{ $json.endDate }}",
+              "leftValue": "={{ $json['\"endDate\"'] }}",
               "rightValue": "null",
               "operator": {
                 "type": "string",
@@ -336,7 +336,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -520,
+        -720,
         1140
       ],
       "id": "cf302591-b0b7-4633-9fc8-5d0cbe44d902",
@@ -351,7 +351,7 @@
           "value": "={{ $('Slack Trigger1').item.json.channel }}",
           "mode": "id"
         },
-        "text": "={{ $json.errorMessage }}",
+        "text": "={{ $json['\"errorMessage\"'] }}",
         "otherOptions": {
           "includeLinkToWorkflow": false
         }
@@ -359,7 +359,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        -220,
+        -420,
         1380
       ],
       "id": "876637cb-40d3-4830-b089-e0c7dfe09bfb",
@@ -388,7 +388,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        840,
+        640,
         1140
       ],
       "id": "d6cc6441-a816-4b01-94e5-d86965812df8",
@@ -403,7 +403,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const output = $input.first().json.output || '';\n\nconst linhas = output\n  .trim()\n  .split('\\n')\n  .map(l => l.trim())\n  .filter(Boolean);\n\n// Trata cada linha e remove vírgula do final\nconst entries = linhas.map(linha => {\n  const [chaveRaw, valorRaw] = linha.split(':');\n  const chave = chaveRaw.trim();\n  let valor = valorRaw.trim().replace(/,$/, ''); // remove vírgula no final\n\n  // Converte null, number ou mantém string\n  if (valor === 'null') {\n    valor = null;\n  } else if (/^\\d+$/.test(valor)) {\n    valor = Number(valor);\n  } else {\n    valor = valor.replace(/^\"|\"$/g, ''); // remove aspas se houver\n  }\n\n  return [chave, valor];\n});\n\n// Monta o objeto final\nconst resultado = {};\nentries.forEach(([chave, valor]) => {\n  resultado[chave] = valor;\n});\n\nreturn [{ json: resultado }];"
+        "jsCode": "// Garante que output seja uma string, mesmo que não exista ou venha como outro tipo\nconst output = ($input.first()?.json?.output ?? '').toString();\n\n// Divide em linhas, remove espaços e ignora linhas vazias\nconst linhas = output\n  .trim()\n  .split('\\n')\n  .map(l => l.trim())\n  .filter(Boolean);\n\n// Trata cada linha e remove vírgula do final\nconst entries = linhas.map(linha => {\n  const [chaveRaw, valorRaw] = linha.split(':');\n  const chave = chaveRaw?.trim() ?? '';\n  let valor = valorRaw?.trim().replace(/,$/, '') ?? '';\n\n  // Converte null, number ou mantém string\n  if (valor === 'null') {\n    valor = null;\n  } else if (/^\\d+$/.test(valor)) {\n    valor = Number(valor);\n  } else {\n    valor = valor.replace(/^\"|\"$/g, ''); // remove aspas se houver\n  }\n\n  return [chave, valor];\n});\n\n// Monta o objeto final\nconst resultado = {};\nentries.forEach(([chave, valor]) => {\n  resultado[chave] = valor;\n});\n\nreturn [{ json: resultado }];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -422,7 +422,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -1160,
+        -1220,
         1360
       ],
       "id": "7c835e9d-b774-482a-99ea-b1889d9f8a53",
@@ -629,7 +629,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "5a2fdcdb-4e42-40af-830d-08aa21f58b95",
+  "versionId": "48908450-a946-4480-891a-bc7f9871279e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "b1dd7d5a248f52852a54c187dc8b5f2508350d00b2bf8019f80ca5f0a6737f0c"
