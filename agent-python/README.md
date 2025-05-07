@@ -55,7 +55,8 @@ Edite o arquivo `.env` com suas configurações.
 agente-python/
 │
 ├── assets/
-│   └── relatorio-empresa-1810.md
+│   └── relatorio-empresa-1810.md  #recargapay
+│   └── relatorio-empresa-1010.md  #cielo
 │
 ├── llm_clients/                   # Camada de abstração para múltiplos LLMs
 │   ├── __init__.py
@@ -66,6 +67,8 @@ agente-python/
 │
 ├── agents/
 │   └── agent.py                    # Agente de negócio com lógica de resposta
+│   └── runner.py                    # Agente de negócio com lógica de resposta
+│   └── __init__.py                  # Agente de negócio com lógica de resposta
 │
 ├── .env
 ├── main.py                         # Arquivo principal do terminal/chat
