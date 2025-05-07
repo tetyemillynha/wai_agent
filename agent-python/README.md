@@ -45,18 +45,33 @@ Edite o arquivo `.env` com suas configurações.
 
 - openai-agents
 - python-dotenv
+- anthropic
+- httpx
+
 
 ## 📁 Estrutura do Projeto
 
 ```
-agent-python/
-├── .env.example
-├── .gitignore
-├── README.md
-├── agent.py
+agente-python/
+│
+├── assets/
+│   └── relatorio-empresa-1810.md
+│
+├── llm_clients/                   # Camada de abstração para múltiplos LLMs
+│   ├── __init__.py
+│   ├── base.py                    # Interface LLMClient
+│   ├── openai_client.py           # Cliente para OpenAI
+│   ├── claude_client.py           # Cliente para Claude (Anthropic)
+│   └── llama_client.py            # Cliente para LLaMA (via Ollama3)
+│
+├── agents/
+│   └── agent.py                    # Agente de negócio com lógica de resposta
+│
+├── .env
+├── main.py                         # Arquivo principal do terminal/chat
 ├── requirements.txt
-└── assets/
-    └── relatorio-empresa-1810.md
+└── utils.py                        # Funções auxiliares como load_env e load_markdown
+
 ```
 
 ## 🚀 Como Usar
@@ -64,7 +79,7 @@ agent-python/
 1. Certifique-se de que o ambiente virtual está ativado
 2. Execute o script principal:
 ```bash
-python agent.py
+python main.py
 ```
 
 3. Interaja com o agente através do terminal:
