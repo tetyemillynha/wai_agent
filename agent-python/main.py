@@ -18,21 +18,6 @@ def load_markdown_content(filepath: str) -> str:
     return path.read_text(encoding="utf-8")
 
 async def create_agent(markdown_data: str) -> Agent:
-    # cached_summary = get_summary_from_cache(markdown_data)
-
-    # if not cached_summary:
-    #     print("🔄 Gerando resumo...")
-    #     summarizer = OpenAIClient(model="gpt-4o")
-    #     summary = await summarizer.summarize(markdown_data)
-    #     save_summary_to_cache(markdown_data, summary)
-    # else:
-    #     print("✅ Resumo carregado do cache")
-    #     summary = cached_summary
-
-    #     with open("./assets/ultimo_resumo.md", "w", encoding="utf-8") as f:
-    #         f.write(summary)
-
-
     client = OpenAIClient(model="gpt-4o")
     # client = ClaudeClient(model="claude-3-opus-20240229")
     # client = LLaMAClient(model="llama3.2")
@@ -92,7 +77,8 @@ def start_terminal_chat(agent: Agent):
 
 def main():
     load_env_variables()
-    markdown = load_markdown_content("./assets/relatorio-empresa-1810.md")
+    # markdown = load_markdown_content("./assets/relatorio-empresa-1810.md")
+    markdown = load_markdown_content("./assets/relatorio-empresa-1010.md")
     agent = asyncio.run(create_agent(markdown))
     start_terminal_chat(agent)
 

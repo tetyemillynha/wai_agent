@@ -1,0 +1,792 @@
+[
+  {
+    "markdown": "# 📊 Relatório Analítico - Empresa 1010 -  Cielo
+
+## 🗓️ Período: 2025-04-30 até 2025-04-01
+
+### 🔢 Resumo Geral
+- Total de reservas: 8310
+- Créditos consumidos: 28404.75
+- Valor gasto estimado: R$ 16479.85
+- Cidades atendidas: 130
+- Grupos identificados: 11
+
+---
+## 🏙️ Reservas por Cidade:
+- **Manaus/AM**: 96 reservas
+- **Araguaína/TO**: 7 reservas
+- **Teresina/PI**: 33 reservas
+- **São José dos Campos/SP**: 83 reservas
+- **Belém/PA**: 90 reservas
+- **Curitiba/PR**: 395 reservas
+- **Gravataí/RS**: 6 reservas
+- **Rio de Janeiro/RJ**: 307 reservas
+- **Ji-Paraná/RO**: 4 reservas
+- **Feira de Santana/BA**: 105 reservas
+- **Criciúma/SC**: 2 reservas
+- **Aracaju/SE**: 16 reservas
+- **Taubaté/SP**: 5 reservas
+- **São Paulo/SP**: 1355 reservas
+- **Campinas/SP**: 57 reservas
+- **Porto Alegre/RS**: 154 reservas
+- **Passo Fundo/RS**: 13 reservas
+- **Campo Grande/MS**: 236 reservas
+- **São Luís/MA**: 77 reservas
+- **Palmas/TO**: 28 reservas
+- **Suzano/SP**: 34 reservas
+- **Salvador/BA**: 204 reservas
+- **Fortaleza/CE**: 238 reservas
+- **Guarulhos/SP**: 100 reservas
+- **São José do Rio Preto/SP**: 123 reservas
+- **Uberlândia/MG**: 39 reservas
+- **Foz do Iguaçu/PR**: 132 reservas
+- **Limeira/SP**: 62 reservas
+- **Recife/PE**: 209 reservas
+- **Santos/SP**: 115 reservas
+- **Piracicaba/SP**: 89 reservas
+- **Belo Horizonte/MG**: 367 reservas
+- **Duque de Caxias/RJ**: 60 reservas
+- **Juiz de Fora/MG**: 90 reservas
+- **Florianópolis/SC**: 145 reservas
+- **Caieiras/SP**: 47 reservas
+- **Itajaí/SC**: 57 reservas
+- **Taboão da Serra/SP**: 32 reservas
+- **Vila Velha/ES**: 87 reservas
+- **Brasília/DF**: 459 reservas
+- **Americana/SP**: 28 reservas
+- **Jundiaí/SP**: 105 reservas
+- **Maceió/AL**: 40 reservas
+- **Natal/RN**: 103 reservas
+- **Maringá/PR**: 129 reservas
+- **São Carlos/SP**: 84 reservas
+- **Bauru/SP**: 111 reservas
+- **Londrina/PR**: 131 reservas
+- **Joinville/SC**: 14 reservas
+- **Contagem/MG**: 88 reservas
+- **Goiânia/GO**: 405 reservas
+- **Rio Claro/SP**: 53 reservas
+- **Mogi das Cruzes/SP**: 89 reservas
+- **São José/SC**: 7 reservas
+- **Lauro de Freitas/BA**: 112 reservas
+- **Osasco/SP**: 20 reservas
+- **Ribeirão Preto/SP**: 76 reservas
+- **Valinhos/SP**: 50 reservas
+- **Cuiabá/MT**: 91 reservas
+- **Canoas/RS**: 87 reservas
+- **Vitória/ES**: 80 reservas
+- **Sorocaba/SP**: 153 reservas
+- **Novo Hamburgo/RS**: 116 reservas
+- **João Pessoa/PB**: 95 reservas
+- **Jaú/SP**: 10 reservas
+- **Macapá/AP**: 5 reservas
+- **Barueri/SP**: 8 reservas
+- **Valparaíso de Goiás/GO**: 3 reservas
+- **Araraquara/SP**: 6 reservas
+- **Praia Grande/SP**: 8 reservas
+- **Porto Velho/RO**: 5 reservas
+- **Nilópolis/RJ**: 23 reservas
+- **Santo André/SP**: 51 reservas
+- **Caxias do Sul/RS**: 7 reservas
+- **Unaí/MG**: 4 reservas
+- **Paracatu/MG**: 3 reservas
+- **Niterói/RJ**: 10 reservas
+- **Rio Verde/GO**: 8 reservas
+- **Cascavel/PR**: 1 reservas
+- **Campos dos Goytacazes/RJ**: 5 reservas
+- **Caruaru/PE**: 2 reservas
+- **Bragança Paulista/SP**: 3 reservas
+- **São Pedro da Aldeia/RJ**: 9 reservas
+- **São Vicente/SP**: 3 reservas
+- **Ponta Grossa/PR**: 2 reservas
+- **São Bernardo do Campo/SP**: 2 reservas
+- **Cachoeiro de Itapemirim/ES**: 3 reservas
+- **Guarapari/ES**: 7 reservas
+- **Teixeira de Freitas/BA**: 2 reservas
+- **Bebedouro/SP**: 2 reservas
+- **Botucatu/SP**: 3 reservas
+- **Marília/SP**: 4 reservas
+- **Marabá/PA**: 3 reservas
+- **São Gonçalo/RJ**: 6 reservas
+- **Birigui/SP**: 2 reservas
+- **Santarém/PA**: 6 reservas
+- **Palhoça/SC**: 3 reservas
+- **Rondonópolis/MT**: 5 reservas
+- **Conselheiro Lafaiete/MG**: 3 reservas
+- **Pelotas/RS**: 6 reservas
+- **Santa Rita do Sapucaí/MG**: 3 reservas
+- **Votuporanga/SP**: 1 reservas
+- **União da Vitória/PR**: 3 reservas
+- **Caldas Novas/GO**: 3 reservas
+- **Volta Redonda/RJ**: 2 reservas
+- **Pindamonhangaba/SP**: 2 reservas
+- **Presidente Prudente/SP**: 4 reservas
+- **Petrolina/PE**: 3 reservas
+- **Assis/SP**: 1 reservas
+- **Franca/SP**: 3 reservas
+- **Rio das Ostras/RJ**: 2 reservas
+- **Chapecó/SC**: 2 reservas
+- **Leme/SP**: 1 reservas
+- **Patos de Minas/MG**: 2 reservas
+- **Nova Iguaçu/RJ**: 2 reservas
+- **Passos/MG**: 1 reservas
+- **Vitória da Conquista/BA**: 1 reservas
+- **Barreiras/BA**: 2 reservas
+- **Caraguatatuba/SP**: 1 reservas
+- **Dourados/MS**: 2 reservas
+- **Barretos/SP**: 1 reservas
+- **Araçatuba/SP**: 1 reservas
+- **Porto Seguro/BA**: 1 reservas
+- **Divinópolis/MG**: 1 reservas
+- **Ipatinga/MG**: 1 reservas
+- **Montes Claros/MG**: 2 reservas
+- **Imperatriz/MA**: 1 reservas
+- **Mauá/SP**: 1 reservas
+- **Indaiatuba/SP**: 1 reservas
+- **Mogi Guaçu/SP**: 1 reservas
+
+## 🧑‍🤝‍🧑 Reservas por Grupo:
+- **30407080**: 1 reservas (2 membros)
+- **130101007**: 121 reservas (44 membros)
+- **130101101**: 1 reservas (5 membros)
+- **130102007**: 76 reservas (25 membros)
+- **131602001**: 78 reservas (37 membros)
+- **131602023**: 72 reservas (49 membros)
+- **131901001**: 189 reservas (35 membros)
+- **140501001**: 8 reservas (24 membros)
+- **140601001**: 4 reservas (13 membros)
+- **140701001**: 203 reservas (89 membros)
+- **Espaço Cielo**: 7090 reservas (1350 membros)
+
+## 👥 Top 5 Usuários por Créditos Consumidos:
+1. **LUIZ ROSSI** (Luiz.rossi@cielo.com.br) – 599 créditos
+2. **JULIANA GOMES** (julianafi@cielo.com.br) – 302 créditos
+3. **GABRIELA CASARIN** (gabriela.casarin@cielo.com.br) – 222.75 créditos
+4. **THIAGO RODRIGUES** (thiago.rodrigues@cielo.com.br) – 218 créditos
+5. **ANDERSON ROCKENBACH** (anderson.daniel@cielo.com.br) – 209 créditos
+
+## 🏢 Espaços Utilizados:
+- **ICM Instituto de Conhecimento Meta** (Manaus/AM, Flores) – 30 reservas — CM: Jaqueline
+- **Cafeteria CB TO GO** (Araguaína/TO, Jardim Beira Lago) – 6 reservas — CM: Shirley Marinho dos Santos Siqueira
+- **Right Space Coworking** (Manaus/AM, Adrianópolis) – 3 reservas — CM: Catharina Botelho
+- **Time Business** (Teresina/PI, Fátima) – 14 reservas — CM: Layna
+- **Paris Office** (Teresina/PI, Fátima) – 2 reservas — CM: Ramilly Adrielly
+- **Co-necta** (São José dos Campos/SP, Vila Ema) – 7 reservas — CM: Daniela Asdente
+- **Do It Coworking Ltda** (Belém/PA, Campina) – 28 reservas — CM: Leonardo
+- **São Cristovão Coworking** (Teresina/PI, São Cristóvão) – 12 reservas — CM: Elisa Raquel
+- **be.HIVE coworking** (Curitiba/PR, Água Verde) – 11 reservas — CM: Sarah
+- **Flowork Barigui** (Curitiba/PR, Seminário) – 10 reservas — CM: Debora Schleder
+- **Urbano Coworking - Gravataí** (Gravataí/RS, Centro) – 6 reservas — CM: Emily Mattos
+- **Regus Mourisco** (Rio de Janeiro/RJ, Botafogo) – 8 reservas — CM: Regus CM
+- **Evolucao Projetos & Consultoria** (Ji-Paraná/RO, Centro) – 4 reservas — CM: Rosimeire Virgillio dos Santos
+- **Ilha 9 Work Premium** (Feira de Santana/BA, Santa Mônica) – 19 reservas — CM: Filipe Pinheiro
+- **Plurall Coworking - Criciuma São Luiz** (Criciúma/SC, São Luiz) – 2 reservas — CM: Jefferson Zappelini Filho
+- **Prime Escritórios (Unidade Jorge Amado)** (Aracaju/SE, Jardins) – 7 reservas — CM: Tamires Oliveira
+- **Acappella Coworking** (Taubaté/SP, Jardim das Nações) – 5 reservas — CM: Mara Silva
+- **Prime Escritórios (Unidade Pedro Paes)** (Aracaju/SE, Salgado Filho) – 9 reservas — CM: Davi Freire
+- **Regus EZ Tower** (São Paulo/SP, Chácara Santo Antônio (Zona Sul)) – 1 reservas — CM: Camila Santo
+- **BUCC Workspaces** (São Paulo/SP, Pinheiros) – 1 reservas — CM: Jéssica Arima
+- **HUS coworking** (Curitiba/PR, Água Verde) – 26 reservas — CM: Anderson Rafael
+- **Meridian Coworking** (Campinas/SP, Taquaral) – 5 reservas — CM: João Finatti
+- **Impact Hub Manaus** (Manaus/AM, Aleixo) – 6 reservas — CM: Marcos Rocha
+- **Gran Faculdade** (Curitiba/PR, Portão) – 4 reservas — CM: Andrey Gomes da Silva
+- **Mateus Leme Offices** (Curitiba/PR, Centro Cívico) – 4 reservas — CM: Eliane Ferreira
+- **TrustCoworking** (Porto Alegre/RS, Boa Vista) – 3 reservas — CM: Júlio Adamy
+- **Flowork Porto Alegre** (Porto Alegre/RS, Independência) – 1 reservas — CM: Marcia Sessegolo
+- **Elevenwork Coworking** (Passo Fundo/RS, Centro) – 13 reservas — CM: Barbara Boeno
+- **Flowork Iguaçu 2820** (Curitiba/PR, Água Verde) – 15 reservas — CM: Débora Schleder
+- **Cielo - Dezker | Barra-Rio - 453(12p)** (Rio de Janeiro/RJ, Jacarepaguá) – 63 reservas — CM: Fred Boquimpani
+- **Cielo - Komodo Office - Sala Privativa Cielo(11p)** (São Paulo/SP, Jardim Ana Lúcia) – 73 reservas — CM: Andre Luiz Targino
+- **Cielo - inOffice - São Bento - Sala Executive Privativa 08(12p)** (Campo Grande/MS, Jardim São Bento) – 150 reservas — CM: Larissa Ribeiro
+- **Cielo - .15 Coworking Unidade Avicênia - sala 12 posições(12p)** (São Luís/MA, Calhau) – 75 reservas — CM: Franklin Lima
+- **Cielo - Clump coworking - sala 10 posições (10p)** (Palmas/TO, Plano Diretor Sul) – 7 reservas — CM: Débora Del Nero de Freitas
+- **Cielo - Star Offices Coworking - sala ate 15 posições(15p)** (Suzano/SP, Centro) – 33 reservas — CM: PRISCILLA
+- **Cielo - Way Coworking - Sala privativa(12p)** (Salvador/BA, Caminho das Árvores) – 54 reservas — CM: João Flávio Schleu
+- **Cielo - Locus Escritório Virtual Fortaleza - sala 12 posições Cielo(12p)** (Fortaleza/CE, Aldeota) – 117 reservas — CM: Erasmo Barbosa Mendonça Filho
+- **Cielo - Zallpy Hub - Sala 2 Cielo(12p)** (Porto Alegre/RS, Floresta) – 66 reservas — CM: Darlene Silveira
+- **Cielo - Mateus Leme Offices - Sala privativa 13(13p)** (Curitiba/PR, Centro Cívico) – 140 reservas — CM: Eliane Ferreira
+- **Cielo - Urban Cowork - SALA PRIVATIVA - 12 PESSOAS(12p)** (Guarulhos/SP, Centro) – 97 reservas — CM: Ariane Almeida
+- **Cielo - COMOCOWORKING CORPORATE - Sala 12P dem Cielo(12p)** (Rio de Janeiro/RJ, Botafogo) – 41 reservas — CM: PAOLA BIANCHINI
+- **Cielo - Meridian Coworking - Sala 4p(11p)** (Campinas/SP, Taquaral) – 21 reservas — CM: João Finatti
+- **Cielo - Igloo Network - sala 12 posições Cielo(11p)** (São Paulo/SP, Jardim São Luís) – 31 reservas — CM: Giselle Balerone Castanho
+- **Cielo - Moove Coworking Barra Olímpica - BS00008(12p)** (Rio de Janeiro/RJ, Barra Olímpica) – 40 reservas — CM: Moove CM
+- **Cielo - C&W UNIDADE REDENTORA - sala 12 posições Cielo(12p)** (São José do Rio Preto/SP, Vila Redentora) – 121 reservas — CM: Emily Stefani
+- **Cielo - ASA Coworking - BS00008(12p)** (Uberlândia/MG, Santa Mônica) – 30 reservas — CM: Cléa Cunha Peres
+- **Cielo - Alfa Coworking Office - BS00001(12p)** (Foz do Iguaçu/PR, Jardim Central) – 131 reservas — CM: Dr. Faisal Ismail
+- **Cielo - Persimmon locações - Sala privativa(12p)** (Limeira/SP, Vila São João) – 61 reservas — CM: Bruno Pommer
+- **Cielo - Foz Coworking - sala 15 posições Cielo(15p)** (Recife/PE, Imbiribeira) – 77 reservas — CM: Philippe Magno
+- **Cielo - The House Coworking - Sala 3(12p)** (Santos/SP, Gonzaga) – 111 reservas — CM: Thainá
+- **Cielo - Ponto 44 - Sala Laranja(13p)** (Piracicaba/SP, Morumbi) – 88 reservas — CM: Bruno Bini
+- **Cielo - Green Valley Coworking Nova Suissa - sala 12 posições Cielo(12p)** (Belo Horizonte/MG, Nova Suíssa) – 98 reservas — CM: Beatriz Machado
+- **Cielo - Studio Office - sala 12 posições Cielo(12p)** (São Paulo/SP, Santana) – 145 reservas — CM: Marcia Dias
+- **Cielo - Truly Offices - Sala 12P(12p)** (Rio de Janeiro/RJ, Cachambi) – 52 reservas — CM: Catari Pinto
+- **Cielo - Work AZ - BS00015(13p)** (Duque de Caxias/RJ, Centro) – 57 reservas — CM: Work AZ do Brasil
+- **Cielo - Speed Coworking - Rio Branco 2691 - sala 12 posições Cielo(12p)** (Juiz de Fora/MG, Centro) – 89 reservas — CM: Lucianita Maciel
+- **Cielo - MNZ Coworking - Sala 14 pessoas(14p)** (Florianópolis/SC, Estreito) – 137 reservas — CM: Jason de Carli
+- **Cielo - Núcleo Digital - sala 12 posições Cielo(12p)** (Belo Horizonte/MG, Camargos) – 90 reservas — CM: Olney Antunes Silva
+- **Cielo - Agylwork - Sala privativa 12 pessoas(12p)** (Caieiras/SP, Nova Caieiras) – 46 reservas — CM: Neuza Vicente da Silva Freitas
+- **Cielo - Prooffice - Sala privativa(10p)** (Manaus/AM, Adrianópolis) – 56 reservas — CM: LUCIMARA DA CUNHA DE SOUZA
+- **Cielo - Locus Coworking- Prime - SALA PRIVATIVA- 05(12p)** (Itajaí/SC, Centro) – 56 reservas — CM: Jaqueline Ferreira Campanha
+- **Cielo - Brains Coworking - Sala 04 (BRAINS 2)(12p)** (Curitiba/PR, Batel) – 93 reservas — CM: Carina Schelbauer
+- **Cielo - Chave Coworking - Sala Privativas(12p)** (Taboão da Serra/SP, Jardim Wanda) – 31 reservas — CM: Pedro Paulo
+- **Cielo - Full Escritório - sala 12 posições Cielo(12p)** (Vila Velha/ES, Praia de Itaparica) – 85 reservas — CM: Flávia Zambom
+- **Cielo - Dezker | Itaim Bibi - 205(12p)** (São Paulo/SP, Itaim Bibi) – 116 reservas — CM: Andrea
+- **Cielo - Concept Working Vivendas do Bosque - BS00001(12p)** (Campo Grande/MS, Vivendas do Bosque) – 83 reservas — CM: Jéssica
+- **Cielo - Ânima Coworking - sala 12 posições Cielo(12p)** (Brasília/DF, Setor Habitacional Vicente Pires - Trecho 3) – 59 reservas — CM: Ricardo Gomide
+- **Cielo - W.Corp Coworking - sala 12 posições Cielo(12p)** (São Paulo/SP, Vila Monumento) – 76 reservas — CM: Natalia Bizotto
+- **Cielo - Hub Plural Aflitos - sala 13 posições Cielo(13p)** (Recife/PE, Aflitos) – 117 reservas — CM: Zíngara Farias
+- **Cielo - Lord Tax Hub - Sala Privativa para 13 pessoas(13p)** (Rio de Janeiro/RJ, Centro) – 62 reservas — CM: José Enrique
+- **Cielo - Orange Coworking - sala 12 posições Cielo(12p)** (São José dos Campos/SP, Jardim América) – 72 reservas — CM: André Carletti
+- **Cielo - BelOffice Coworking - sala 12 posições Cielo(12p)** (Belém/PA, Parque Verde) – 42 reservas — CM: Evandro Paes
+- **Cielo - Zallpy Hub - sala 12 posições Cielo(12p)** (Porto Alegre/RS, Floresta) – 79 reservas — CM: Darlene Silveira
+- **Cielo - Ponto Brasil - Sala 07(16p)** (Americana/SP, Jardim Paulista) – 27 reservas — CM: Maria Nunes
+- **Cielo - Apolar Concept - Archademy - sala 12 posições auditório(12p)** (Curitiba/PR, Água Verde) – 75 reservas — CM: Verônica
+- **Cielo - Crework - Sala privativa - 12 Pessoas(12p)** (Jundiaí/SP, Vila Garcia) – 103 reservas — CM: Eduardo
+- **Cielo - Recruitment Coworking - Sala privativa(12p)** (Maceió/AL, Gruta de Lourdes) – 39 reservas — CM: Nara Menezes
+- **Cielo - Digital Working - sala 12 posições Cielo(12p)** (São Paulo/SP, Vila Taquari) – 157 reservas — CM: Marcelo Hideo Motoyama
+- **Cielo - Organico Coworking Nações - sala 15 posições Cielo(15p)** (São Paulo/SP, Chácara Santo Antônio) – 52 reservas — CM: Emanuelle Coelhas
+- **Cielo - Seahub Unidade Ayrton Senna - Sala 12 posições(12p)** (Natal/RN, Neópolis) – 101 reservas — CM: José Dantas
+- **Cielo - Digital Working - sala 12 posições Cielo 2(12p)** (São Paulo/SP, Vila Taquari) – 176 reservas — CM: Marcelo Hideo Motoyama
+- **Cielo - Hangar Coworking - sala 16 posições Cielo(16p)** (Maringá/PR, Zona Armazém) – 128 reservas — CM: Isadora Peres Arns
+- **Cielo - FlyNow Coworking - sala 12 posições Cielo(12p)** (São Paulo/SP, Jabaquara) – 140 reservas — CM: Michel Peres
+- **Cielo - Coworking Aricanduva - sala 14 posições Cielo(14p)** (São Paulo/SP, Jardim Aricanduva) – 110 reservas — CM: Thainá
+- **Cielo - Reserva Coworking - sala 12 posições Cielo(12p)** (Fortaleza/CE, Fátima) – 111 reservas — CM: Marcos Parente
+- **Cielo - NBA TERCEIRICAZÃO - Sala Especial(12p)** (São Carlos/SP, Vila Prado) – 82 reservas — CM: Kherolayne
+- **Cielo - Lagoa Conecta - Sala 3(12p)** (Belo Horizonte/MG, São Luiz) – 99 reservas — CM: Wanderley Netto
+- **Cielo - Multcoworking - Sala Space(13p)** (Bauru/SP, Vila Guedes de Azevedo) – 104 reservas — CM: Vinicius Avallone
+- **Cielo - State Offices - Unidade Lago - Sala Cielo(12p)** (Londrina/PR, Gleba Fazenda Palhano) – 124 reservas — CM: Marco Pacheco
+- **Cielo - Fliperama Espaço Colaborativo - Estudio 2(12p)** (Joinville/SC, América) – 12 reservas — CM: Mônica Hellmann
+- **Cielo - Coworking Coluna Mall - sala 14 posições Cielo(15p)** (Contagem/MG, Ressaca) – 87 reservas — CM: Frederico
+- **Cielo - Smart Hub Green Coworking - Sala privativa(12p)** (Goiânia/GO, Setor Oeste) – 82 reservas — CM: Thaís Marinho
+- **Cielo - HeyHub - Cega machado e Lobeira(12p)** (Goiânia/GO, St. Oeste) – 152 reservas — CM: Krislohany Machado
+- **Cielo - Stalo Lab - sala 12 posições Cielo(12p)** (Rio Claro/SP, Centro) – 51 reservas — CM: Julia Tarpinian
+- **Cielo - Ilha 9 Work Premium - sala 12 posições Cielo(12p)** (Feira de Santana/BA, Santa Mônica) – 85 reservas — CM: Filipe Pinheiro
+- **Cielo - Matriz Alphaville** (Mogi das Cruzes/SP, Jardim Esplanada) – 83 reservas — CM: josé wilson
+- **MGP Coworking** (São Paulo/SP, Jardim Taquaral) – 1 reservas — CM: Magda Francischini Guerrero Pedro
+- **Diaudi Hotel** (São José/SC, Kobrasol) – 2 reservas — CM: Ivan Kretzer Rabello
+- **Eventos - Buffet Tio Pizzas** (Goiânia/GO, Setor Leste Universitário) – 2 reservas — CM: Sheila Alves
+- **HeyHub** (Goiânia/GO, St. Oeste) – 3 reservas — CM: Karla Cíntia
+- **Lean Cowork** (Recife/PE, Casa Forte) – 7 reservas — CM: Pietro Ramos
+- **Garagem105 Coworking Sombreiros** (Salvador/BA, Caminho das Árvores) – 11 reservas — CM: Davi Gomes
+- **RF Coworking Escritório de Negócios** (Lauro de Freitas/BA, Recreio Ipitanga) – 3 reservas — CM: Rosana Alcoforado
+- **Órbi Conecta** (Belo Horizonte/MG, Lagoinha) – 1 reservas — CM: Gabriel Benzaquen
+- **Moove Coworking Barra Olímpica** (Rio de Janeiro/RJ, Barra Olímpica) – 6 reservas — CM: Moove CM
+- **OPTADESK** (Brasília/DF, Asa Norte) – 4 reservas — CM: JOSSELA ALBUQUERQUE
+- **Regus Osasco** (Osasco/SP, Centro) – 9 reservas — CM: Jéssica Sales
+- **Ânima Coworking** (Brasília/DF, Setor Habitacional Vicente Pires - Trecho 3) – 3 reservas — CM: Ricardo Gomide
+- **Vila Amazônia Offices** (Belém/PA, Batista Campos) – 1 reservas — CM: Paulo Bassotto
+- **Avodah Coworking** (São Paulo/SP, Vila Progredior) – 4 reservas — CM: Flavia dos Santos Oliveira Gama
+- **Fliperama Espaço Colaborativo** (Joinville/SC, América) – 2 reservas — CM: Mônica Hellmann
+- **Newduca** (Ribeirão Preto/SP, Centro) – 1 reservas — CM: Nathália Pires
+- **Cielo - Smart CEO Coworking Valinhos - Sala privativa(12p)** (Valinhos/SP, Jardim Paiquerê) – 49 reservas — CM: Ronaldo Caceffo
+- **Cielo - Way Coworking - SALA PRIVATIVA PARA 12 PESSOAS(12p)** (Salvador/BA, Caminho das Árvores) – 28 reservas — CM: João Flávio Schleu
+- **Cielo - Way Coworking - SALA PRIVATIVA ATÉ 12 PESSOAS(12p)** (Salvador/BA, Caminho das Árvores) – 86 reservas — CM: João Flávio Schleu
+- **Cielo - Teu CWK - sala 13 posições Cielo(13p)** (São Paulo/SP, Vila Ipojuca) – 33 reservas — CM: Karol
+- **BASE Coworking - Allianz Parque** (São Paulo/SP, Água Branca) – 4 reservas — CM: Lisandra Borges
+- **Cielo - Cathedral Coworking - sala 12 posições Cielo 2(12p)** (Brasília/DF, Asa Sul) – 68 reservas — CM: Katia Rosane Da Silva Galeno
+- **Cielo - Towork Coworking - sala 12 posições Cielo(12p)** (Cuiabá/MT, Jardim Campus Elizius) – 82 reservas — CM: Patricia Ramos
+- **Cielo - Dezker | Campinas - 6806(13p)** (Campinas/SP, Centro) – 14 reservas — CM: Edla Rocha
+- **Cielo - Regus Osasco - Sala 011(13p)** (Osasco/SP, Centro) – 10 reservas — CM: Jéssica Sales
+- **Cielo - Território Coworking - Sala privativa(11p)** (Canoas/RS, Bairro Fátima) – 86 reservas — CM: Gabriel Kostelnaki Ramos
+- **Cielo - Plusoffice - sala 14 posições Cielo(14p)** (Vitória/ES, Mata da Praia) – 74 reservas — CM: Priscila
+- **Cielo - I5 Coworking - sala 12 posições Cielo(12p)** (Brasília/DF, Sul (Águas Claras)) – 102 reservas — CM: Leida Souza
+- **Cielo - Ânima Coworking - Sala privativa(12p)** (Brasília/DF, Setor Habitacional Vicente Pires - Trecho 3) – 128 reservas — CM: Ricardo Gomide
+- **Cielo - Connect Work Office - Sala privativa(12p)** (Sorocaba/SP, Jardim Vergueiro) – 86 reservas — CM: Karen Abreu
+- **Cielo - 44office - Sala privativa(11p)** (Novo Hamburgo/RS, Pátria Nova) – 110 reservas — CM: Carine Blauth
+- **Cielo - Gravity Coworking - sala 13 posições Cielo(13p)** (São Paulo/SP, Pinheiros) – 43 reservas — CM: Victor Felipe
+- **Cielo - RF Coworking Escritório de Negócios - sala 12 posições(12p)** (Lauro de Freitas/BA, Recreio Ipitanga) – 109 reservas — CM: Rosana Alcoforado
+- **Cielo - YouBe Work - Infinity - Sala privativa(12p)** (João Pessoa/PB, Cabo Branco) – 94 reservas — CM: Rannielle Farias Batista
+- **It's Coworking** (São José/SC, Kobrasol) – 5 reservas — CM: Dom Marcus Rossato
+- **Agência Bits+** (Jaú/SP, Vila Nova) – 10 reservas — CM: Erick Paghete
+- **Zion Coworking Macapá** (Macapá/AP, Alvorada) – 1 reservas — CM: Rodrigo Colares
+- **Vista Offices** (Brasília/DF, Águas Claras) – 17 reservas — CM: Brenda Fernanda
+- **Workflex** (São José dos Campos/SP, Parque Residencial Aquarius) – 1 reservas — CM: Rafael Guerra Fernandes
+- **Regus Alphaville** (Barueri/SP, Tamboré) – 1 reservas — CM: Regus CM
+- **Área Coworking** (Valparaíso de Goiás/GO, Parque Esplanada III) – 3 reservas — CM: TALITA MANHAES
+- **Workah Negócios e Café** (Araraquara/SP, Jardim Primavera) – 6 reservas — CM: Armando Ferraz
+- **CW 304** (Praia Grande/SP, Boqueirão) – 7 reservas — CM: Nayara Samora
+- **Coworking Parquelandia** (Fortaleza/CE, Parquelândia) – 5 reservas — CM: Maria Lilene
+- **Leader coworking** (Belo Horizonte/MG, Ouro Preto) – 1 reservas — CM: Carolina
+- **Lemonadde** (Florianópolis/SC, Itacorubi) – 3 reservas — CM: Cleverson Acunha
+- **Regus Uberlandia - Center Shopping** (Uberlândia/MG, Santa Mônica) – 1 reservas — CM: Regus CM
+- **Regus Edificio Argentina** (Rio de Janeiro/RJ, Botafogo) – 6 reservas — CM: Regus CM
+- **Donadelas Work** (Belém/PA, Nazaré) – 7 reservas — CM: Ely Ribeiro
+- **King Coworking** (Campinas/SP, Fazenda Santa Cândida) – 8 reservas — CM: Luana
+- **Espaço Closs** (Porto Velho/RO, Olaria) – 5 reservas — CM: Juliana Closs Correia
+- **Cielo - Colaboração.Space - Sala 12 posições(12p)** (Nilópolis/RJ, Centro) – 22 reservas — CM: Carla Brício
+- **Eventos - Flavia Coffees e Fingers** (Recife/PE, Ibura) – 1 reservas — CM: Flavia
+- **Cielo - Mofo WorkSpaces - Unidade CASA Jd. Paulistano - Sala privativa(12p)** (Sorocaba/SP, Jardim Paulistano) – 65 reservas — CM: Maria Paula
+- **Cielo - Cwbe Coworking - Sala 14 pessoas(14p)** (Curitiba/PR, Hugo Lange) – 4 reservas — CM: roberto stier
+- **Cielo - Global Hub - SALA 02 - BRASIL(14p)** (Ribeirão Preto/SP, Jardim Irajá) – 66 reservas — CM: Salete Flores
+- **Cielo - Mango Tree - sala 13 posições Cielo(13p)** (São Paulo/SP, República) – 56 reservas — CM: Fábio Oliveira
+- **Cielo - Cathedral Coworking - sala 12 posições Cielo(12p)** (Brasília/DF, Asa Sul) – 65 reservas — CM: Katia Rosane Da Silva Galeno
+- **Cielo - Santo Ofício Coworking - BS00004(12p)** (Belo Horizonte/MG, Santa Tereza) – 62 reservas — CM: Yuri Fortes
+- **Cielo - Hub Cerrado - Sala privativa(12p)** (Goiânia/GO, Jardim Atlântico) – 39 reservas — CM: Jéssica Ferreira
+- **Cielo - Muvita Coworking Santo André - Sala especial(12p)** (Santo André/SP, Jardim) – 47 reservas — CM: Renata Bottura
+- **Cielo - Curado Coworking - Nova sala 12(12p)** (Goiânia/GO, Jardim América) – 114 reservas — CM: Diego Curado
+- **Colavoro Sanvitto** (Caxias do Sul/RS, Centro) – 2 reservas — CM: Pedro Henrique Sanvitto Andreazza Corso
+- **State Offices - Unidade Ayrton Senna** (Londrina/PR, Gleba Fazenda Palhano) – 6 reservas — CM: Marco Pacheco
+- **Use Coworking** (Cuiabá/MT, Duque de Caxias) – 1 reservas — CM: Karen Regina Domingo Sobreira
+- **Spaces Ipanema** (Rio de Janeiro/RJ, Ipanema) – 11 reservas — CM: Luiz Eduardo Mendez
+- **Nook Workplace - Unidade Anselmo** (Uberlândia/MG, Santa Mônica) – 1 reservas — CM: Mariana Dias Gonçalves
+- **Global Hub** (Ribeirão Preto/SP, Jardim Irajá) – 3 reservas — CM: Salete Flores
+- **My Place Office Campinas** (Campinas/SP, Jardim Conceição) – 8 reservas — CM: Gregório Andrade
+- **My Place Office Chácara Santo Antônio** (São Paulo/SP, Santo Amaro) – 1 reservas — CM: Sabrina Brandão
+- **Tipo Coworking** (Unaí/MG, Centro) – 4 reservas — CM: Fernando Alves
+- **Coworking Pro** (Paracatu/MG, Centro) – 3 reservas — CM: Isabele
+- **Blocks Coworking** (Brasília/DF, Águas Claras) – 5 reservas — CM: BLOCKS COWORKING
+- **Círculo Coworking Central Prime** (Niterói/RJ, Icaraí) – 2 reservas — CM: Nathan
+- **Albatroz Working Space** (Rio de Janeiro/RJ, Jacarepaguá) – 1 reservas — CM: Matheus Braz
+- **Elabore Coworking** (Curitiba/PR, Boqueirão) – 2 reservas — CM: Cintia Martini
+- **Ypê Office e Coworking** (Ribeirão Preto/SP, Jardim Botânico) – 4 reservas — CM: Neto Parada
+- **Espaço Capital Simple Agro** (Rio Verde/GO, Jardim Goiás) – 8 reservas — CM: Community Manager
+- **Colmeia Carioca Coworking** (Rio de Janeiro/RJ, Botafogo) – 2 reservas — CM: Naiara Nogueira
+- **BV Coworking** (Recife/PE, Boa Viagem) – 2 reservas — CM: Eduarda Santiago
+- **Upworks - São Pelegrino** (Caxias do Sul/RS, São Pelegrino) – 5 reservas — CM: Rafaella Pigozzi Saba Bertotto
+- **Casa 36** (Cascavel/PR, Santa Cruz) – 1 reservas — CM: Isabela
+- **Hub Cerrado** (Goiânia/GO, Jardim Atlântico) – 5 reservas — CM: Jéssica Ferreira
+- **Círculo Coworking** (Niterói/RJ, Icaraí) – 3 reservas — CM: Letícia
+- **Barão Coworking** (Campos dos Goytacazes/RJ, Centro) – 1 reservas — CM: Marcelo Ferreira Rebel
+- **Oficina La Patria** (Campos dos Goytacazes/RJ, Centro) – 4 reservas — CM: Luan
+- **Clump coworking** (Palmas/TO, Plano Diretor Sul) – 21 reservas — CM: Débora Del Nero de Freitas
+- **Eventos - Shokupan padaria** (São Paulo/SP, Paraíso) – 2 reservas — CM: Shokupan padaria
+- **Owzone** (Bauru/SP, Vila Mesquita) – 4 reservas — CM: MARCELLA ALFINI VAZ
+- **Realiza Coworking** (Caruaru/PE, Indianópolis) – 2 reservas — CM: Marlon Batiston
+- **688 Coworking** (Bragança Paulista/SP, Centro) – 3 reservas — CM: Thomas Magalhães Liza
+- **LAGOS COWORKING SPACE** (São Pedro da Aldeia/RJ, Vinhateiro) – 9 reservas — CM: Caroline
+- **Cielo - Garagem105 Coworking Sombreiros - Privativa 12 Lugares PD(12p)** (Salvador/BA, Caminho das Árvores) – 22 reservas — CM: Davi Gomes
+- **Cielo - Instituto Connection - sala 12 posições Cielo(12p)** (São Paulo/SP, Jardim Paulista) – 12 reservas — CM: Vanessa Guimarães
+- **Hotel NH Curitiba The Five** (Curitiba/PR, Centro) – 3 reservas — CM: Vanine Fiori
+- **Solution Indoor** (Ribeirão Preto/SP, Subsetor Sul - 4 (S-4)) – 2 reservas — CM: Lorena Lorençato
+- **Organico Coworking Nações** (São Paulo/SP, Chácara Santo Antônio) – 3 reservas — CM: Emanuelle Coelhas
+- **Okay Coworking** (Belo Horizonte/MG, Castelo) – 2 reservas — CM: Flaviana Araújo
+- **Curado Coworking** (Goiânia/GO, Jardim América) – 2 reservas — CM: Diego Curado
+- **Ponto Business** (São Vicente/SP, Centro) – 3 reservas — CM: Renato José de Bairos
+- **312 Coworking & Offices** (Ponta Grossa/PR, Olarias) – 2 reservas — CM: Carol Hayashi
+- **Cielo - Nalu Coworking - Sala 04(12p)** (São Bernardo do Campo/SP, Nova Petrópolis) – 1 reservas — CM: Carol Gatti
+- **Cielo - Elabore Coworking - Sala 12 posições(12p)** (Curitiba/PR, Boqueirão) – 4 reservas — CM: Cintia Martini
+- **Amazoom Coworking** (Macapá/AP, Central) – 4 reservas — CM: .
+- **Coworking Aricanduva** (São Paulo/SP, Jardim Aricanduva) – 2 reservas — CM: Thainá
+- **Thex Escritórios** (Teresina/PI, Jóquei) – 3 reservas — CM: Hellen Duarte
+- **Mixwork Coworking** (Cachoeiro de Itapemirim/ES, Doutor Gilberto Machado) – 3 reservas — CM: THAIS VIEIRA QUINTINO
+- **North Office** (Belém/PA, Nazaré) – 2 reservas — CM: Agostinho Cunha
+- **Fratelli Office - Unidade Quintino** (Belém/PA, Cremação) – 6 reservas — CM: Lívia Oltramari Carvalho
+- **Conecta Working** (Guarapari/ES, Centro) – 3 reservas — CM: Ana Paula Cavalcanti da Fonseca
+- **Ritz Coworking -  Vitória** (Vitória/ES, Enseada do Suá) – 2 reservas — CM: Tereza Cristina
+- **Pitaya** (Teixeira de Freitas/BA, Centro) – 2 reservas — CM: Denise Dias
+- **Premium Offices** (Vitória/ES, Praia do Suá) – 2 reservas — CM: Gilson Mansur Filho 
+- **Infinity Coworking** (Barueri/SP, Alphaville Industrial) – 4 reservas — CM: Mauro Koraicho
+- **Soluti Space Coworking** (Goiânia/GO, Jardim Goiás) – 4 reservas — CM: Marcelo Castro
+- **Start Work Coworking** (Bauru/SP, Jardim América) – 1 reservas — CM: Miriam Lupia Crema
+- **Coworking Bebedouro** (Bebedouro/SP, Vila Paula) – 2 reservas — CM: Marcelo Rosa
+- **On Business Office** (Brasília/DF, Brasília) – 1 reservas — CM: Sandra Amantéa
+- **Coworking Smart Savassi** (Belo Horizonte/MG, Savassi) – 1 reservas — CM: Ketty Lorrane
+- **Cielo - 4UCoworking - Sala privativa(12p)** (Niterói/RJ, Badu) – 2 reservas — CM: Ivo Thomaz
+- **Cielo - Bem te-vi coworking - sala 12 posições Cielo(12p)** (São Paulo/SP, Santana) – 58 reservas — CM: Bem Te Vi Coworking
+- **Fullworking Centro** (Botucatu/SP, Centro) – 2 reservas — CM: Adriana
+- **Regus Flamboyant Shopping Center** (Goiânia/GO, Jardim Goiás) – 1 reservas — CM: Regus CM
+- **CW15 Coworking** (Marília/SP, Centro) – 4 reservas — CM: Débora Vicente
+- **Atrio Business Center** (Uberlândia/MG, Brasil) – 3 reservas — CM: Eduardo Gomes
+- **Amapa Office** (Marabá/PA, Amapá) – 3 reservas — CM: Regiana Carvalho
+- **Office House Coworking Itaim** (São Paulo/SP, Itaim Bibi) – 5 reservas — CM: Eduardo Presto
+- **NaCapital - João da Cruz** (Vitória/ES, Praia do Canto) – 1 reservas — CM: Gigi Oliveira
+- **Cielo - NearWork - sala 12 posições Cielo(12p)** (São Gonçalo/RJ, Estrela do Norte) – 5 reservas — CM: Bruno Falbo
+- **The House Coworking** (Santos/SP, Gonzaga) – 2 reservas — CM: Thainá
+- **Wecompany Coworking** (Rio de Janeiro/RJ, Barra da Tijuca) – 1 reservas — CM: Bruno Bellas
+- **Moov'up Coworking - Unidade Savassi II** (Belo Horizonte/MG, Savassi) – 1 reservas — CM: Eduardo Duarte Ulhoa
+- **My Place Office Savassi** (Belo Horizonte/MG, Savassi) – 1 reservas — CM: Leandro Luís
+- **Bendito Coworking - Al. Santos** (São Paulo/SP, Cerqueira César) – 1 reservas — CM: Michele Sousa
+- **Towork Coworking** (Cuiabá/MT, Jardim Campus Elizius) – 5 reservas — CM: Patricia Ramos
+- **B.Office** (Birigui/SP, Centro) – 2 reservas — CM: Marcel Santos
+- **HVNA Coworking** (Rio de Janeiro/RJ, Tijuca) – 1 reservas — CM: Horacio Costa
+- **HZ Coworking Space** (Florianópolis/SC, Centro) – 1 reservas — CM: Israel José Linhares
+- **Tarrafa Coletivo Criativo** (Florianópolis/SC, Rio Tavares) – 2 reservas — CM: Harnnon
+- **Cielo - Tempo Coworking - Sala privativa(11p)** (São Paulo/SP, Vila Nova Manchester) – 3 reservas — CM: Vanessa Salvá de Oliveira
+- **Zero Nove 3 Coworking** (Santarém/PA, Santíssimo) – 6 reservas — CM: Daniel Noel
+- **Coworking Pedra Branca** (Palhoça/SC, Pedra Branca) – 3 reservas — CM: Bruno Oliveira
+- **Okay Gold Coworking** (Belo Horizonte/MG, Castelo) – 2 reservas — CM: Flaviana Araújo
+- **Círculo Coworking Unidade Centro** (Niterói/RJ, Centro) – 2 reservas — CM: Iolanda
+- **Regus Chácara Santo Antônio** (São Paulo/SP, Santo Amaro) – 2 reservas — CM: Regus CM
+- **França Office & Coworking** (Rondonópolis/MT, Vila Aurora I) – 5 reservas — CM: Daniela Mota França
+- **I5 Coworking** (Brasília/DF, Sul (Águas Claras)) – 2 reservas — CM: Leida Souza
+- **Casa Ubumntu** (Belo Horizonte/MG, São Luiz) – 2 reservas — CM: Francis
+- **Locus Coworking Paulista** (São Paulo/SP, Jardim Paulista) – 1 reservas — CM: Renata Retamero
+- **VIP Office Paulista** (São Paulo/SP, Jardim Paulista) – 2 reservas — CM: Marcel Baffi
+- **Ventures Coworking** (Conselheiro Lafaiete/MG, Campo Alegre) – 3 reservas — CM: Marcelo Mapa
+- **44office** (Novo Hamburgo/RS, Pátria Nova) – 6 reservas — CM: Carine Blauth
+- **Wworking Coworking** (Guarulhos/SP, Vila Hulda) – 2 reservas — CM: Caio Prado
+- **ESPAÇO INX** (Pelotas/RS, Centro) – 3 reservas — CM: Marcelo Sundstron
+- **SIS Coworking** (Santa Rita do Sapucaí/MG, Centro) – 3 reservas — CM: Bruna do Valle
+- **Work AZ** (Duque de Caxias/RJ, Centro) – 3 reservas — CM: Work AZ do Brasil
+- **Eventos - Emporio MD** (São José dos Campos/SP, Jardim São Dimas) – 2 reservas — CM: Tainá
+- **Dg Coworking** (Rio de Janeiro/RJ, Taquara) – 1 reservas — CM: Gabriel Reis
+- **KafeWork** (São Paulo/SP, Vila Guarani (Z Sul)) – 1 reservas — CM: Kleber Coelho
+- **Colab Coworking** (Votuporanga/SP, Santa Eliza) – 1 reservas — CM: Sarah
+- **Truly Offices** (Rio de Janeiro/RJ, Cachambi) – 4 reservas — CM: Catari Pinto
+- **Hotel Executivo** (Araguaína/TO, Conjunto Urbanístico) – 1 reservas — CM: Felipe
+- **Pátio Sabiá** (Uberlândia/MG, Santa Mônica) – 2 reservas — CM: Dyemieli Pereira
+- **Due Coworking** (Bauru/SP, Jardim Estoril IV) – 1 reservas — CM: Carlos Alberto
+- **Athena escritórios & Coworking** (União da Vitória/PR, Centro) – 3 reservas — CM: Laércio Silveira Junior
+- **Espaço B3 Coworking** (Caldas Novas/GO, Estância Itanhangá) – 3 reservas — CM: Hellen Cristina De Oliveira Barbosa
+- **Inspire Work** (Volta Redonda/RJ, Vila Santa Cecília) – 2 reservas — CM: Luciana Neves
+- **Workbeach Coworking Space** (Guarapari/ES, Centro) – 4 reservas — CM: Rodrigo dos Santos
+- **VILLA GRECCO - ESPAÇOS CORPORATIVOS** (Cuiabá/MT, Quilombo) – 3 reservas — CM: Viviane Carvalho
+- **City Working Recife** (Recife/PE, Imbiribeira) – 1 reservas — CM: Shirley Cordeiro
+- **Cielo - Opportunity Work - sala 12 posições Cielo(12p)** (São Paulo/SP, Jardim das Laranjeiras) – 9 reservas — CM: Debora Garcia
+- **Eventos - Finesse eventos** (Belém/PA, Nazaré) – 1 reservas — CM: : Raimunda Maria Farias Gomes
+- **Move Coworking** (Pindamonhangaba/SP, Centro) – 2 reservas — CM: Valéria da Silva e/ou Ana Paula Antunes
+- **O2Hub** (Presidente Prudente/SP, Jardim dos Pioneiros) – 4 reservas — CM: Isadora Cuba
+- **4Work Praia** (Vila Velha/ES, Praia da Costa) – 1 reservas — CM: Lorraynne Martins
+- **Bcorgi Coworking E Treinamento** (Rio de Janeiro/RJ, Centro) – 1 reservas — CM: Hanna Araujo
+- **Sou Mais Coworking** (São Paulo/SP, Ipiranga) – 1 reservas — CM: Antonio Bertaci Araujo
+- **Hub Plural Petrolina** (Petrolina/PE, Centro) – 3 reservas — CM: Dêivid Farias
+- **Vital Be Together** (Botucatu/SP, Jardim Bom Pastor) – 1 reservas — CM: Bruno Marques de Almeida
+- **Mango Tree** (São Paulo/SP, República) – 4 reservas — CM: Fábio Oliveira
+- **COMOCOWORKING CORPORATE** (Rio de Janeiro/RJ, Botafogo) – 3 reservas — CM: PAOLA BIANCHINI
+- **BelOffice Coworking** (Belém/PA, Parque Verde) – 2 reservas — CM: Evandro Paes
+- **Santos Offices - The Blue** (Santos/SP, Centro) – 2 reservas — CM: Carlos Eduardo Justo de Freitas
+- **Kiriri Coworking** (Fortaleza/CE, Centro) – 1 reservas — CM: Nira
+- **Hub1005** (Pelotas/RS, Centro) – 1 reservas — CM: Lucas Bauer
+- **La Casa Coworking** (Assis/SP, Portal de São Francisco) – 1 reservas — CM: Rafael Campos
+- **Bonsai Coworking** (Franca/SP, Prolongamento Vila Duque de Caxias) – 1 reservas — CM: Priscila
+- **Apex Coworking** (São Paulo/SP, Alto de Pinheiros) – 1 reservas — CM: Paulo Denoni
+- **EASY COWORKING SPACE** (Rio das Ostras/RJ, Centro) – 2 reservas — CM: Bianca Xavier
+- **Regus Paulista Center 3** (São Paulo/SP, Cerqueira César) – 1 reservas — CM: Thais Silva
+- **Gato Pingado Cat Cafe e Coworking** (São Paulo/SP, Pinheiros) – 1 reservas — CM: Sabrina
+- **ESPAÇO LER Coworking Livraria e Café** (Mogi das Cruzes/SP, Jardim Esplanada) – 3 reservas — CM: josé wilson
+- **S&V Coworking Chapeco** (Chapecó/SC, Centro) – 2 reservas — CM: Janaina Vasconcelos
+- **Espaço Jardins eventos** (Leme/SP, Cidade Jardim) – 1 reservas — CM: Helena De Marchi
+- **Labor Coffee Cafeteria e Business** (Franca/SP, Residencial Paraíso) – 2 reservas — CM: PEDRO CUNHA TEODORO
+- **Colmeia Patos de Minas** (Patos de Minas/MG, Distrito Industrial I) – 2 reservas — CM: Cynthia Rabelo de Morais
+- **818 Coworking** (São Paulo/SP, Jardim Paulista) – 1 reservas — CM: Luiza Werneck da Cunha Bastos
+- **VBA Coworking Santo André** (Santo André/SP, Jardim) – 1 reservas — CM: Leonardo Kielblock Martines Henrique
+- **Strategy Coworking** (Nova Iguaçu/RJ, Centro) – 2 reservas — CM: Rose Coelho
+- **Argo Coworking** (São Paulo/SP, Vila Gomes Cardim) – 1 reservas — CM: Debora Rodrigues
+- **Delta Business Coworking Paulista II** (São Paulo/SP, Bela Vista) – 1 reservas — CM: Francini Romero
+- **Coworking Prospperar** (Teresina/PI, Horto) – 1 reservas — CM: Alayres Oliveira
+- **360M2 Coworking** (Santo André/SP, Paraiso) – 2 reservas — CM: Vinicius Wengryn
+- **One Work Office Espaços Compartilhados** (São Paulo/SP, Vila Formosa) – 2 reservas — CM: Stefany Dias
+- **Coworking Bela Vista INC.** (Passos/MG, Bela Vista) – 1 reservas — CM: Pâmela Ramos
+- **My Place Office - Alphaville** (Barueri/SP, Alphaville Industrial) – 3 reservas — CM: Simone Almeida
+- **Dezker | Centro-Rio** (Rio de Janeiro/RJ, Centro) – 1 reservas — CM: Fred Boquimpani
+- **Yolo** (Brasília/DF, Asa Sul) – 1 reservas — CM: Luiz Fernando
+- **1700 escritórios** (Teresina/PI, Jóquei) – 1 reservas — CM: Chrystopher Luan
+- **VOP Virtual Office Prime** (Osasco/SP, Continental) – 1 reservas — CM: Ana Lucia Biazan Garcia
+- **ClapMe HUB** (São Paulo/SP, Pinheiros) – 1 reservas — CM: Felipe Imperio
+- **Casa Baanko** (Belo Horizonte/MG, Funcionários) – 2 reservas — CM: Ingrid
+- **Cowork Arena** (Natal/RN, Lagoa Nova) – 1 reservas — CM: Renato Siqueira
+- **Coworking 013** (Praia Grande/SP, Boqueirão) – 1 reservas — CM: Sabrina
+- **Locus Escritório Virtual Fortaleza** (Fortaleza/CE, Aldeota) – 3 reservas — CM: Erasmo Barbosa Mendonça Filho
+- **4Work Escritórios Inteligentes** (Brasília/DF, Asa Sul) – 1 reservas — CM: Helaine Brito
+- **Conquista & Co II** (Vitória da Conquista/BA, Recreio) – 1 reservas — CM: Leilane Maciel
+- **Office's Coworking** (Barreiras/BA, Renato Gonçalves) – 2 reservas — CM: Emilly Vitoria Andrade de Oliveira
+- **.15 Coworking Unidade Holandeses** (São Luís/MA, Olho D'Água) – 1 reservas — CM: Franklin Lima
+- **Coworking Sintonia** (Caraguatatuba/SP, Sumaré) – 1 reservas — CM: Suely dos Anjos
+- **North Office Mirai** (Belém/PA, Umarizal) – 1 reservas — CM: Agostinho Cunha
+- **inOffice - São Bento** (Campo Grande/MS, Jardim São Bento) – 2 reservas — CM: Larissa Ribeiro
+- **Sales e Amaral Coworking** (Dourados/MS, Centro) – 1 reservas — CM: Grazielly Fernandes da Silva Souza
+- **Horizonte Coworking Colaborativo** (Recife/PE, Boa Viagem) – 1 reservas — CM: Sabrina Magnata
+- **ESPAÇO 414** (Mogi das Cruzes/SP, Vila Mogilar) – 3 reservas — CM: Sonia
+- **C&W UNIDADE REDENTORA** (São José do Rio Preto/SP, Vila Redentora) – 2 reservas — CM: Emily Stefani
+- **Nau Live Spaces** (Porto Alegre/RS, São Geraldo) – 2 reservas — CM: Nau Live Spaces
+- **Scarpellini Ed. Empresarial & Coworking** (Barretos/SP, Fortaleza) – 1 reservas — CM: Andreza Maria Gomes
+- **Click coworking** (Pelotas/RS, Centro) – 2 reservas — CM: Jussara
+- **Hub Feira** (Feira de Santana/BA, Capuchinhos) – 1 reservas — CM: Débora Macêdo
+- **WO Center** (Belo Horizonte/MG, Estoril) – 1 reservas — CM: Ariel
+- **Locomotiva Coworking** (Dourados/MS, Jardim América) – 1 reservas — CM: Marina Pereira Ortiz
+- **Geometria Social** (Araçatuba/SP, Vila Bandeirantes) – 1 reservas — CM: André
+- **Share Coworking** (Porto Seguro/BA, Taperapuan) – 1 reservas — CM: Share Coworking
+- **Cia Coworking** (Divinópolis/MG, Centro) – 1 reservas — CM: Vivelina
+- **Nobre Coworking** (Ipatinga/MG, Cidade Nobre) – 1 reservas — CM: Ricardo luis
+- **Jardins Coworking** (Montes Claros/MG, Jardim São Luiz) – 2 reservas — CM: Nilde Lima
+- **FlyNow Coworking** (São Paulo/SP, Jabaquara) – 2 reservas — CM: Michel Peres
+- **Tempo Coworking** (São Paulo/SP, Vila Nova Manchester) – 3 reservas — CM: Vanessa Salvá de Oliveira
+- **Hub Care Coworking** (Imperatriz/MA, Nova Imperatriz) – 1 reservas — CM: Luís Fernando
+- **Apolar Concept** (Curitiba/PR, Água Verde) – 2 reservas — CM: Secretaria Apolar
+- **Stalo Lab** (Rio Claro/SP, Centro) – 2 reservas — CM: Julia Tarpinian
+- **Crework** (Jundiaí/SP, Vila Garcia) – 2 reservas — CM: Eduardo
+- **LORD TAX** (Rio de Janeiro/RJ, Campo Grande) – 1 reservas — CM: José Enrique
+- **Hub Plural Aflitos** (Recife/PE, Aflitos) – 2 reservas — CM: Zíngara Farias
+- **Cathedral Coworking** (Brasília/DF, Asa Sul) – 3 reservas — CM: Katia Rosane Da Silva Galeno
+- **Way Coworking** (Salvador/BA, Caminho das Árvores) – 3 reservas — CM: João Flávio Schleu
+- **NBA TERCEIRICAZÃO** (São Carlos/SP, Vila Prado) – 2 reservas — CM: Kherolayne
+- **Speed Coworking - Rio Branco 2691** (Juiz de Fora/MG, Centro) – 1 reservas — CM: Lucianita Maciel
+- **Zallpy Hub** (Porto Alegre/RS, Floresta) – 3 reservas — CM: Darlene Silveira
+- **.15 Coworking Unidade Avicênia** (São Luís/MA, Calhau) – 1 reservas — CM: Franklin Lima
+- **Mofo WorkSpaces - Unidade CASA Jd. Paulistano** (Sorocaba/SP, Jardim Paulistano) – 1 reservas — CM: Maria Paula
+- **Hangar Coworking** (Maringá/PR, Zona Armazém) – 1 reservas — CM: Isadora Peres Arns
+- **Ponto 44** (Piracicaba/SP, Morumbi) – 1 reservas — CM: Bruno Bini
+- **Teu CWK** (São Paulo/SP, Vila Ipojuca) – 1 reservas — CM: Karol
+- **Muvita Coworking Santo André** (Santo André/SP, Jardim) – 1 reservas — CM: Renata Bottura
+- **4UCoworking** (Niterói/RJ, Badu) – 1 reservas — CM: Ivo Thomaz
+- **Locus Coworking- Prime** (Itajaí/SC, Centro) – 1 reservas — CM: Jaqueline Ferreira Campanha
+- **OZ Coworking** (São Paulo/SP, Vila Regente Feijó) – 1 reservas — CM: Vitor Neres
+- **Prooffice** (Manaus/AM, Adrianópolis) – 1 reservas — CM: LUCIMARA DA CUNHA DE SOUZA
+- **State Offices - Unidade Lago** (Londrina/PR, Gleba Fazenda Palhano) – 1 reservas — CM: Marco Pacheco
+- **Coworking JOB** (Mauá/SP, Vila Bocaina) – 1 reservas — CM: Fábio Freire
+- **Recruitment Coworking** (Maceió/AL, Gruta de Lourdes) – 1 reservas — CM: Nara Menezes
+- **YouBe Work - Infinity** (João Pessoa/PB, Cabo Branco) – 1 reservas — CM: Rannielle Farias Batista
+- **Brains Coworking** (Curitiba/PR, Batel) – 1 reservas — CM: Carina Schelbauer
+- **Ponto Brasil** (Americana/SP, Jardim Paulista) – 1 reservas — CM: Maria Nunes
+- **Instituto Connection** (São Paulo/SP, Jardim Paulista) – 1 reservas — CM: Vanessa Guimarães
+- **Studio Office** (São Paulo/SP, Santana) – 1 reservas — CM: Fernando Gaspar - CEO
+- **Smart Hub Green Coworking** (Goiânia/GO, Setor Oeste) – 1 reservas — CM: Thaís Marinho
+- **Smart CEO Coworking Valinhos** (Valinhos/SP, Jardim Paiquerê) – 1 reservas — CM: Ronaldo Caceffo
+- **NearWork** (São Gonçalo/RJ, Estrela do Norte) – 1 reservas — CM: Bruno Falbo
+- **Persimmon locações** (Limeira/SP, Vila São João) – 1 reservas — CM: Bruno Pommer
+- **ASA Coworking** (Uberlândia/MG, Santa Mônica) – 2 reservas — CM: Bárbara Carvalho
+- **Multcoworking** (Bauru/SP, Vila Guedes de Azevedo) – 1 reservas — CM: Vinicius Avallone
+- **Digital Working** (São Paulo/SP, Vila Taquari) – 2 reservas — CM: Marcelo Hideo Motoyama
+- **Nalu Coworking** (São Bernardo do Campo/SP, Nova Petrópolis) – 1 reservas — CM: Nalu Coworking
+- **MNZ Coworking** (Florianópolis/SC, Estreito) – 2 reservas — CM: Jason de Carli
+- **Território Coworking** (Canoas/RS, Bairro Fátima) – 1 reservas — CM: Gabriel Kostelnaki Ramos
+- **Dezker | Barra-Rio** (Rio de Janeiro/RJ, Jacarepaguá) – 1 reservas — CM: Fred Boquimpani
+- **Dezker | Itaim Bibi** (São Paulo/SP, Itaim Bibi) – 1 reservas — CM: Andrea
+- **Foz Coworking** (Recife/PE, Imbiribeira) – 1 reservas — CM: Philippe Magno
+- **Igloo Network** (São Paulo/SP, Jardim São Luís) – 1 reservas — CM: Giselle Balerone Castanho
+- **Reserva Coworking** (Fortaleza/CE, Fátima) – 1 reservas — CM: Marcos Parente
+- **Espaço Viana** (Indaiatuba/SP, Jardim Rossignatti) – 1 reservas — CM: Queren Hapuque
+- **Orange Coworking** (São José dos Campos/SP, Jardim América) – 1 reservas — CM: André Carletti
+- **Alfa Coworking Office** (Foz do Iguaçu/PR, Jardim Central) – 1 reservas — CM: Dr. Faisal Ismail
+- **Opportunity Work** (São Paulo/SP, Jardim das Laranjeiras) – 1 reservas — CM: Debora Garcia 
+- **Seahub Unidade Ayrton Senna** (Natal/RN, Neópolis) – 1 reservas — CM: José Dantas
+- **Casa Guedes Coworking** (São Paulo/SP, City América) – 1 reservas — CM: Karla Ferraz
+- **Full Escritório** (Vila Velha/ES, Praia de Itaparica) – 1 reservas — CM: Flávia Zambom
+- **Coworking Coluna Mall** (Contagem/MG, Ressaca) – 1 reservas — CM: Frederico
+- **Dezker | Campinas** (Campinas/SP, Centro) – 1 reservas — CM: Edla Rocha
+- **Santo Ofício Coworking** (Belo Horizonte/MG, Santa Tereza) – 1 reservas — CM: Yuri Fortes
+- **Agylwork** (Caieiras/SP, Nova Caieiras) – 1 reservas — CM: Neuza Vicente da Silva Freitas
+- **Núcleo Digital** (Belo Horizonte/MG, Camargos) – 1 reservas — CM: Olney Antunes Silva
+- **Lord Tax Hub** (Rio de Janeiro/RJ, Centro) – 1 reservas — CM: José Enrique
+- **Concept Working Vivendas do Bosque** (Campo Grande/MS, Vivendas do Bosque) – 1 reservas — CM: Jéssica
+- **Connect Work Office** (Sorocaba/SP, Jardim Vergueiro) – 1 reservas — CM: Karen Abreu
+- **Colaboração.Space** (Nilópolis/RJ, Centro) – 1 reservas — CM: Carla Brício
+- **Plusoffice** (Vitória/ES, Mata da Praia) – 1 reservas — CM: Priscila
+- **Be.Cowork** (Mogi Guaçu/SP, Areião) – 1 reservas — CM: Betisa
+- **Komodo Office** (São Paulo/SP, Jardim Ana Lúcia) – 1 reservas — CM: Andre Luiz Targino
+- **Urban Cowork** (Guarulhos/SP, Centro) – 1 reservas — CM: Ariane Almeida
+- **Chave Coworking** (Taboão da Serra/SP, Jardim Wanda) – 1 reservas — CM: Pedro Paulo
+- **Star Offices Coworking** (Suzano/SP, Centro) – 1 reservas — CM: PRISCILLA
+- **W.Corp Coworking** (São Paulo/SP, Vila Monumento) – 1 reservas — CM: Natalia Bizotto
+- **Green Valley Coworking Nova Suissa** (Belo Horizonte/MG, Nova Suíssa) – 1 reservas — CM: Beatriz Machado
+- **Lagoa Conecta** (Belo Horizonte/MG, São Luiz) – 1 reservas — CM: Wanderley Netto
+- **CWA Coworking Itaquera** (São Paulo/SP, Jardim Maringá) – 1 reservas — CM: Thainá
+- **Bem te-vi coworking** (São Paulo/SP, Santana) – 1 reservas — CM: Bem Te Vi Coworking
+- **Cwbe Coworking** (Curitiba/PR, Hugo Lange) – 1 reservas — CM: roberto stier
+- **Gravity Coworking** (São Paulo/SP, Pinheiros) – 1 reservas — CM: Victor Felipe
+
+---
+## 📌 Análise Consolidada das Reservas:
+
+### 📅 Dias da Semana com Mais Reservas:
+- terça-feira: 2300 reservas
+- quarta-feira: 1718 reservas
+- segunda-feira: 1559 reservas
+- quinta-feira: 1529 reservas
+- sexta-feira: 1204 reservas
+
+### ✅ Check-ins:
+- Realizados: 7321
+- Não realizados: 989
+
+### 📦 Reservas por Tipo de Produto:
+- Reunião: 671 reservas
+- Eventos: 39 reservas
+- Exclusivo: 7406 reservas
+- Compartilhado: 61 reservas
+- Privativo: 133 reservas
+
+### 📝 Reservas por Status:
+- Aprovado: 8129 reservas
+- Recusado: 95 reservas
+- Cancelado: 46 reservas
+- Cancelado pelo usuário: 40 reservas
+
+### 🧑‍🤝‍🧑 Créditos por Grupo:
+- 30407080: 1 reservas, 68 créditos
+- 130101007: 121 reservas, 1360.5 créditos
+- 130101101: 1 reservas, 8 créditos
+- 130102007: 76 reservas, 700.75 créditos
+- 131602001: 78 reservas, 714.75 créditos
+- 131602023: 72 reservas, 885 créditos
+- 131901001: 189 reservas, 1212 créditos
+- 140501001: 8 reservas, 29 créditos
+- 140601001: 4 reservas, 27 créditos
+- 140701001: 203 reservas, 1847.75 créditos
+- Espaço Cielo: 7090 reservas, 52 créditos
+
+### 🏢 Espaços Mais Reservados:
+- Cielo - Digital Working - sala 12 posições Cielo 2(12p): 176 reservas, 0 créditos
+- Cielo - Digital Working - sala 12 posições Cielo(12p): 157 reservas, 0 créditos
+- Cielo - HeyHub - Cega machado e Lobeira(12p): 152 reservas, 0 créditos
+- Cielo - inOffice - São Bento - Sala Executive Privativa 08(12p): 150 reservas, 0 créditos
+- Cielo - Studio Office - sala 12 posições Cielo(12p): 145 reservas, 0 créditos
+- Cielo - Mateus Leme Offices - Sala privativa 13(13p): 140 reservas, 0 créditos
+- Cielo - FlyNow Coworking - sala 12 posições Cielo(12p): 140 reservas, 0 créditos
+- Cielo - MNZ Coworking - Sala 14 pessoas(14p): 137 reservas, 0 créditos
+- Cielo - Alfa Coworking Office - BS00001(12p): 131 reservas, 0 créditos
+- Cielo - Hangar Coworking - sala 16 posições Cielo(16p): 128 reservas, 0 créditos
+
+
+## 🎯 Informações do Pacote Contratado
+
+### Pacote #341 (annual)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **PO**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 214692
+- Créditos consumidos: 207991
+- Créditos disponíveis: 6701
+- Preço unitário: R$ 57.50
+- Preço de crédito excedente: R$ 57.50
+- Porcentagem consumida: 96.88%
+
+### Pacote #380 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 2370
+- Créditos consumidos: 2178.5
+- Créditos disponíveis: 191.5
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 91.92%
+
+### Pacote #381 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 1491
+- Créditos consumidos: 675.5
+- Créditos disponíveis: 815.5
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 45.31%
+
+### Pacote #382 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 1260
+- Créditos consumidos: 665.5
+- Créditos disponíveis: 594.5
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 52.82%
+
+### Pacote #383 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 1170
+- Créditos consumidos: 1338.5
+- Créditos disponíveis: 0
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 114.40%
+
+### Pacote #384 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 1050
+- Créditos consumidos: 1322.5
+- Créditos disponíveis: 0
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 125.95%
+
+### Pacote #385 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 720
+- Créditos consumidos: 848.75
+- Créditos disponíveis: 0
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 117.88%
+
+### Pacote #386 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 300
+- Créditos consumidos: 28
+- Créditos disponíveis: 272
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 9.33%
+
+### Pacote #387 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 210
+- Créditos consumidos: 43
+- Créditos disponíveis: 167
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 20.48%
+
+### Pacote #388 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 81
+- Créditos consumidos: 106
+- Créditos disponíveis: 0
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 130.86%
+
+### Pacote #389 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 20
+- Créditos consumidos: 8
+- Créditos disponíveis: 12
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 40.00%
+
+### Pacote #390 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 18
+- Créditos consumidos: 8
+- Créditos disponíveis: 10
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 44.44%
+
+### Pacote #426 (monthly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **EV**
+- Produtos bloqueados: **_nenhum_**
+- Créditos excedentes utilizados: 194
+- Preço de crédito excedente: R$ 61.00
+- Créditos disponíveis: 0
+
+### Pacote #429 (quarterly)
+- Vigência: 01/01/2025 até 31/12/2025
+- Produtos disponíveis: **MR, WS**
+- Produtos bloqueados: **_nenhum_**
+- Créditos totais: 10
+- Créditos consumidos: 0
+- Créditos disponíveis: 10
+- Preço unitário: R$ 59.00
+- Preço de crédito excedente: R$ 61.00
+- Porcentagem consumida: 0.00%
+
+### Pacote #519 (monthly)
+- Vigência: 01/04/2025 até 31/05/2025
+- Produtos disponíveis: **PO**
+- Produtos bloqueados: **_nenhum_**
+- Créditos excedentes utilizados: 783
+- Preço de crédito excedente: R$ 57.50
+- Créditos disponíveis: 0
+
+---
+_Gerado automaticamente por WAi Facilities em 07/05/2025, 03:26:53_
