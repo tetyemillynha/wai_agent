@@ -2,7 +2,9 @@ import asyncio
 from agents import Agent, Runner
 from pathlib import Path
 from dotenv import load_dotenv
-import os
+from llm_clients.openai_client import OpenAIClient
+# from llm_clients.claude_client import ClaudeClient
+# from llm_clients.llama_client import LLaMAClient
 
 def load_env_variables():
     load_dotenv()
@@ -14,6 +16,10 @@ def load_markdown_content(filepath: str) -> str:
     return path.read_text(encoding="utf-8")
 
 def create_agent(markdown_data: str) -> Agent:
+    client = OpenAIClient(model="gpt-4o")
+    # client = ClaudeClient(model="claude-3-opus-20240229")
+    # client = LLaMAClient(model="llama3.2")
+
     return Agent(
         name="Booking Report Analyst",
         instructions=(
@@ -46,7 +52,7 @@ def create_agent(markdown_data: str) -> Agent:
             "Dados do relatório:\n"
             f"{markdown_data}"
         ),
-        model="gpt-4o"
+        model=client
     )
 
 async def handle_question(agent: Agent, question: str):
