@@ -67,8 +67,8 @@ agente-python/
 │
 ├── agents/
 │   └── agent.py                    # Agente de negócio com lógica de resposta
-│   └── runner.py                    # Agente de negócio com lógica de resposta
-│   └── __init__.py                  # Agente de negócio com lógica de resposta
+│   └── runner.py                   # Orquestrador da execução do agente
+│   └── __init__.py                 
 │
 ├── .env
 ├── main.py                         # Arquivo principal do terminal/chat
