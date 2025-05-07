@@ -2,10 +2,10 @@ import asyncio
 from agents import Agent, Runner
 from pathlib import Path
 from dotenv import load_dotenv
-from llm_clients.openai_client import OpenAIClient
+# from llm_clients.openai_client import OpenAIClient
 # from llm_clients.claude_client import ClaudeClient
 # from llm_clients.llama_client import LLaMAClient
-from summary_cache import get_summary_from_cache, save_summary_to_cache
+from llm_clients.deepseek_client import DeepSeekClient
 
 
 def load_env_variables():
@@ -18,10 +18,13 @@ def load_markdown_content(filepath: str) -> str:
     return path.read_text(encoding="utf-8")
 
 async def create_agent(markdown_data: str) -> Agent:
-    client = OpenAIClient(model="gpt-4o")
+    # client = OpenAIClient(model="gpt-4o")
     # client = ClaudeClient(model="claude-3-opus-20240229")
     # client = LLaMAClient(model="llama3.2")
+    client = DeepSeekClient(model="deepseek-chat")
 
+    # OBS: precisamos refinar para casos de agradecimento, pois hoje quando o usuário agradece, o agente responde entregando insights, o que não é o comportamento esperado.
+    
     return Agent(
         name="Booking Report Analyst",
         instructions=(
@@ -77,8 +80,8 @@ def start_terminal_chat(agent: Agent):
 
 def main():
     load_env_variables()
-    # markdown = load_markdown_content("./assets/relatorio-empresa-1810.md")
-    markdown = load_markdown_content("./assets/relatorio-empresa-1010.md")
+    markdown = load_markdown_content("./assets/relatorio-empresa-1810.md")
+    # markdown = load_markdown_content("./assets/relatorio-empresa-1010.md")
     agent = asyncio.run(create_agent(markdown))
     start_terminal_chat(agent)
 
