@@ -2,7 +2,7 @@ from anthropic import AsyncAnthropic
 from llm_clients.base import LLMClient
 
 class ClaudeClient(LLMClient):
-    def __init__(self, model: str = "claude-3-opus-20240229"):
+    def __init__(self, model: str = "claude-3-7-sonnet-20250219"):
         super().__init__(model)
         self.client = AsyncAnthropic()
 
