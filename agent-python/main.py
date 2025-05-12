@@ -1,7 +1,5 @@
 import asyncio
 from agents import Agent, Runner
-from pathlib import Path
-from dotenv import load_dotenv
 from llm_clients.openai_client import OpenAIClient
 from utils import load_env_variables, load_markdown_content, parse_markdown
 from llm_clients.claude_client import ClaudeClient
@@ -16,8 +14,6 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
     # client = DeepSeekClient(model="deepseek-chat")
 
     insights = parse_markdown(markdown_data)
-
-    print(insights);
 
     return Agent(
         name="Booking Report Analyst",
