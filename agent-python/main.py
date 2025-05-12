@@ -3,21 +3,17 @@ from agents import Agent, Runner
 from pathlib import Path
 from dotenv import load_dotenv
 from llm_clients.openai_client import OpenAIClient
-from utils import load_env_variables, load_markdown_content, parse_markdown
+from utils import load_env_variables, load_markdown_content, load_json_content
 from llm_clients.claude_client import ClaudeClient
 # from llm_clients.llama_client import LLaMAClient
 # from llm_clients.deepseek_client import DeepSeekClient
 
 async def create_agent_analyst(markdown_data: str) -> Agent:
-    client = OpenAIClient(model="gpt-4o")
+    # client = OpenAIClient(model="gpt-4o")
     # client = ClaudeClient()
-    # client = ClaudeClient(model="claude-3-5-sonnet-20241022")
+    client = ClaudeClient(model="claude-3-5-sonnet-20241022")
     # client = LLaMAClient(model="llama3.2")
     # client = DeepSeekClient(model="deepseek-chat")
-
-    insights = parse_markdown(markdown_data)
-
-    print(insights);
 
     return Agent(
         name="Booking Report Analyst",
@@ -27,7 +23,7 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
 
             Ao receber:
             1. Uma pergunta em linguagem natural (já validada e dentro do escopo)
-            2. Um documento em Markdown com os dados da empresa
+            2. Um documento em JSON com os dados da empresa
 
             Sua missão é responder com clareza, objetividade e facilidade de leitura, gerando insights úteis com base somente nos dados fornecidos.
 
@@ -38,32 +34,33 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
                - Destaque padrões, aumentos, quedas, ou qualquer dado que se destaque.
                - Evite jargões técnicos. Use linguagem acessível a gestores de qualquer área.
 
-            3. Se não houver dados suficientes para responder à pergunta, escreva:
+            3. Se não houver dados suficientes para responder à pergunta, não solicite mais informações ao usuário e escreva:
             Desculpe! Não encontramos dados suficientes para responder à sua pergunta neste momento.
 
+            
             Importante:
-            - Sempre baseie sua resposta apenas nos dados fornecidos no Markdown.
+            - Sempre baseie sua resposta apenas nos dados fornecidos no JSON.
             - Nunca invente informações.
             - Mantenha o texto simples, visual e com foco em leitura rápida.
 
             - Em caso de agradecimento, responda de forma amigável e não forneça insights.
 
             Dados do relatório:
-            {insights}
+            {markdown_data}
             """
         ),
         model=client
     )
 
 async def create_agent_judge(markdown_data: str) -> Agent:
-    client = OpenAIClient(model="o3")
+    client = OpenAIClient(model="o3-mini")
 
     return Agent(
         name="Agent Judge",
         instructions=(
             f"""
                 Você é um avaliador rigoroso.  Julgue a resposta do assistente com base **apenas** nos
-                dados do Markdown fornecido.  Atribua notas de 0 a 10 para cada critério abaixo
+                dados do JSON fornecido.  Atribua notas de 0 a 10 para cada critério abaixo
                 (exatidão, relevância, clareza_formato, insight).
 
                 Retorne **somente** o JSON no formato:
@@ -122,10 +119,11 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
 
 def main():
     load_env_variables()
-    markdown = load_markdown_content("./assets/relatorio-empresa-1810-fev-mar-abr.md")
+    # markdown = load_markdown_content("./assets/relatorio-empresa-1810-fev-mar-abr.md")
+    json_data = load_json_content("./assets/relatorio-empresa-1810.json")
     # markdown = load_markdown_content("./assets/relatorio-empresa-1010.md")
-    agent = asyncio.run(create_agent_analyst(markdown))
-    judge = asyncio.run(create_agent_judge(markdown))
+    agent = asyncio.run(create_agent_analyst(json_data))
+    judge = asyncio.run(create_agent_judge(json_data))
     start_terminal_chat(agent, judge)
 
 

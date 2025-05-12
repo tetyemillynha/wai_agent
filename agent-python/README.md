@@ -55,8 +55,9 @@ Edite o arquivo `.env` com suas configurações.
 agente-python/
 │
 ├── assets/
-│   └── relatorio-empresa-1810.md  #recargapay
-│   └── relatorio-empresa-1010.md  #cielo
+│   └── relatorio-empresa-1810.md    #recargapay
+│   └── relatorio-empresa-1810.json  #recargapay
+│   └── relatorio-empresa-1010.md    #cielo
 │
 ├── llm_clients/                   # Camada de abstração para múltiplos LLMs
 │   ├── __init__.py

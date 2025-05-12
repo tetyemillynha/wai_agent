@@ -1,0 +1,693 @@
+[
+  {
+    "empresa": {
+      "id": 1810,
+      "nome": "Recargapay"
+    },
+    "periodo": {
+      "inicio": "2025-04-30",
+      "fim": "2025-02-03"
+    },
+    "resumo_geral": {
+      "total_reservas": 1020,
+      "creditos_consumidos": 2457.35,
+      "valor_gasto": 1793.8654999999999,
+      "cidades_atendidas": 43,
+      "grupos_identificados": 49,
+      "checkins": {
+        "realizados": 349,
+        "nao_realizados": 671
+      }
+    },
+    "por_cidade": [
+      {
+        "cidade": "Barueri/SP",
+        "reservas": 10
+      },
+      {
+        "cidade": "São Paulo/SP",
+        "reservas": 748
+      },
+      {
+        "cidade": "Osasco/SP",
+        "reservas": 13
+      },
+      {
+        "cidade": "Sorocaba/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "Maringá/PR",
+        "reservas": 4
+      },
+      {
+        "cidade": "Curitiba/PR",
+        "reservas": 15
+      },
+      {
+        "cidade": "Campinas/SP",
+        "reservas": 10
+      },
+      {
+        "cidade": "Buenos Aires",
+        "reservas": 73
+      },
+      {
+        "cidade": "Brasília/DF",
+        "reservas": 1
+      },
+      {
+        "cidade": "Rio de Janeiro/RJ",
+        "reservas": 52
+      },
+      {
+        "cidade": "Florianópolis/SC",
+        "reservas": 4
+      },
+      {
+        "cidade": "Belo Horizonte/MG",
+        "reservas": 12
+      },
+      {
+        "cidade": "Porto Alegre/RS",
+        "reservas": 14
+      },
+      {
+        "cidade": "Lisboa",
+        "reservas": 2
+      },
+      {
+        "cidade": "Londrina/PR",
+        "reservas": 3
+      },
+      {
+        "cidade": "Vitória/ES",
+        "reservas": 2
+      },
+      {
+        "cidade": "Recife/PE",
+        "reservas": 4
+      },
+      {
+        "cidade": "Mogi das Cruzes/SP",
+        "reservas": 3
+      },
+      {
+        "cidade": "Vila Velha/ES",
+        "reservas": 1
+      },
+      {
+        "cidade": "Mauá/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "São Caetano do Sul/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "São José dos Campos/SP",
+        "reservas": 2
+      },
+      {
+        "cidade": "Joinville/SC",
+        "reservas": 1
+      },
+      {
+        "cidade": "Pirassununga/SP",
+        "reservas": 7
+      },
+      {
+        "cidade": "Pindamonhangaba/SP",
+        "reservas": 3
+      },
+      {
+        "cidade": "Cotia/SP",
+        "reservas": 4
+      },
+      {
+        "cidade": "Santo André/SP",
+        "reservas": 2
+      },
+      {
+        "cidade": "Buenos Aires/CABA",
+        "reservas": 1
+      },
+      {
+        "cidade": "Fortaleza/CE",
+        "reservas": 2
+      },
+      {
+        "cidade": "Lauro de Freitas/BA",
+        "reservas": 2
+      },
+      {
+        "cidade": "Santa Rosa/RS",
+        "reservas": 3
+      },
+      {
+        "cidade": "Natal/RN",
+        "reservas": 1
+      },
+      {
+        "cidade": "Ribeirão Preto/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "Maceió/AL",
+        "reservas": 2
+      },
+      {
+        "cidade": "Aguascalientes/Ags.",
+        "reservas": 1
+      },
+      {
+        "cidade": "São Bernardo do Campo/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "Vinhedo/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "Suzano/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "Taubaté/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "Jundiaí/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "Limeira/SP",
+        "reservas": 1
+      },
+      {
+        "cidade": "Porto Seguro/BA",
+        "reservas": 7
+      },
+      {
+        "cidade": "Armação dos Búzios/RJ",
+        "reservas": 1
+      }
+    ],
+    "por_grupo": [
+      {
+        "grupo": "Customer Experience",
+        "reservas": 16,
+        "membros": 4,
+        "creditos": 208
+      },
+      {
+        "grupo": "Producto",
+        "reservas": 122,
+        "membros": 42,
+        "creditos": 126.9
+      },
+      {
+        "grupo": "Analytics",
+        "reservas": 68,
+        "membros": 25,
+        "creditos": 83.5
+      },
+      {
+        "grupo": "Desarrollo",
+        "reservas": 79,
+        "membros": 99,
+        "creditos": 108.25
+      },
+      {
+        "grupo": "Finance Operations",
+        "reservas": 76,
+        "membros": 30,
+        "creditos": 92.65
+      },
+      {
+        "grupo": "CX Strategy",
+        "reservas": 5,
+        "membros": 6,
+        "creditos": 5.25
+      },
+      {
+        "grupo": "Knowledge Management",
+        "reservas": 8,
+        "membros": 7,
+        "creditos": 8.75
+      },
+      {
+        "grupo": "HR",
+        "reservas": 59,
+        "membros": 19,
+        "creditos": 255.4
+      },
+      {
+        "grupo": "Special Cases",
+        "reservas": 17,
+        "membros": 13,
+        "creditos": 17.25
+      },
+      {
+        "grupo": "Planning & IR",
+        "reservas": 39,
+        "membros": 10,
+        "creditos": 130.5
+      },
+      {
+        "grupo": "BPO",
+        "reservas": 10,
+        "membros": 3,
+        "creditos": 25.25
+      },
+      {
+        "grupo": "Financial Reporting",
+        "reservas": 3,
+        "membros": 5,
+        "creditos": 3.15
+      },
+      {
+        "grupo": "Legal",
+        "reservas": 22,
+        "membros": 18,
+        "creditos": 39
+      },
+      {
+        "grupo": "Accounting & Controller",
+        "reservas": 23,
+        "membros": 16,
+        "creditos": 24.25
+      },
+      {
+        "grupo": "BizDev & Commercial",
+        "reservas": 61,
+        "membros": 11,
+        "creditos": 66.45
+      },
+      {
+        "grupo": "PJ",
+        "reservas": 48,
+        "membros": 8,
+        "creditos": 55
+      },
+      {
+        "grupo": "Operational Excellence",
+        "reservas": 6,
+        "membros": 10,
+        "creditos": 6.4
+      },
+      {
+        "grupo": "Data Science",
+        "reservas": 10,
+        "membros": 8,
+        "creditos": 10
+      },
+      {
+        "grupo": "Atención al cliente",
+        "reservas": 6,
+        "membros": 23,
+        "creditos": 6
+      },
+      {
+        "grupo": "Cyber",
+        "reservas": 15,
+        "membros": 19,
+        "creditos": 15.75
+      },
+      {
+        "grupo": "Impuesto",
+        "reservas": 27,
+        "membros": 8,
+        "creditos": 31.5
+      },
+      {
+        "grupo": "CX Journey",
+        "reservas": 4,
+        "membros": 5,
+        "creditos": 4
+      },
+      {
+        "grupo": "Branding",
+        "reservas": 5,
+        "membros": 1,
+        "creditos": 5
+      },
+      {
+        "grupo": "Compliance",
+        "reservas": 25,
+        "membros": 14,
+        "creditos": 25
+      },
+      {
+        "grupo": "Fraud Prevention",
+        "reservas": 9,
+        "membros": 7,
+        "creditos": 9.25
+      },
+      {
+        "grupo": "COps & Chargeback",
+        "reservas": 4,
+        "membros": 14,
+        "creditos": 4.25
+      },
+      {
+        "grupo": "Operational Quality",
+        "reservas": 3,
+        "membros": 4,
+        "creditos": 3.25
+      },
+      {
+        "grupo": "Data Platform",
+        "reservas": 9,
+        "membros": 3,
+        "creditos": 9
+      },
+      {
+        "grupo": "Business Operations",
+        "reservas": 36,
+        "membros": 11,
+        "creditos": 181
+      },
+      {
+        "grupo": "Credit & Collections",
+        "reservas": 6,
+        "membros": 10,
+        "creditos": 6.25
+      },
+      {
+        "grupo": "Growth",
+        "reservas": 7,
+        "membros": 3,
+        "creditos": 8.25
+      },
+      {
+        "grupo": "UX & Design",
+        "reservas": 4,
+        "membros": 17,
+        "creditos": 4
+      },
+      {
+        "grupo": "Internal Audit",
+        "reservas": 9,
+        "membros": 7,
+        "creditos": 9.25
+      },
+      {
+        "grupo": "Desempeño",
+        "reservas": 10,
+        "membros": 10,
+        "creditos": 41.5
+      },
+      {
+        "grupo": "Infrastructure",
+        "reservas": 13,
+        "membros": 14,
+        "creditos": 13
+      },
+      {
+        "grupo": "Aprendiz",
+        "reservas": 5,
+        "membros": 1,
+        "creditos": 8.25
+      },
+      {
+        "grupo": "Risks",
+        "reservas": 1,
+        "membros": 7,
+        "creditos": 1
+      },
+      {
+        "grupo": "BI",
+        "reservas": 8,
+        "membros": 0,
+        "creditos": 12
+      },
+      {
+        "grupo": "Data Modeler",
+        "reservas": 11,
+        "membros": 8,
+        "creditos": 11
+      },
+      {
+        "grupo": "IT Operations",
+        "reservas": 7,
+        "membros": 5,
+        "creditos": 7
+      },
+      {
+        "grupo": "Reports & Tools",
+        "reservas": 2,
+        "membros": 7,
+        "creditos": 2
+      },
+      {
+        "grupo": "Monetization",
+        "reservas": 5,
+        "membros": 0,
+        "creditos": 5.75
+      },
+      {
+        "grupo": "Press Relations",
+        "reservas": 6,
+        "membros": 3,
+        "creditos": 53.5
+      },
+      {
+        "grupo": "Partnerships",
+        "reservas": 1,
+        "membros": 2,
+        "creditos": 1
+      },
+      {
+        "grupo": "Creatives",
+        "reservas": 6,
+        "membros": 12,
+        "creditos": 14
+      },
+      {
+        "grupo": "Commercial",
+        "reservas": 3,
+        "membros": 3,
+        "creditos": 5.25
+      },
+      {
+        "grupo": "Business & Governance",
+        "reservas": 1,
+        "membros": 1,
+        "creditos": 1
+      },
+      {
+        "grupo": "Processes & Continuous Improvement",
+        "reservas": 2,
+        "membros": 2,
+        "creditos": 2
+      },
+      {
+        "grupo": "Planning",
+        "reservas": 10,
+        "membros": 0,
+        "creditos": 10.25
+      }
+    ],
+    "top_usuarios": [
+      {
+        "nome": "Natalia Zanni",
+        "email": "natalia.zanni@recargapay.com",
+        "creditos": 393
+      },
+      {
+        "nome": "Joel Caponi Bonaldi",
+        "email": "joel.bonaldi@recargapay.com",
+        "creditos": 236.25
+      },
+      {
+        "nome": "Leticia Bueno Coletto",
+        "email": "leticia.coletto@recargapay.com",
+        "creditos": 209
+      },
+      {
+        "nome": "Marco Aurelio Galan Sanches",
+        "email": "marco.galan@recargapay.com",
+        "creditos": 148
+      },
+      {
+        "nome": "Macarena Broglieri",
+        "email": "macarena.broglieri@recargapay.com",
+        "creditos": 125
+      }
+    ],
+    "analise_consolidada": {
+      "dias_semana": [
+        {
+          "dia": "quarta-feira",
+          "reservas": 290
+        },
+        {
+          "dia": "quinta-feira",
+          "reservas": 258
+        },
+        {
+          "dia": "terça-feira",
+          "reservas": 194
+        },
+        {
+          "dia": "sexta-feira",
+          "reservas": 149
+        },
+        {
+          "dia": "segunda-feira",
+          "reservas": 129
+        }
+      ],
+      "por_tipo_produto": [
+        {
+          "tipo": "WS - Compartilhado",
+          "reservas": 938
+        },
+        {
+          "tipo": "MR - Reunião",
+          "reservas": 67
+        },
+        {
+          "tipo": "EV - Eventos",
+          "reservas": 14
+        },
+        {
+          "tipo": "Outro",
+          "reservas": 1
+        }
+      ],
+      "por_status": [
+        {
+          "status": "Aprovado",
+          "reservas": 936
+        },
+        {
+          "status": "Cancelado pelo usuário",
+          "reservas": 46
+        },
+        {
+          "status": "Recusado",
+          "reservas": 11
+        },
+        {
+          "status": "Cancelado",
+          "reservas": 27
+        }
+      ],
+      "espacos_mais_reservados": [
+        {
+          "espaco": "Rocket N Coworking",
+          "cidade": "São Paulo/SP",
+          "bairro": "Vila Mariana",
+          "cm": "Marcia Dias",
+          "reservas": 180,
+          "creditos": 617.25
+        },
+        {
+          "espaco": "BASE Coworking - Allianz Parque",
+          "cidade": "São Paulo/SP",
+          "bairro": "Água Branca",
+          "cm": "Lisandra Borges",
+          "reservas": 81,
+          "creditos": 140
+        },
+        {
+          "espaco": "Ibrawork Open Innovation",
+          "cidade": "São Paulo/SP",
+          "bairro": "Cerqueira César",
+          "cm": "Marcella Andrade",
+          "reservas": 57,
+          "creditos": 57
+        },
+        {
+          "espaco": "WorkPlace Paulista",
+          "cidade": "São Paulo/SP",
+          "bairro": "Bela Vista",
+          "cm": "Mayara Yasmin",
+          "reservas": 42,
+          "creditos": 42
+        },
+        {
+          "espaco": "Shigoto Space",
+          "cidade": "São Paulo/SP",
+          "bairro": "Vila Mariana",
+          "cm": "Albert Maeda",
+          "reservas": 38,
+          "creditos": 39.25
+        },
+        {
+          "espaco": "La Maquinita Co. - Libertador (Zona Norte)",
+          "cidade": "Buenos Aires",
+          "bairro": "Vicente López",
+          "cm": "La Maquinita Co. - Libertador (Zona Norte)",
+          "reservas": 37,
+          "creditos": 37
+        },
+        {
+          "espaco": "Club Coworking Faria Lima",
+          "cidade": "São Paulo/SP",
+          "bairro": "Itaim Bibi",
+          "cm": "Clarice Leal",
+          "reservas": 35,
+          "creditos": 148
+        },
+        {
+          "espaco": "New Working Coworking - Unidade Paulista",
+          "cidade": "São Paulo/SP",
+          "bairro": "Consolação",
+          "cm": "Letice Senna",
+          "reservas": 33,
+          "creditos": 51
+        },
+        {
+          "espaco": "VIP Office Paulista",
+          "cidade": "São Paulo/SP",
+          "bairro": "Jardim Paulista",
+          "cm": "Marcel Baffi",
+          "reservas": 30,
+          "creditos": 123.75
+        },
+        {
+          "espaco": "818 Coworking",
+          "cidade": "São Paulo/SP",
+          "bairro": "Jardim Paulista",
+          "cm": "Luiza Werneck da Cunha Bastos",
+          "reservas": 23,
+          "creditos": 130
+        }
+      ]
+    },
+    "pacotes": [
+      {
+        "id": 36,
+        "duracao": "annual",
+        "vigencia": {
+          "inicio": "2024-07-01T00:00:00.000Z",
+          "fim": "2025-06-30T23:59:59.000Z"
+        },
+        "produtos": {
+          "disponiveis": [
+            "WS - Compartilhado",
+            "MR - Reunião",
+            "EV - Eventos",
+            "PO - Outro"
+          ],
+          "bloqueados": []
+        },
+        "creditos": {
+          "totais": 6000,
+          "consumidos": 5821.8,
+          "disponiveis": 178.19999999999982,
+          "excedentes": 0
+        },
+        "precos": {
+          "unitario": 73,
+          "excedente": 73
+        },
+        "porcentagem_consumida": 97.03
+      }
+    ],
+    "gerado_em": "2025-05-12T23:09:40.414Z"
+  }
+]
