@@ -10,6 +10,7 @@ from llm_clients.claude_client import ClaudeClient
 
 async def create_agent_analyst(markdown_data: str) -> Agent:
     # client = OpenAIClient(model="gpt-4o")
+    # client = ClaudeClient()
     client = ClaudeClient(model="claude-3-5-sonnet-20241022")
     # client = LLaMAClient(model="llama3.2")
     # client = DeepSeekClient(model="deepseek-chat")
@@ -51,7 +52,7 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
     )
 
 async def create_agent_judge(markdown_data: str) -> Agent:
-    client = OpenAIClient(model="gpt-4o-mini")
+    client = OpenAIClient(model="o3")
 
     return Agent(
         name="Agent Judge",
