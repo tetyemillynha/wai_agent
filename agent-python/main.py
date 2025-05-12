@@ -3,7 +3,7 @@ from agents import Agent, Runner
 from pathlib import Path
 from dotenv import load_dotenv
 from llm_clients.openai_client import OpenAIClient
-from utils import load_env_variables, load_markdown_content
+from utils import load_env_variables, load_markdown_content, parse_markdown
 from llm_clients.claude_client import ClaudeClient
 # from llm_clients.llama_client import LLaMAClient
 # from llm_clients.deepseek_client import DeepSeekClient
@@ -13,6 +13,10 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
     client = ClaudeClient(model="claude-3-5-sonnet-20241022")
     # client = LLaMAClient(model="llama3.2")
     # client = DeepSeekClient(model="deepseek-chat")
+
+    insights = parse_markdown(markdown_data)
+
+    print(insights);
 
     return Agent(
         name="Booking Report Analyst",
@@ -44,7 +48,7 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
             - Em caso de agradecimento, responda de forma amigável e não forneça insights.
 
             Dados do relatório:
-            {markdown_data}
+            {insights}
             """
         ),
         model=client

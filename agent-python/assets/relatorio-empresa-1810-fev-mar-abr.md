@@ -9,6 +9,7 @@
 - Cidades atendidas: 47
 - Grupos identificados: 28
 
+
 ---
 ## 🏙️ Reservas por Cidade:
 - **São Paulo/SP**: 1149 reservas
