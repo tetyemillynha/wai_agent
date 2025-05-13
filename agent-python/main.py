@@ -31,6 +31,7 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
                - Seja direto e claro.
                - Destaque padrões, aumentos, quedas, ou qualquer dado que se destaque.
                - Evite jargões técnicos. Use linguagem acessível a gestores de qualquer área.
+               - Indicar limitações de forma sutil e sem solicitar mais dados ao usuário.
 
             3. Se não houver dados suficientes para responder à pergunta, não solicite mais informações ao usuário e escreva:
             Desculpe! Não encontramos dados suficientes para responder à sua pergunta neste momento.
