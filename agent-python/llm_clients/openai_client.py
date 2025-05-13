@@ -10,10 +10,11 @@ LOG_DIR = "logs"
 LOG_FILE = os.path.join(LOG_DIR, "openai_tracing_logs.csv")
 os.makedirs(LOG_DIR, exist_ok=True)
 
-def log_to_csv(trace_id, request_id, prompt, response, model):
-    file_exists = os.path.isfile(LOG_FILE)
-    with open(LOG_FILE, mode='a', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ["timestamp", "trace_id", "request_id", "model", "prompt", "response"]
+def log_to_csv(trace_id, request_id, response, model, judging_model: str = ""):
+    file_path = f"logs/{judging_model}_logs.csv"
+    file_exists = os.path.isfile(file_path)
+    with open(file_path, mode='a', newline='', encoding='utf-8') as csvfile:
+        fieldnames = ["timestamp", "trace_id", "request_id", "model", "judging_model", "response"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if not file_exists:
             writer.writeheader()
@@ -22,13 +23,14 @@ def log_to_csv(trace_id, request_id, prompt, response, model):
             "trace_id": trace_id,
             "request_id": request_id,
             "model": model,
-            "prompt": prompt,
+            "judging_model": judging_model,
             "response": response,
         })
 
 class OpenAIClient(LLMClient):
-    def __init__(self, model: str):
+    def __init__(self, model: str, judging_model: str = ""):
         super().__init__(model)
+        self.judging_model = judging_model
         timeout = Timeout(30.0) 
         self.http_client = AsyncClient(timeout=timeout)
         self.client = AsyncOpenAI(http_client=self.http_client)
@@ -36,7 +38,6 @@ class OpenAIClient(LLMClient):
     async def ask(self, prompt: str) -> str:
         trace_id = str(uuid.uuid4())
 
-        # Envia a requisição manualmente e intercepta a resposta HTTP
         response = await self.http_client.post(
             url="https://api.openai.com/v1/chat/completions",
             headers={
@@ -54,5 +55,6 @@ class OpenAIClient(LLMClient):
         request_id = response.headers.get("x-request-id", "unknown")
         reply = response_json["choices"][0]["message"]["content"].strip()
 
-        log_to_csv(trace_id, request_id, prompt, reply, self.model)
+        log_to_csv(trace_id, request_id, reply, self.model, self.judging_model)
+
         return reply

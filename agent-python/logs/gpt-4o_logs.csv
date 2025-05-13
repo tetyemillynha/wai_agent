@@ -1,0 +1,18 @@
+timestamp,trace_id,request_id,model,judging_model,response
+2025-05-13T20:10:15.684704,64f80362-3d80-4e02-8e5a-a21eed542177,req_920b005d967019f2878266809bab5e3c,gpt-4o,gpt-4o,"- O grupo ""Producto"" foi responsável por uma alta quantidade de reservas, com 122 reservas no período, indicando um uso intensivo dos créditos disponíveis. Esse grupo também possui um grande número de membros (42), o que pode explicar o consumo acelerado dos créditos.
+
+- O grupo ""BizDev & Commercial"" teve 61 reservas e consumiu 66.45 créditos. Essa frequência de uso coloca esse grupo entre os que mais gastam, contribuindo para a aceleração do consumo de créditos do pacote.
+
+- O grupo ""HR"" destaca-se com 59 reservas e um consumo de 255.4 créditos. O alto consumo de créditos por este grupo, mesmo com um número relativamente menor de reservas em comparação ao ""Producto"", indica um uso significativo de recursos, aumentando o risco do esgotamento dos créditos disponíveis no pacote atual.
+
+Essas observações destacam que os grupos mencionados estão entre os maiores consumidores de créditos, impactando diretamente o consumo do pacote da empresa."
+2025-05-13T20:10:40.029153,2f044e86-0194-4d43-accc-d0526770f3c1,req_80c79943ce28a1f167ea2ef441a5a93d,o3-mini,gpt-4o,"{
+    ""scores"": {
+        ""exatidão"": 3,
+        ""relevância"": 4,
+        ""clareza_formato"": 0,
+        ""insight"": 3
+    },
+    ""nota_geral"": 25,
+    ""critica"": ""A resposta identifica alguns grupos com alta atividade, mas não utiliza os dados corretos do JSON para identificar os grupos que realmente apresentam maior consumo de créditos, deixando de fora grupos como 'Business Operations' ou 'Planning & IR', e incluindo 'BizDev & Commercial', que não tem um consumo tão elevado. Além disso, a resposta não segue o formato JSON exigido.""
+}"

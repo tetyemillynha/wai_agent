@@ -6,12 +6,13 @@ from llm_clients.claude_client import ClaudeClient
 # from llm_clients.llama_client import LLaMAClient
 # from llm_clients.deepseek_client import DeepSeekClient
 
-async def create_agent_analyst(markdown_data: str) -> Agent:
-    client = OpenAIClient(model="gpt-4o")
-    # client = ClaudeClient()
-    # client = ClaudeClient(model="claude-3-5-sonnet-20241022")
-    # client = LLaMAClient(model="llama3.2")
-    # client = DeepSeekClient(model="deepseek-chat")
+async def create_agent_analyst(markdown_data: str, model_name: str) -> Agent:
+    if model_name.startswith("claude-3-7"):
+        client = ClaudeClient(model=model_name, judging_model="claude-3-7-sonnet-20250219")
+    elif model_name.startswith("claude-3-5"):
+        client = ClaudeClient(model=model_name, judging_model="claude-3-5-sonnet-20241022")
+    else:
+        client = OpenAIClient(model=model_name, judging_model="gpt-4o")
 
     return Agent(
         name="Booking Report Analyst",
@@ -51,8 +52,8 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
         model=client
     )
 
-async def create_agent_judge(markdown_data: str) -> Agent:
-    client = OpenAIClient(model="o3-mini")
+async def create_agent_judge(markdown_data: str, model_to_judge: str) -> Agent:
+    client = OpenAIClient(model="o3-mini", judging_model=model_to_judge)
 
     return Agent(
         name="Agent Judge",
@@ -118,11 +119,14 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
 
 def main():
     load_env_variables()
-    # markdown = load_markdown_content("./assets/relatorio-empresa-1810-fev-mar-abr.md")
     json_data = load_json_content("./assets/relatorio-empresa-1810.json")
-    # markdown = load_markdown_content("./assets/relatorio-empresa-1010.md")
-    agent = asyncio.run(create_agent_analyst(json_data))
-    judge = asyncio.run(create_agent_judge(json_data))
+
+    # analyst_model_name = "claude-3-7-sonnet-20250219"
+    # analyst_model_name = "claude-3-5-sonnet-20241022"
+    analyst_model_name = "gpt-4o"
+   
+    agent = asyncio.run(create_agent_analyst(json_data, analyst_model_name))
+    judge = asyncio.run(create_agent_judge(json_data, model_to_judge=analyst_model_name))
     start_terminal_chat(agent, judge)
 
 
