@@ -1,7 +1,3 @@
 openai-agents
 python-dotenv
-anthropic
-httpx
-uuid
-openai
-httpx[async]
+openai-agents[litellm]

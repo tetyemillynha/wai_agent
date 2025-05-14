@@ -1,18 +1,8 @@
 import asyncio
 from agents import Agent, Runner
-from llm_clients.openai_client import OpenAIClient
-from utils import load_env_variables, load_markdown_content, load_json_content
-from llm_clients.claude_client import ClaudeClient
-# from llm_clients.llama_client import LLaMAClient
-# from llm_clients.deepseek_client import DeepSeekClient
+from utils import load_env_variables, load_json_content
 
 async def create_agent_analyst(markdown_data: str) -> Agent:
-    client = OpenAIClient(model="gpt-4o")
-    # client = ClaudeClient()
-    # client = ClaudeClient(model="claude-3-5-sonnet-20241022")
-    # client = LLaMAClient(model="llama3.2")
-    # client = DeepSeekClient(model="deepseek-chat")
-
     return Agent(
         name="Booking Report Analyst",
         instructions=(
@@ -48,12 +38,10 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
             {markdown_data}
             """
         ),
-        model=client
+        model="litellm/anthropic/claude-3-5-sonnet-20240620"
     )
 
 async def create_agent_judge(markdown_data: str) -> Agent:
-    client = OpenAIClient(model="o3-mini")
-
     return Agent(
         name="Agent Judge",
         instructions=(
@@ -84,7 +72,7 @@ async def create_agent_judge(markdown_data: str) -> Agent:
                 {markdown_data}
             """
         ),
-        model=client
+        model="o3-mini"
     )
 
 async def handle_question(agent: Agent, question: str):

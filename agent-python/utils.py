@@ -1,9 +1,6 @@
 from dotenv import load_dotenv
 from pathlib import Path
 import json
-from typing import List, Dict
-import re
-from collections import defaultdict
 
 def load_env_variables():
     load_dotenv()
