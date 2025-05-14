@@ -1,44 +1,113 @@
 import asyncio
-from agents import Agent, Runner
+from agents import (
+    Agent,
+    Runner,
+    GuardrailFunctionOutput,
+    InputGuardrail,
+    input_guardrail,
+    OutputGuardrail,
+    output_guardrail,
+    RunContextWrapper,
+    TResponseInputItem,
+    InputGuardrailTripwireTriggered,
+    OutputGuardrailTripwireTriggered
+)
 from utils import load_env_variables, load_json_content
+
+async def create_agent_guardrail(name: str, instructions: str) -> Agent:
+    return Agent(
+        name=name,
+        instructions=instructions,
+        model="gpt-4o-mini",
+    )
+
+@input_guardrail
+async def check_input_guardrail(
+    ctx: RunContextWrapper[None],
+    _: Agent,
+    input: str | list[TResponseInputItem]
+) -> GuardrailFunctionOutput:
+    guardrail_agent = await create_agent_guardrail(
+        name="Input Guardrail Agent",
+        instructions=(
+            f"""
+                Você é um verificador de escopo.
+                Responda apenas PASS ou FAIL.
+
+                1. Fala sobre consumo de créditos, reservas ou pacotes de espaços flexíveis da empresa?  
+                2. Está em português e contém um pedido claro?  
+                3. Não pede dados pessoais sensíveis nem informações fora do escopo?
+
+                Se TODAS as respostas forem "sim", responda apenas com PASS.  
+                Caso contrário, responda apenas com FAIL e NÃO acrescente nada além dessa palavra.
+            """
+        )
+    )
+    result = await Runner.run(guardrail_agent, input, context=ctx.context)
+    return GuardrailFunctionOutput(
+        output_info=result.final_output,
+        tripwire_triggered=result.final_output.strip() == "FAIL"
+    )
+
+@output_guardrail
+async def check_output_guardrail(
+    ctx: RunContextWrapper[None],
+    _: Agent,
+    response_agent: str
+) -> GuardrailFunctionOutput:
+    guardrail_agent = await create_agent_guardrail(
+        name="Output Guardrail Agent",
+        instructions=(
+            f"""
+                Você é um auditor de formato de saída.
+                Responda apenas PASS ou FAIL.
+
+                Critérios (todos obrigatórios):
+
+                ✓ A resposta é em português.  
+                ✓ Contém de 3 a 5 bullet points iniciados por "- " (travessão + espaço).  
+                ✓ Cada bullet é curto, direto e usa linguagem acessível a gestores.  
+                ✓ Não há jargões técnicos, links, cabeçalhos ou emojis.  
+                ✓ Não menciona "dados insuficientes" **a menos** que a resposta inteira seja exatamente:
+                "Desculpe! Não encontramos dados suficientes para responder à sua pergunta neste momento."
+
+                Se TODOS os critérios forem atendidos, devolva apenas PASS.  
+                Caso qualquer critério falhe, devolva apenas FAIL.
+            """
+        )
+    )
+    result = await Runner.run(guardrail_agent, response_agent, context=ctx.context)
+    return GuardrailFunctionOutput(
+        output_info=result.final_output,
+        tripwire_triggered=result.final_output.strip() == "FAIL"
+    )
 
 async def create_agent_analyst(markdown_data: str) -> Agent:
     return Agent(
         name="Booking Report Analyst",
         instructions=(
             f"""
-            Você é um analista de dados especializado em consumo de espaços flexíveis e reservas empresariais.
+                Você é um analista de dados especializado em consumo de espaços flexíveis e reservas empresariais.
 
-            Ao receber:
-            1. Uma pergunta em linguagem natural (já validada e dentro do escopo)
-            2. Um documento em JSON com os dados da empresa
+                Contexto:
+                - Dados da empresa (JSON): {markdown_data}
 
-            Sua missão é responder com clareza, objetividade e facilidade de leitura, gerando insights úteis com base somente nos dados fornecidos.
-
-            Instruções:
-
-            Apresente de 3 a 5 insights relevantes em tópicos (bullet points):
-               - Seja direto e claro.
-               - Destaque padrões, aumentos, quedas, ou qualquer dado que se destaque.
-               - Evite jargões técnicos. Use linguagem acessível a gestores de qualquer área.
-               - Indicar limitações de forma sutil e sem solicitar mais dados ao usuário.
-
-            3. Se não houver dados suficientes para responder à pergunta, não solicite mais informações ao usuário e escreva:
-            Desculpe! Não encontramos dados suficientes para responder à sua pergunta neste momento.
-
-            
-            Importante:
-            - Sempre baseie sua resposta apenas nos dados fornecidos no JSON.
-            - Nunca invente informações.
-            - Mantenha o texto simples, visual e com foco em leitura rápida.
-
-            - Em caso de agradecimento, responda de forma amigável e não forneça insights.
-
-            Dados do relatório:
-            {markdown_data}
+                Instruções:
+                1. Baseie-se exclusivamente nos dados acima — não invente nada.
+                2. Gere de 3 a 5 insights em bullet points:
+                - Seja direto e claro.
+                - Destaque padrões, aumentos ou quedas relevantes.
+                - Evite jargões técnicos; linguagem acessível a gestores.
+                - Indique limitações de forma sutil, sem pedir mais dados.
+                3. Se os dados forem insuficientes: retorne exatamente
+                "Desculpe! Não encontramos dados suficientes para responder à sua pergunta neste momento."
+                4. Se o usuário apenas agradecer, responda de forma amigável e não forneça insights.
+                5. Não adicione cabeçalhos, emojis ou assinaturas — apenas os bullets (ou a mensagem de desculpas).
             """
         ),
-        model="litellm/anthropic/claude-3-5-sonnet-20240620"
+        model="litellm/anthropic/claude-3-5-sonnet-20240620",
+        input_guardrails=[check_input_guardrail],
+        output_guardrails=[check_output_guardrail]
     )
 
 async def create_agent_judge(markdown_data: str) -> Agent:
@@ -72,7 +141,7 @@ async def create_agent_judge(markdown_data: str) -> Agent:
                 {markdown_data}
             """
         ),
-        model="o3-mini"
+        model="o3"
     )
 
 async def handle_question(agent: Agent, question: str):
@@ -88,19 +157,33 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
             if user_input.lower() in {"exit", "quit"}:
                 print("👋 Saindo do chat.")
                 break
-            response = await handle_question(agent, user_input)
-            print(f"Agente Facilities: {response}\n")
-            if judge:
-                prompt_judge = f"""
-                    QUESTION:
-                    {user_input}
 
-                    ANSWER:
-                    {response}
-                """
+            try:
+                response = await handle_question(agent, user_input)
+                print(f"Agente Facilities: {response}\n")
                 
-                judge_response = await handle_question(judge, prompt_judge)
-                print(f"Agente Judge: {judge_response}\n")
+                if judge:
+                    prompt_judge = f"""
+                        QUESTION:
+                        {user_input}
+
+                        ANSWER:
+                        {response}
+                    """
+                    judge_response = await handle_question(judge, prompt_judge)
+                    print(f"Agente Judge: {judge_response}\n")
+
+            except InputGuardrailTripwireTriggered:
+                print("❌ Desculpe, sua pergunta está fora do escopo do assistente. Por favor, faça uma pergunta relacionada a:")
+                print("- Consumo de créditos")
+                print("- Reservas empresariais")
+                print("- Uso de espaços flexíveis")
+                print("- Tendências por grupo, cidade ou usuário")
+                print("- Comparativos entre períodos")
+                print("- Informações baseadas em relatórios de uso")
+                print()
+            except OutputGuardrailTripwireTriggered:
+                print("Desculpe! Algo deu errado ao gerar a resposta.")
 
     asyncio.run(chat_loop())
 
