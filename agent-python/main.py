@@ -106,14 +106,11 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
 
 def main():
     load_env_variables()
+    # markdown = load_markdown_content("./assets/relatorio-empresa-1810-fev-mar-abr.md")
     json_data = load_json_content("./assets/relatorio-empresa-1810.json")
-
-    # analyst_model_name = "claude-3-7-sonnet-20250219"
-    # analyst_model_name = "claude-3-5-sonnet-20241022"
-    analyst_model_name = "gpt-4o"
-   
-    agent = asyncio.run(create_agent_analyst(json_data, analyst_model_name))
-    judge = asyncio.run(create_agent_judge(json_data, model_to_judge=analyst_model_name))
+    # markdown = load_markdown_content("./assets/relatorio-empresa-1010.md")
+    agent = asyncio.run(create_agent_analyst(json_data))
+    judge = asyncio.run(create_agent_judge(json_data))
     start_terminal_chat(agent, judge)
 
 
