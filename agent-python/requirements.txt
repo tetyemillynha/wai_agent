@@ -1,3 +1,5 @@
 openai-agents
 python-dotenv
 openai-agents[litellm]
+fastapi
+uvicorn

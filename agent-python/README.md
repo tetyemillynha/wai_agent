@@ -59,18 +59,6 @@ agente-python/
 │   └── relatorio-empresa-1810.json  #recargapay
 │   └── relatorio-empresa-1010.md    #cielo
 │
-├── llm_clients/                   # Camada de abstração para múltiplos LLMs
-│   ├── __init__.py
-│   ├── base.py                    # Interface LLMClient
-│   ├── openai_client.py           # Cliente para OpenAI
-│   ├── claude_client.py           # Cliente para Claude (Anthropic)
-│   └── llama_client.py            # Cliente para LLaMA (via Ollama3)
-│
-├── agents/
-│   └── agent.py                    # Agente de negócio com lógica de resposta
-│   └── runner.py                   # Orquestrador da execução do agente
-│   └── __init__.py                 
-│
 ├── .env
 ├── main.py                         # Arquivo principal do terminal/chat
 ├── requirements.txt

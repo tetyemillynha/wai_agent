@@ -2,6 +2,7 @@ import asyncio
 from agents import (
     Agent,
     Runner,
+    ModelSettings,
     GuardrailFunctionOutput,
     input_guardrail,
     output_guardrail,
@@ -11,8 +12,7 @@ from agents import (
     OutputGuardrailTripwireTriggered
 )
 from utils import load_env_variables, load_json_content
-from agents import Agent, Runner, ModelSettings
-from utils import load_env_variables, load_json_content
+from fastapi import HTTPException
 
 model_instructions = """
 Você é um analista de dados experiente especializado em consumo de espaços flexíveis e reservas empresariais. Responda com precisão e evite inferências que não estejam diretamente sustentadas pelos dados.
@@ -210,8 +210,22 @@ async def create_agent_judge(markdown_data: str) -> Agent:
     )
 
 async def handle_question(agent: Agent, question: str):
-    result = await Runner.run(agent, question)
-    return result.final_output
+    try:
+        result = await Runner.run(agent, question)
+        return result.final_output
+    except InputGuardrailTripwireTriggered as e:
+        raise HTTPException(status_code=422, detail={
+            "erro": "Pergunta fora do escopo",
+            "tipo": e.args[0] if e.args else "TRIPWIRE_INPUT",
+            "mensagem": "Por favor, pergunte algo relacionado a consumo de créditos, reservas, espaços, grupos, usuários ou cidades."
+        })
+    except OutputGuardrailTripwireTriggered as e:
+        raise HTTPException(status_code=422, detail={
+            "erro": "Resposta reprovada pelo guardrail",
+            "tipo": e.args[0] if e.args else "TRIPWIRE_OUTPUT",
+            "mensagem": "A estrutura da resposta não está no formato esperado. Estamos corrigindo isso."
+        })
+
 
 def start_terminal_chat(json_data: str):
     print("💬 Chat inicializado com o Agente Facilities (digite 'exit' para sair)\n")
