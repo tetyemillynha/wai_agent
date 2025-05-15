@@ -32,18 +32,16 @@ async def chat_agent(payload: QuestionPayload):
             "avaliacao": julgamento
         }
     except InputGuardrailTripwireTriggered as e:
-        print(f"🔍 Input Guardrail Result: {e}")
         return {
-            "erro": "Pergunta fora do escopo",
-            "tipo": e.output_info,
-            "mensagem": "Por favor, pergunte algo relacionado a consumo de créditos, reservas, usuários, grupos, cidades ou espaços utilizados."
+            "erro": "422",
+            "mensagem": "Pergunta fora do escopo"
         }
 
     except OutputGuardrailTripwireTriggered as e:
+        print(f"📋 Output Guardrail Result: {e.output_info}")
         return {
-            "erro": "Resposta reprovada pelo guardrail de formato",
-            "tipo": e.output_info,
-            "mensagem": "A estrutura da resposta não está no formato esperado. Estamos corrigindo isso."
+            "erro": "422",
+            "mensagem": "Resposta reprovada pelo guardrail de formato"
         }
 
     except Exception as e:
