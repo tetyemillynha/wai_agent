@@ -38,7 +38,6 @@ Sua missão é:
 - Não solicite dados adicionais ao usuário
 - Caso a pergunta seja apenas um agradecimento, responda de forma amigável, sem gerar insights
 - Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi 🤔
-
 """
 
 async def create_agent_guardrail(name: str, instructions: str) -> Agent:
@@ -166,6 +165,8 @@ async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
 
             Dados do relatório:
             {markdown_report}
+
+            Aguarde a pergunta do usuário.
             """
         ),
         model=model,
