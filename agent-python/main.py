@@ -37,7 +37,7 @@ Sua missão é:
 - Nunca faça suposições ou projeções que não estejam nos dados
 - Não solicite dados adicionais ao usuário
 - Caso a pergunta seja apenas um agradecimento, responda de forma amigável, sem gerar insights
-- Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi 🤔
+- Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi ou não tenho dados suficientes para responder. 🤔
 """
 
 async def create_agent_guardrail(name: str, instructions: str) -> Agent:
@@ -97,7 +97,7 @@ async def check_output_guardrail(
             Analise a saída do assistente e retorne **apenas um dos rótulos abaixo**, conforme a situação:
 
             - `FORMATO_VALIDO` — A resposta está em português, tem de 3 a 6 tópicos com subtítulos claros (ex: "**Cidades com Maior Gasto**"), e bullet points iniciados com "- " curtos, objetivos e acessíveis a gestores. Sem emojis, jargões ou links.
-            - `RESPOSTA_FALLBACK` — A resposta é exatamente: "Hmm... essa eu ainda não aprendi 🤔"
+            - `RESPOSTA_FALLBACK` — A resposta é exatamente: "Hmm... essa eu ainda não aprendi ou não tenho dados suficientes para responder. 🤔"
             - `SEM_SUBTITULO` — Os insights estão apenas em bullet points, sem separação por subtítulos.
             - `POUCOS_INSIGHTS` — Menos de 3 insights ou tópicos.
             - `EXCESSO_INSIGHTS` — Mais de 6 tópicos ou seções.
@@ -132,7 +132,7 @@ async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
     generate_agent = create_generate_report_agent(json_data, user_question)
     markdown_report = await handle_question(generate_agent, user_question)
 
-    print(f"🔍 Relatório gerado: {markdown_report}")
+    # print(f"🔍 Relatório gerado: {markdown_report}")
     print(f"🔍 Pergunta: {user_question}")
 
     # print(f"🔍 Relatório gerado: {markdown_report}")
@@ -165,8 +165,6 @@ async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
 
             Dados do relatório:
             {markdown_report}
-
-            Aguarde a pergunta do usuário.
             """
         ),
         model=model,
