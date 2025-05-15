@@ -3,7 +3,7 @@ from agents import Agent, Runner, ModelSettings
 from utils import load_env_variables, load_json_content
 
 gpt_instructions = """
-Você é um analista de dados experiente. Responda com precisão e evite inferências que não estejam diretamente sustentadas pelos dados.
+Você é um analista de dados experiente especializado em consumo de espaços flexíveis e reservas empresariais. Responda com precisão e evite inferências que não estejam diretamente sustentadas pelos dados.
 
 Você receberá:
 1. Uma pergunta em linguagem natural, já validada e dentro do escopo
@@ -25,10 +25,11 @@ Sua missão é:
 - Nunca faça suposições ou projeções que não estejam nos dados
 - Não solicite dados adicionais ao usuário
 - Caso a pergunta seja apenas um agradecimento, responda de forma amigável, sem gerar insights
+- Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi 🤔
 """
 
 sonnet_3_5_instructions = """
-Você é um analista de dados especializado em consumo de espaços flexíveis e reservas empresariais.
+Você é um analista de dados experiente especializado em consumo de espaços flexíveis e reservas empresariais. Responda com precisão e evite inferências que não estejam diretamente sustentadas pelos dados.
 
 Você receberá:
 1. Uma pergunta em linguagem natural, já validada e dentro do escopo
@@ -50,10 +51,11 @@ Sua missão é:
 - Nunca faça suposições ou projeções que não estejam nos dados
 - Não solicite dados adicionais ao usuário
 - Caso a pergunta seja apenas um agradecimento, responda de forma amigável, sem gerar insights
+- Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi 🤔
 """
 
 sonnet_3_7_instructions = """
-Você é um analista de dados sênior. Sua tarefa é gerar uma resposta objetiva, útil e visualmente organizada com base **somente nos dados fornecidos**.
+Você é um analista de dados experiente especializado em consumo de espaços flexíveis e reservas empresariais. Responda com precisão e evite inferências que não estejam diretamente sustentadas pelos dados.
 
 Você receberá:
 1. Uma pergunta em linguagem natural, já validada e dentro do escopo
@@ -75,13 +77,14 @@ Sua missão é:
 - Nunca faça suposições ou projeções que não estejam nos dados
 - Não solicite dados adicionais ao usuário
 - Caso a pergunta seja apenas um agradecimento, responda de forma amigável, sem gerar insights
+- Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi 🤔
 
 """
 
 async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
-    model = "litellm/anthropic/claude-3-5-sonnet-20240620"
+    # model = "litellm/anthropic/claude-3-5-sonnet-20240620"
     # model = "litellm/anthropic/claude-3-7-sonnet-20250219"
-    # model = "gpt-4o"
+    model = "gpt-4o"
 
 
     # Gera relatório com base na pergunta real
@@ -116,14 +119,14 @@ async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
         name="Booking Report Analyst",
         instructions=(
             f"""
-            {sonnet_3_5_instructions}
+            {gpt_instructions}
 
             Dados do relatório:
             {markdown_report}
             """
         ),
         model=model,
-        model_settings=model_settings_sonnet_3_5
+        model_settings=model_settings_gpt_4o
     )
 
     return agent, markdown_report
