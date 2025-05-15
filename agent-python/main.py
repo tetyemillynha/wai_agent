@@ -57,23 +57,30 @@ async def check_input_guardrail(
     guardrail_agent = await create_agent_guardrail(
         name="Input Guardrail Agent",
         instructions=(
-            f"""
-                Você é um verificador de escopo.
-                Responda apenas PASS ou FAIL.
+            """
+            Você é um classificador de escopo.  
+            Sua tarefa é classificar a pergunta do usuário em **um único rótulo**, com base no conteúdo da pergunta.
 
-                1. Fala sobre consumo de créditos, reservas ou pacotes de espaços flexíveis da empresa?  
-                2. Está em português e contém um pedido claro?  
-                3. Não pede dados pessoais sensíveis nem informações fora do escopo?
+            Responda **apenas com um destes rótulos (sem nada mais)**:
 
-                Se TODAS as respostas forem "sim", responda apenas com PASS.  
-                Caso contrário, responda apenas com FAIL e NÃO acrescente nada além dessa palavra.
+            - `DENTRO_ESCOP` — Se a pergunta estiver relacionada a reservas, consumo de créditos, espaços, grupos, usuários, cidades, produtos ou qualquer dado de uso da empresa em espaços flexíveis.
+            - `FORA_ESCOP` — Se a pergunta for sobre outro assunto ou não estiver relacionada ao uso de espaços flexíveis.
+            - `AGRADECIMENTO` — Se for apenas uma saudação, agradecimento ou conversa informal (ex: "obrigado", "olá", "valeu", etc).
+
+            ⚠️ Não justifique, não explique. Responda apenas com um dos rótulos acima.
             """
         )
     )
     result = await Runner.run(guardrail_agent, input, context=ctx.context)
+
+    final_output = result.final_output.strip().upper()
+    is_fail = final_output not in {"DENTRO_ESCOP", "AGRADECIMENTO"}
+
+    print(f"🔍 Input Guardrail Result: {final_output}")
+
     return GuardrailFunctionOutput(
-        output_info=result.final_output,
-        tripwire_triggered=result.final_output.strip() == "FAIL"
+        output_info=final_output,
+        tripwire_triggered=is_fail
     )
 
 @output_guardrail
@@ -83,31 +90,39 @@ async def check_output_guardrail(
     response_agent: str
 ) -> GuardrailFunctionOutput:
     guardrail_agent = await create_agent_guardrail(
-        name="Output Guardrail Agent",
+        name="Output Guardrail Classifier",
         instructions=(
-            f"""
-                Você é um auditor de formato de saída.
-                Responda apenas PASS ou FAIL.
+            """
+            Você é um classificador de formato de resposta.
 
-                Critérios (todos obrigatórios):
+            Analise a saída do assistente e retorne **apenas um dos rótulos abaixo**, conforme a situação:
 
-                ✓ A resposta é em português.  
-                ✓ Contém de 3 a 5 bullet points iniciados por "- " (travessão + espaço).  
-                ✓ Cada bullet é curto, direto e usa linguagem acessível a gestores.  
-                ✓ Não há jargões técnicos, links, cabeçalhos ou emojis.  
-                ✓ Não menciona "dados insuficientes" **a menos** que a resposta inteira seja exatamente:
-                "Hmm... essa eu ainda não aprendi 🤔"
+            - `FORMATO_VALIDO` — A resposta está em português, tem de 3 a 6 tópicos com subtítulos claros (ex: "**Cidades com Maior Gasto**"), e bullet points iniciados com "- " curtos, objetivos e acessíveis a gestores. Sem emojis, jargões ou links.
+            - `RESPOSTA_FALLBACK` — A resposta é exatamente: "Hmm... essa eu ainda não aprendi 🤔"
+            - `SEM_SUBTITULO` — Os insights estão apenas em bullet points, sem separação por subtítulos.
+            - `POUCOS_INSIGHTS` — Menos de 3 insights ou tópicos.
+            - `EXCESSO_INSIGHTS` — Mais de 6 tópicos ou seções.
+            - `USO_EMOJI` — A resposta contém emojis.
+            - `LINGUAGEM_TECNICA` — A linguagem usada é técnica demais para um gestor comum.
+            - `FORA_ESCOP` — A resposta não tem relação com reservas, consumo, espaços ou dados da empresa.
 
-                Se TODOS os critérios forem atendidos, devolva apenas PASS.  
-                Caso qualquer critério falhe, devolva apenas FAIL.
+            ⚠️ Responda apenas com o rótulo. Não explique, não formate.
             """
         )
     )
+
     result = await Runner.run(guardrail_agent, response_agent, context=ctx.context)
+
+    final_output = result.final_output.strip().upper()
+    tripwire = final_output not in {"FORMATO_VALIDO", "RESPOSTA_FALLBACK"}
+
+    print(f"📋 Output Guardrail Result: {final_output}")
+
     return GuardrailFunctionOutput(
-        output_info=result.final_output,
-        tripwire_triggered=result.final_output.strip() == "FAIL"
+        output_info=final_output,
+        tripwire_triggered=tripwire
     )
+
 
 async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
     # model = "litellm/anthropic/claude-3-5-sonnet-20240620"
@@ -117,6 +132,9 @@ async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
     # Gera relatório com base na pergunta real
     generate_agent = create_generate_report_agent(json_data, user_question)
     markdown_report = await handle_question(generate_agent, user_question)
+
+    print(f"🔍 Relatório gerado: {markdown_report}")
+    print(f"🔍 Pergunta: {user_question}")
 
     # print(f"🔍 Relatório gerado: {markdown_report}")
     
