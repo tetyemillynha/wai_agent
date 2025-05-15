@@ -11,6 +11,35 @@ from agents import (
     OutputGuardrailTripwireTriggered
 )
 from utils import load_env_variables, load_json_content
+from agents import Agent, Runner, ModelSettings
+from utils import load_env_variables, load_json_content
+
+model_instructions = """
+Você é um analista de dados experiente especializado em consumo de espaços flexíveis e reservas empresariais. Responda com precisão e evite inferências que não estejam diretamente sustentadas pelos dados.
+
+Você receberá:
+1. Uma pergunta em linguagem natural, já validada e dentro do escopo
+2. Um documento em Markdown (markdown estruturado) com os dados da empresa
+
+Sua missão é:
+- Gerar uma resposta clara, objetiva e fácil de ler
+- Apresentar insights úteis e relevantes com base **exclusiva** nos dados fornecidos
+
+### Instruções para sua resposta:
+- Responda em tópicos (bullet points), com **de 3 a 6 insights**
+- Estruture os insights com subtítulos claros, ex: "**Top Grupos com Risco**", "**Cidades com Maior Gasto por Reserva**", etc.
+- Use linguagem simples, acessível a gestores, evitando jargões técnicos
+- Destaque padrões, aumentos, quedas, desvios ou comparativos relevantes
+- Não invente informações. **Baseie-se estritamente nos dados**
+- Se houver limitação de dados, mencione de forma sutil e profissional (sem pedir mais informações)
+
+### Importante:
+- Nunca faça suposições ou projeções que não estejam nos dados
+- Não solicite dados adicionais ao usuário
+- Caso a pergunta seja apenas um agradecimento, responda de forma amigável, sem gerar insights
+- Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi 🤔
+
+"""
 
 async def create_agent_guardrail(name: str, instructions: str) -> Agent:
     return Agent(
@@ -67,7 +96,7 @@ async def check_output_guardrail(
                 ✓ Cada bullet é curto, direto e usa linguagem acessível a gestores.  
                 ✓ Não há jargões técnicos, links, cabeçalhos ou emojis.  
                 ✓ Não menciona "dados insuficientes" **a menos** que a resposta inteira seja exatamente:
-                "Desculpe! Não encontramos dados suficientes para responder à sua pergunta neste momento."
+                "Hmm... essa eu ainda não aprendi 🤔"
 
                 Se TODOS os critérios forem atendidos, devolva apenas PASS.  
                 Caso qualquer critério falhe, devolva apenas FAIL.
@@ -80,33 +109,54 @@ async def check_output_guardrail(
         tripwire_triggered=result.final_output.strip() == "FAIL"
     )
 
-async def create_agent_analyst(markdown_data: str) -> Agent:
-    return Agent(
+async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
+    # model = "litellm/anthropic/claude-3-5-sonnet-20240620"
+    # model = "litellm/anthropic/claude-3-7-sonnet-20250219"
+    model = "gpt-4o"
+
+    # Gera relatório com base na pergunta real
+    generate_agent = create_generate_report_agent(json_data, user_question)
+    markdown_report = await handle_question(generate_agent, user_question)
+
+    # print(f"🔍 Relatório gerado: {markdown_report}")
+    
+    model_settings_sonnet_3_5 = ModelSettings(
+        temperature=0.1,
+        top_p=1,
+        max_tokens=2500
+    )
+
+    model_settings_sonnet_3_7 = ModelSettings(
+        temperature=0.1,
+        top_p=1,
+        max_tokens=3000
+    )
+
+    model_settings_gpt_4o = ModelSettings(
+        temperature=0.1,
+        top_p=1,
+        max_tokens=3000,
+        frequency_penalty=0.0,
+        presence_penalty=0.0
+    )
+
+    agent = Agent(
         name="Booking Report Analyst",
         instructions=(
             f"""
-                Você é um analista de dados especializado em consumo de espaços flexíveis e reservas empresariais.
+            {model_instructions}
 
-                Contexto:
-                - Dados da empresa (JSON): {markdown_data}
-
-                Instruções:
-                1. Baseie-se exclusivamente nos dados acima — não invente nada.
-                2. Gere de 3 a 5 insights em bullet points:
-                - Seja direto e claro.
-                - Destaque padrões, aumentos ou quedas relevantes.
-                - Evite jargões técnicos; linguagem acessível a gestores.
-                - Indique limitações de forma sutil, sem pedir mais dados.
-                3. Se os dados forem insuficientes: retorne exatamente
-                "Desculpe! Não encontramos dados suficientes para responder à sua pergunta neste momento."
-                4. Se o usuário apenas agradecer, responda de forma amigável e não forneça insights.
-                5. Não adicione cabeçalhos, emojis ou assinaturas — apenas os bullets (ou a mensagem de desculpas).
+            Dados do relatório:
+            {markdown_report}
             """
         ),
-        model="litellm/anthropic/claude-3-5-sonnet-20240620",
+        model=model,
+        model_settings=model_settings_gpt_4o,
         input_guardrails=[check_input_guardrail],
         output_guardrails=[check_output_guardrail]
     )
+
+    return agent, markdown_report
 
 async def create_agent_judge(markdown_data: str) -> Agent:
     return Agent(
@@ -114,10 +164,10 @@ async def create_agent_judge(markdown_data: str) -> Agent:
         instructions=(
             f"""
                 Você é um avaliador rigoroso.  Julgue a resposta do assistente com base **apenas** nos
-                dados do JSON fornecido.  Atribua notas de 0 a 10 para cada critério abaixo
+                dados do Markdown fornecido.  Atribua notas de 0 a 10 para cada critério abaixo
                 (exatidão, relevância, clareza_formato, insight).
 
-                Retorne **somente** o JSON no formato:
+                Retorne **somente** o Markdown no formato:
 
                 {{
                     "scores": {{
@@ -133,7 +183,7 @@ async def create_agent_judge(markdown_data: str) -> Agent:
                 Regras adicionais:
                 - Se a resposta inventar informações, defina exatidão = 0.
                 - Se faltar qualquer critério, defina a nota desse critério = 0.
-                - Nunca inclua explicações fora do JSON.
+                - Nunca inclua explicações fora do Markdown.
 
                 Dados do relatório:
                 {markdown_data}
@@ -146,7 +196,7 @@ async def handle_question(agent: Agent, question: str):
     result = await Runner.run(agent, question)
     return result.final_output
 
-def start_terminal_chat(agent: Agent, judge: Agent = None):
+def start_terminal_chat(json_data: str):
     print("💬 Chat inicializado com o Agente Facilities (digite 'exit' para sair)\n")
 
     async def chat_loop():
@@ -157,9 +207,13 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
                 break
 
             try:
+                agent, markdown_report = await create_agent_analyst(json_data, user_input)
+
                 response = await handle_question(agent, user_input)
-                print(f"Agente Facilities: {response}\n")
-                
+                print(f"\n🤖 Agente Facilities:\n{response}\n")
+
+                judge = await create_agent_judge(markdown_report)
+
                 if judge:
                     prompt_judge = f"""
                         QUESTION:
@@ -169,7 +223,7 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
                         {response}
                     """
                     judge_response = await handle_question(judge, prompt_judge)
-                    print(f"Agente Judge: {judge_response}\n")
+                    print(f"🧑‍⚖️ Agente Judge:\n{judge_response}\n")
 
             except InputGuardrailTripwireTriggered:
                 print("❌ Desculpe, sua pergunta está fora do escopo do assistente. Por favor, faça uma pergunta relacionada a:")
@@ -182,17 +236,57 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
                 print()
             except OutputGuardrailTripwireTriggered:
                 print("Desculpe! Algo deu errado ao gerar a resposta.")
+            
 
     asyncio.run(chat_loop())
 
 def main():
     load_env_variables()
-    # markdown = load_markdown_content("./assets/relatorio-empresa-1810-fev-mar-abr.md")
     json_data = load_json_content("./assets/relatorio-empresa-1810.json")
-    # markdown = load_markdown_content("./assets/relatorio-empresa-1010.md")
-    agent = asyncio.run(create_agent_analyst(json_data))
-    judge = asyncio.run(create_agent_judge(json_data))
-    start_terminal_chat(agent, judge)
+    
+    start_terminal_chat(json_data)
+
+def create_generate_report_agent(json_data: str, question: str):
+    model = "gpt-4o"
+    model_settings_gpt_4o = ModelSettings(
+        temperature=0.1,
+        top_p=1,
+        max_tokens=3000,
+        frequency_penalty=0.0,
+        presence_penalty=0.0
+    )
+
+    generate_report_instructions = """
+        Você é um analista de dados experiente. Sua missão é gerar um relatório analítico **somente quando a pergunta estiver relacionada ao uso de créditos, reservas, espaços, consumo ou análise de comportamento dos usuários**.
+
+        Você recebeu a seguinte pergunta do usuário:
+        "{question}"
+
+        ### Regras:
+        - Se a pergunta for um agradecimento, cumprimento ou algo fora do contexto esperado, **não gere nenhum relatório** e simplesmente retorne:
+        > "{}"
+
+        Com base apenas nos dados do JSON abaixo, gere um relatório completo com os principais insights que ajudam a responder a essa pergunta.
+
+        Dados do relatório:
+        {json_data}
+
+        O relatório deve ser em **markdown bem formatado**, com seções, listas e títulos claros, facil de ser lido e interpretado por outros analistas.
+    """
+
+    return Agent(
+        name="Generate Report Agent",
+        instructions=(
+            f"""
+            {generate_report_instructions}
+
+            Dados do relatório:
+            {json_data}
+            """
+        ),
+        model=model,
+        model_settings=model_settings_gpt_4o
+    )
 
 
 if __name__ == "__main__":
