@@ -7,7 +7,7 @@ Você é um analista de dados experiente. Responda com precisão e evite inferê
 
 Você receberá:
 1. Uma pergunta em linguagem natural, já validada e dentro do escopo
-2. Um documento em JSON (markdown estruturado) com os dados da empresa
+2. Um documento em Markdown (markdown estruturado) com os dados da empresa
 
 Sua missão é:
 - Gerar uma resposta clara, objetiva e fácil de ler
@@ -32,7 +32,7 @@ Você é um analista de dados especializado em consumo de espaços flexíveis e 
 
 Ao receber:
    1. Uma pergunta em linguagem natural (já validada e dentro do escopo)
-   2. Um documento em JSON com os dados da empresa
+   2. Um documento em Markdown com os dados da empresa
 
 Sua missão é responder com clareza, objetividade e facilidade de leitura, gerando insights úteis com base somente nos dados fornecidos.
 
@@ -49,7 +49,7 @@ Apresente de 3 a 5 insights relevantes em tópicos (bullet points):
 
    
 Importante:
-   - Sempre baseie sua resposta apenas nos dados fornecidos no JSON.
+   - Sempre baseie sua resposta apenas nos dados fornecidos no Markdown.
    - Nunca invente informações.
    - Mantenha o texto simples, visual e com foco em leitura rápida.
 
@@ -61,7 +61,7 @@ Você é um analista de dados sênior. Sua tarefa é gerar uma resposta objetiva
 
 Ao receber:
    1. Uma pergunta em linguagem natural (já validada e dentro do escopo)
-   2. Um documento em JSON com os dados da empresa
+   2. Um documento em Markdown com os dados da empresa
 
 Sua missão é responder com clareza, objetividade e facilidade de leitura, gerando insights úteis com base somente nos dados fornecidos.
 
@@ -78,7 +78,7 @@ Apresente de 3 a 5 insights relevantes em tópicos (bullet points):
 
    
 Importante:
-   - Sempre baseie sua resposta apenas nos dados fornecidos no JSON.
+   - Sempre baseie sua resposta apenas nos dados fornecidos no Markdown.
    - Nunca invente informações.
    - Mantenha o texto simples, visual e com foco em leitura rápida.
 
@@ -86,10 +86,18 @@ Importante:
 
 """
 
-async def create_agent_analyst(markdown_data: str) -> Agent:
+async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
     # model = "litellm/anthropic/claude-3-5-sonnet-20240620"
     # model = "litellm/anthropic/claude-3-7-sonnet-20250219"
     model = "gpt-4o"
+
+
+    # Gera relatório com base na pergunta real
+    generate_agent = create_generate_report_agent(json_data, user_question)
+    markdown_report = await handle_question(generate_agent, user_question)
+
+    print(f"🔍 Relatório gerado: {markdown_report}")
+    
 
     # 3.5 não ficou legal ajustando os parâmetros
     model_settings_sonnet_3_5 = ModelSettings(
@@ -112,19 +120,21 @@ async def create_agent_analyst(markdown_data: str) -> Agent:
         presence_penalty=0.0
     )
 
-    return Agent(
+    agent = Agent(
         name="Booking Report Analyst",
         instructions=(
             f"""
             {gpt_instructions}
 
             Dados do relatório:
-            {markdown_data}
+            {markdown_report}
             """
         ),
         model=model,
         model_settings=model_settings_gpt_4o
     )
+
+    return agent, markdown_report
 
 async def create_agent_judge(markdown_data: str) -> Agent:
     return Agent(
@@ -132,10 +142,10 @@ async def create_agent_judge(markdown_data: str) -> Agent:
         instructions=(
             f"""
                 Você é um avaliador rigoroso.  Julgue a resposta do assistente com base **apenas** nos
-                dados do JSON fornecido.  Atribua notas de 0 a 10 para cada critério abaixo
+                dados do Markdown fornecido.  Atribua notas de 0 a 10 para cada critério abaixo
                 (exatidão, relevância, clareza_formato, insight).
 
-                Retorne **somente** o JSON no formato:
+                Retorne **somente** o Markdown no formato:
 
                 {{
                     "scores": {{
@@ -151,7 +161,7 @@ async def create_agent_judge(markdown_data: str) -> Agent:
                 Regras adicionais:
                 - Se a resposta inventar informações, defina exatidão = 0.
                 - Se faltar qualquer critério, defina a nota desse critério = 0.
-                - Nunca inclua explicações fora do JSON.
+                - Nunca inclua explicações fora do Markdown.
 
                 Dados do relatório:
                 {markdown_data}
@@ -164,7 +174,7 @@ async def handle_question(agent: Agent, question: str):
     result = await Runner.run(agent, question)
     return result.final_output
 
-def start_terminal_chat(agent: Agent, judge: Agent = None):
+def start_terminal_chat(json_data: str):
     print("💬 Chat inicializado com o Agente Facilities (digite 'exit' para sair)\n")
 
     async def chat_loop():
@@ -173,8 +183,18 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
             if user_input.lower() in {"exit", "quit"}:
                 print("👋 Saindo do chat.")
                 break
+
+            # 1. Cria agent e obtém o relatório em markdown
+            agent, markdown_report = await create_agent_analyst(json_data, user_input)
+
+            # 2. Roda o agente com a pergunta
             response = await handle_question(agent, user_input)
-            print(f"Agente Facilities: {response}\n")
+            print(f"\n🤖 Agente Facilities:\n{response}\n")
+
+            # 3. Cria o juiz com o markdown, não com o JSON original
+            judge = await create_agent_judge(markdown_report)
+
+            # 4. Avaliação
             if judge:
                 prompt_judge = f"""
                     QUESTION:
@@ -183,20 +203,58 @@ def start_terminal_chat(agent: Agent, judge: Agent = None):
                     ANSWER:
                     {response}
                 """
-                
                 judge_response = await handle_question(judge, prompt_judge)
-                print(f"Agente Judge: {judge_response}\n")
+                print(f"🧑‍⚖️ Agente Judge:\n{judge_response}\n")
 
     asyncio.run(chat_loop())
 
 def main():
     load_env_variables()
-    # markdown = load_markdown_content("./assets/relatorio-empresa-1810-fev-mar-abr.md")
     json_data = load_json_content("./assets/relatorio-empresa-1810.json")
-    # markdown = load_markdown_content("./assets/relatorio-empresa-1010.md")
-    agent = asyncio.run(create_agent_analyst(json_data))
-    judge = asyncio.run(create_agent_judge(json_data))
-    start_terminal_chat(agent, judge)
+    
+    start_terminal_chat(json_data)
+
+def create_generate_report_agent(json_data: str, question: str):
+    model = "gpt-4o"
+    model_settings_gpt_4o = ModelSettings(
+        temperature=0.1,
+        top_p=1,
+        max_tokens=3000,
+        frequency_penalty=0.0,
+        presence_penalty=0.0
+    )
+
+    generate_report_instructions = """
+        Você é um analista de dados experiente. Sua missão é gerar um relatório analítico **somente quando a pergunta estiver relacionada ao uso de créditos, reservas, espaços, consumo ou análise de comportamento dos usuários**.
+
+        Você recebeu a seguinte pergunta do usuário:
+        "{question}"
+
+        ### Regras:
+        - Se a pergunta for um agradecimento, cumprimento ou algo fora do contexto esperado, **não gere nenhum relatório** e simplesmente retorne:
+        > "{}"
+
+        Com base apenas nos dados do JSON abaixo, gere um relatório completo com os principais insights que ajudam a responder a essa pergunta.
+
+        Dados do relatório:
+        {json_data}
+
+        O relatório deve ser em **markdown bem formatado**, com seções, listas e títulos claros, facil de ser lido e interpretado por outros analistas.
+    """
+
+    return Agent(
+        name="Generate Report Agent",
+        instructions=(
+            f"""
+            {generate_report_instructions}
+
+            Dados do relatório:
+            {json_data}
+            """
+        ),
+        model=model,
+        model_settings=model_settings_gpt_4o
+    )
 
 
 if __name__ == "__main__":
