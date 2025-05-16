@@ -95,12 +95,12 @@ async def check_output_guardrail(
 
             Analise a saída do assistente e retorne **apenas um dos rótulos abaixo**, conforme a situação:
 
-            - `FORMATO_VALIDO` — A resposta está em português, tem de 3 a 6 tópicos com subtítulos claros (ex: "**Cidades com Maior Gasto**"), e bullet points iniciados com "- " curtos, objetivos e acessíveis a gestores. Sem emojis, jargões ou links.
+            - `FORMATO_VALIDO` — A resposta está em português, tem de 3 a 6 tópicos com subtítulos claros (ex: "**Cidades com Maior Gasto**"), e bullet points iniciados com "- " curtos, objetivos e acessíveis a gestores. Sem jargões ou links.
+            - `AGRADECIMENTO` — A resposta é um agradecimento, cumprimento ou algo fora do contexto esperado.
             - `RESPOSTA_FALLBACK` — A resposta é exatamente: "Hmm... essa eu ainda não aprendi e não tenho dados suficientes para responder. 🤔"
             - `SEM_SUBTITULO` — Os insights estão apenas em bullet points, sem separação por subtítulos.
             - `POUCOS_INSIGHTS` — Menos de 3 insights ou tópicos.
             - `EXCESSO_INSIGHTS` — Mais de 6 tópicos ou seções.
-            - `USO_EMOJI` — A resposta contém emojis.
             - `LINGUAGEM_TECNICA` — A linguagem usada é técnica demais para um gestor comum.
             - `FORA_ESCOP` — A resposta não tem relação com reservas, consumo, espaços ou dados da empresa.
 
@@ -112,7 +112,7 @@ async def check_output_guardrail(
     result = await Runner.run(guardrail_agent, response_agent, context=ctx.context)
 
     final_output = result.final_output.strip().upper()
-    tripwire = final_output not in {"FORMATO_VALIDO", "RESPOSTA_FALLBACK"}
+    tripwire = final_output not in {"FORMATO_VALIDO", "RESPOSTA_FALLBACK", "AGRADECIMENTO"}
 
     print(f"📋 Output Guardrail Result: {final_output}")
 
