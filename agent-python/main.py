@@ -36,7 +36,7 @@ model_instructions = """
     - Nunca faça suposições ou projeções que não estejam nos dados
     - Não solicite dados adicionais ao usuário
     - Caso a pergunta seja apenas um agradecimento, responda de forma amigável, sem gerar insights
-    - Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi ou não tenho dados suficientes para responder. 🤔
+    - Caso o Markdown esteja vazio responda: Hmm... essa eu ainda não aprendi e não tenho dados suficientes para responder. 🤔
 """
 
 async def create_agent_guardrail(name: str, instructions: str) -> Agent:
@@ -96,7 +96,7 @@ async def check_output_guardrail(
             Analise a saída do assistente e retorne **apenas um dos rótulos abaixo**, conforme a situação:
 
             - `FORMATO_VALIDO` — A resposta está em português, tem de 3 a 6 tópicos com subtítulos claros (ex: "**Cidades com Maior Gasto**"), e bullet points iniciados com "- " curtos, objetivos e acessíveis a gestores. Sem emojis, jargões ou links.
-            - `RESPOSTA_FALLBACK` — A resposta é exatamente: "Hmm... essa eu ainda não aprendi ou não tenho dados suficientes para responder. 🤔"
+            - `RESPOSTA_FALLBACK` — A resposta é exatamente: "Hmm... essa eu ainda não aprendi e não tenho dados suficientes para responder. 🤔"
             - `SEM_SUBTITULO` — Os insights estão apenas em bullet points, sem separação por subtítulos.
             - `POUCOS_INSIGHTS` — Menos de 3 insights ou tópicos.
             - `EXCESSO_INSIGHTS` — Mais de 6 tópicos ou seções.
