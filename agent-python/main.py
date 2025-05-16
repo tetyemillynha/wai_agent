@@ -168,8 +168,8 @@ async def create_agent_analyst(json_data: str, user_question: str) -> Agent:
         ),
         model=model,
         model_settings=model_settings_gpt_4o,
-        input_guardrails=[check_input_guardrail],
-        output_guardrails=[check_output_guardrail]
+        # input_guardrails=[check_input_guardrail],
+        # output_guardrails=[check_output_guardrail]
     )
 
     return agent, markdown_report
@@ -306,6 +306,22 @@ def create_generate_report_agent(json_data: str, question: str):
         model_settings=model_settings_gpt_4o
     )
 
+async def create_graph_classifier_agent() -> Agent:
+    return Agent(
+        name="Graph Classifier",
+        instructions="""
+            Você é um classificador que analisa se os insights podem ser representados visualmente.
+
+            Receberá a resposta do analista em markdown.
+
+            Responda apenas com:
+            - `GRAFICO_POSSIVEL` — se os tópicos forem dados estruturados (como ranking de usuários, cidades, grupos, etc.).
+            - `GRAFICO_NAO_POSSIVEL` — se forem observações textuais, análises subjetivas ou dados insuficientes.
+
+            ⚠️ Não explique. Apenas retorne um desses rótulos.
+        """,
+        model="gpt-4o-mini"
+    )
 
 if __name__ == "__main__":
     main()

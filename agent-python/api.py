@@ -1,8 +1,12 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from utils import load_env_variables, load_json_content
-from main import create_agent_analyst, handle_question, create_agent_judge, InputGuardrailTripwireTriggered, OutputGuardrailTripwireTriggered
+from main import create_agent_analyst, handle_question, create_agent_judge, InputGuardrailTripwireTriggered, OutputGuardrailTripwireTriggered, create_graph_classifier_agent
+# from charts import create_chart_top_users, extract_top_users_from_markdown
+import os
+
 load_env_variables()
 
 app = FastAPI(title="WAi Facilities API")
@@ -29,6 +33,14 @@ async def chat_agent(payload: QuestionPayload):
     try:
         agent, markdown = await create_agent_analyst(json_data, payload.question)
         resposta = await handle_question(agent, payload.question)
+
+        graph_classifier_agent = await create_graph_classifier_agent()
+        result = await handle_question(graph_classifier_agent, resposta)
+
+        can_generate = result.strip().upper() == "GRAFICO_POSSIVEL"
+
+        if can_generate:
+            resposta += "\n\n📊 Gostaria que eu gerasse os gráficos desses insights?"
 
         # judge = await create_agent_judge(markdown)
         # prompt_judge = f"""
@@ -58,4 +70,8 @@ async def chat_agent(payload: QuestionPayload):
         }
 
     except Exception as e:
+        print(f"❌ Erro inesperado: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+    
+
+# app.mount("/static", StaticFiles(directory="static"), name="static")
